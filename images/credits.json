@@ -927,6 +927,22 @@
   },
   "w": 960
  },
+ "scranton-basilica-of-the-national-shrine-of-st-ann": {
+  "author": "Unknown authorUnknown author or not provided",
+  "file": "File:1940 Census Enumeration District Descriptions - Pennsylvania - Lackawanna County - ED 71-143, ED 71-144, ED 71-145 - NARA - 5858061.jpg",
+  "h": 518,
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:1940_Census_Enumeration_District_Descriptions_-_Pennsylvania_-_Lackawanna_County_-_ED_71-143,_ED_71-144,_ED_71-145_-_NARA_-_5858061.jpg",
+  "source": {
+   "must": [
+    "ann"
+   ],
+   "search": "St. Ann's Monastery Scranton",
+   "wikidata": "Q4867412"
+  },
+  "w": 960
+ },
  "southampton-basilica-of-the-sacred-hearts-of-jesus-and-mary": {
   "author": "Leonard J. DeFrancisci",
   "file": "File:Sacred Hearts of Jesus and Mary Roman Catholic Church (Southampton, New York) 001.jpg",
