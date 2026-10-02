@@ -18,7 +18,7 @@ CREDITS = os.path.join(OUT, "credits.json")
 MISSING = os.path.join(OUT, "missing.json")
 CANDIDATES = os.path.join(OUT, "candidates.json")
 SOURCE_KEYS = ("file", "wiki", "wikidata", "category", "search", "must")
-AVOID = re.compile(r"sign|logo|coat.of.arms|arms\b|map|plaque|seal|diagram|plan\b|\.svg$|\.pdf$|\.tiff?$", re.I)
+AVOID = re.compile(r"sign|logo|coat.of.arms|arms\b|map|plaque|seal|diagram|plan\b|census|document|nara|record|letter|\.svg$|\.pdf$|\.tiff?$", re.I)
 PREFER = re.compile(r"exterior|front|fa[cç]ade|outside|view", re.I)
 CAND_LOG = {}
 WIKI_API = "https://en.wikipedia.org/w/api.php"
@@ -76,7 +76,7 @@ def resolve_file(entry):
                 srnamespace="6|14", srlimit=30)
         for hit in j.get("query", {}).get("search", []):
             t = hit["title"]
-            if must and not all(w in t.lower() for w in must):
+            if must and not all(re.search(r"\b" + re.escape(w) + r"\b", t, re.I) for w in must):
                 continue
             titles += category_files(t) if t.startswith("Category:") else [t]
     return pick(entry["slug"], titles)
@@ -124,6 +124,13 @@ def main():
     manifest = json.load(open(MANIFEST, encoding="utf-8"))
     credits = json.load(open(CREDITS, encoding="utf-8")) if os.path.exists(CREDITS) else {}
     missing = {}
+
+    def drop(slug):
+        credits.pop(slug, None)
+        p = os.path.join(OUT, slug + ".jpg")
+        if os.path.exists(p):
+            os.remove(p)
+
     for i, e in enumerate(manifest, 1):
         slug = e["slug"]
         source = {k: e[k] for k in SOURCE_KEYS if k in e}
@@ -133,12 +140,12 @@ def main():
         try:
             ftitle = resolve_file(e)
             if not ftitle:
-                missing[slug] = "no photo found for this source"; print(f"[{i:2}] MISS  {slug}"); continue
+                drop(slug); missing[slug] = "no photo found for this source"; print(f"[{i:2}] MISS  {slug}"); continue
             info = image_info(ftitle)
             if not info:
-                missing[slug] = f"no image info for {ftitle}"; print(f"[{i:2}] MISS  {slug}"); continue
+                drop(slug); missing[slug] = f"no image info for {ftitle}"; print(f"[{i:2}] MISS  {slug}"); continue
             if info["nonfree"]:
-                missing[slug] = f"{ftitle} is not freely licensed"; print(f"[{i:2}] SKIP  {slug} (non-free)"); continue
+                drop(slug); missing[slug] = f"{ftitle} is not freely licensed"; print(f"[{i:2}] SKIP  {slug} (non-free)"); continue
             r = S.get(info["thumb"], timeout=60)
             for attempt in range(4):
                 if r.status_code != 429: break

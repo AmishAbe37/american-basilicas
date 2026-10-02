@@ -561,10 +561,6 @@
   "name": "Basilica of the National Shrine of St. Ann",
   "city": "Scranton",
   "state": "Pennsylvania",
-  "search": "St. Ann's Monastery Scranton",
-  "must": [
-   "ann"
-  ],
   "wikidata": "Q4867412"
  },
  {
