@@ -775,6 +775,8 @@ function openDetail(d){
   D_links.innerHTML=L.join("");
   D_img.style.display="none"; D_img.removeAttribute("src"); D_cred.textContent="";
   D_fig.style.display=""; D_fig.classList.add("loading");
+  clearTimeout(showImg.t);
+  showImg.t=setTimeout(()=>{ if(d===CUR && D_img.style.display==="none") noPhoto(d); },10000);  // slow connection: drop the empty box
   loadPhoto(d);
   fitOverlay(); DET.hidden=false; document.body.style.overflow="hidden";
 }
@@ -786,9 +788,10 @@ function noPhoto(d){
 }
 function showImg(src,credHTML,d){
   if(d!==CUR) return;
-  D_img.onload=()=>{ D_img.style.display="block"; D_fig.classList.remove("loading"); };
+  D_img.onload=()=>{ if(d!==CUR) return; clearTimeout(showImg.t);
+    D_img.style.display="block"; D_fig.classList.remove("loading"); D_cred.innerHTML=credHTML; };  // credit only with the photo
   D_img.onerror=()=>noPhoto(d);
-  D_img.src=src; D_cred.innerHTML=credHTML;
+  D_cred.innerHTML=""; D_img.src=src;
 }
 // ---------- photos bundled with the site (images/), credited from images/credits.json ----------
 let CREDITS=null;
