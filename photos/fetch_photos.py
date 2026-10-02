@@ -16,6 +16,11 @@ MANIFEST = os.path.join(ROOT, "photos", "manifest.json")
 OUT = os.path.join(ROOT, "images")
 CREDITS = os.path.join(OUT, "credits.json")
 MISSING = os.path.join(OUT, "missing.json")
+CANDIDATES = os.path.join(OUT, "candidates.json")
+SOURCE_KEYS = ("file", "wiki", "category", "search", "must")
+AVOID = re.compile(r"sign|logo|coat.of.arms|arms\b|map|plaque|seal|diagram|plan\b|\.svg$|\.pdf$|\.tiff?$", re.I)
+PREFER = re.compile(r"exterior|front|fa[cç]ade|outside|view", re.I)
+CAND_LOG = {}
 WIKI_API = "https://en.wikipedia.org/w/api.php"
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 WIDTH = 960
@@ -52,13 +57,35 @@ def resolve_file(entry):
         if pages and pages[0].get("pageimage"):
             return "File:" + pages[0]["pageimage"].replace("_", " ")
         return None
+    titles = []
     if "category" in entry:
-        j = api(COMMONS_API, action="query", list="categorymembers", cmtitle=entry["category"],
-                cmtype="file", cmlimit=50)
-        for m in j.get("query", {}).get("categorymembers", []):
-            if re.search(r"\.(jpe?g|png)$", m["title"], re.I):
-                return m["title"]
-    return None
+        titles += category_files(entry["category"])
+    if "search" in entry:
+        must = [w.lower() for w in entry.get("must", [])]
+        j = api(COMMONS_API, action="query", list="search", srsearch=entry["search"],
+                srnamespace="6|14", srlimit=30)
+        for hit in j.get("query", {}).get("search", []):
+            t = hit["title"]
+            if must and not all(w in t.lower() for w in must):
+                continue
+            titles += category_files(t) if t.startswith("Category:") else [t]
+    return pick(entry["slug"], titles)
+
+
+def category_files(cat):
+    j = api(COMMONS_API, action="query", list="categorymembers", cmtitle=cat, cmtype="file", cmlimit=100)
+    return [m["title"] for m in j.get("query", {}).get("categorymembers", [])]
+
+
+def pick(slug, titles):
+    """Choose the most likely exterior photo; log every candidate for review."""
+    photos = [t for t in dict.fromkeys(titles) if re.search(r"\.(jpe?g|png)$", t, re.I)]
+    CAND_LOG[slug] = photos
+    good = [t for t in photos if not AVOID.search(t.split(":", 1)[1])]
+    preferred = [t for t in good if PREFER.search(t)]
+    choice = (preferred or good or [None])[0]
+    print(f"      candidates={len(photos)} chose={choice}")
+    return choice
 
 
 def image_info(file_title):
@@ -89,7 +116,7 @@ def main():
     missing = {}
     for i, e in enumerate(manifest, 1):
         slug = e["slug"]
-        source = {k: e[k] for k in ("file", "wiki", "category") if k in e}
+        source = {k: e[k] for k in SOURCE_KEYS if k in e}
         path = os.path.join(OUT, slug + ".jpg")
         if os.path.exists(path) and credits.get(slug, {}).get("source") == source:
             print(f"[{i:2}/{len(manifest)}] keep  {slug}"); continue
@@ -121,6 +148,7 @@ def main():
             missing[slug] = f"error: {ex}"[:300]; print(f"[{i:2}] ERROR {slug}: {ex}")
     json.dump(credits, open(CREDITS, "w", encoding="utf-8"), ensure_ascii=False, indent=1, sort_keys=True)
     json.dump(missing, open(MISSING, "w", encoding="utf-8"), ensure_ascii=False, indent=1, sort_keys=True)
+    json.dump(CAND_LOG, open(CANDIDATES, "w", encoding="utf-8"), ensure_ascii=False, indent=1, sort_keys=True)
     print(f"\nDone: {len(credits)} photos, {len(missing)} missing.")
     if len(credits) == 0:
         sys.exit(1)

@@ -137,7 +137,11 @@
   "name": "Basilica of St. Edward",
   "city": "Palm Beach",
   "state": "Florida",
-  "category": "Category:Saint_Edward_Church_(Palm_Beach,_Florida)"
+  "category": "Category:Saint_Edward_Church_(Palm_Beach,_Florida)",
+  "search": "St Edward Palm Beach",
+  "must": [
+   "palm beach"
+  ]
  },
  {
   "slug": "atlanta-basilica-of-the-sacred-heart-of-jesus",
@@ -424,7 +428,7 @@
   "name": "Basilica of St. Patrick's Old Cathedral",
   "city": "New York",
   "state": "New York",
-  "wiki": "Basilica of St. Patrick's Old Cathedral"
+  "file": "Saint_Pats_Old_Cathedral_Manh_jeh.JPG"
  },
  {
   "slug": "southampton-basilica-of-the-sacred-hearts-of-jesus-and-mary",
@@ -438,7 +442,7 @@
   "name": "Basilica of Regina Pacis",
   "city": "Brooklyn",
   "state": "New York",
-  "wiki": "Regina Pacis Votive Shrine"
+  "file": "Basilica_Regina_Pacis_Shrine.jpg"
  },
  {
   "slug": "olean-basilica-of-st-mary-of-the-angels",
@@ -529,7 +533,7 @@
   "name": "St. Vincent Archabbey Basilica",
   "city": "Latrobe",
   "state": "Pennsylvania",
-  "wiki": "Saint Vincent Archabbey"
+  "file": "Saint_Vincent_Basilica_-_Latrobe,_Pennsylvania_01.jpg"
  },
  {
   "slug": "hanover-basilica-of-the-sacred-heart-of-jesus-conewago-chapel",
@@ -557,7 +561,11 @@
   "name": "Basilica of the National Shrine of St. Ann",
   "city": "Scranton",
   "state": "Pennsylvania",
-  "wiki": "Basilica of the National Shrine of St. Ann"
+  "search": "St. Ann basilica Scranton",
+  "must": [
+   "scranton",
+   "ann"
+  ]
  },
  {
   "slug": "loretto-basilica-of-st-michael-the-archangel",
