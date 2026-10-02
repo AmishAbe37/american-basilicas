@@ -170,6 +170,7 @@
   /* ---------- map zoom ---------- */
   svg#map{touch-action:pan-y}
   .state,.lake,.river{vector-effect:non-scaling-stroke}
+  .leader{stroke:#3a3226;stroke-opacity:.9;pointer-events:none}
   .blabel{font-weight:600;fill:#241d12;paint-order:stroke;stroke:#f7f2e7;stroke-linejoin:round;cursor:pointer}
   .blabel:hover{fill:#7a1f1f}
   .zoombtns{display:inline-flex;align-items:center;gap:5px;margin-left:auto}
@@ -657,7 +658,7 @@ const labG = svg.append("g").attr("class","blabels");      // basilica names, dr
 g.selectAll("text").each(function(){                        // remember base sizes so text stays constant
   const cs=getComputedStyle(this); this.__fs=parseFloat(cs.fontSize)||9; this.__sw=parseFloat(cs.strokeWidth)||0; });
 let curT=d3.zoomIdentity, curK=1;
-const zoom=d3.zoom().scaleExtent([1,16]).translateExtent([[0,0],[W,H]])
+const zoom=d3.zoom().scaleExtent([1,40]).translateExtent([[0,0],[W,H]])
   .wheelDelta(e=>{ const d=-e.deltaY*(e.deltaMode===1?0.05:e.deltaMode?1:0.002)*(e.ctrlKey?10:1);
                   return Math.max(-0.45,Math.min(0.45,d)); })   // gentle steps for mouse wheels; trackpad pinch unaffected
   .filter(e=>{
@@ -701,7 +702,10 @@ function restyle(){                                          // counter-scale ma
 }
 
 // ---------- full basilica names wherever they fit ----------
-const LABEL_MIN_K=1.8, LABEL_PX=11.5;
+const LABEL_MIN_K=1.8, LABEL_PX=11.5, LEADER_MIN_K=6;
+function segHits(x1,y1,x2,y2,b){                              // does segment cross box b?
+  for(let i=0;i<=12;i++){ const t=i/12, x=x1+(x2-x1)*t, y=y1+(y2-y1)*t;
+    if(x>b[0]&&x<b[2]&&y>b[1]&&y<b[3]) return true; } return false; }
 const measCtx=document.createElement("canvas").getContext("2d");
 function scheduleLabels(){ if(scheduleLabels.p) return; scheduleLabels.p=true;
   requestAnimationFrame(()=>{ scheduleLabels.p=false; placeLabels(); }); }
@@ -751,20 +755,50 @@ function placeLabels(){
   pts.forEach(o=>{ o.near=pts.reduce((a,q)=>a+(q!==o&&Math.hypot(q.x-o.x,q.y-o.y)<90/s?1:0),0); });
   pts.sort((a,b)=>a.near-b.near);                                        // isolated basilicas claim space first
   const placed=[];
-  for(const o of pts){
-    const w=measCtx.measureText(o.d.n).width/s;
-    const cands=[[o.x+hw+gap,o.y,"start"],[o.x-hw-gap,o.y,"end"],
-                 [o.x,o.y-hh-gap-h/2,"middle"],[o.x,o.y+hh+gap+h/2,"middle"]];
-    for(const [x,y,a] of cands){
-      const x0=a==="start"?x:a==="end"?x-w:x-w/2;
-      const b=[x0-pad,y-h/2-pad,x0+w+pad,y+h/2+pad];
-      if(clash(b)) continue;
-      obst.push(b); placed.push({d:o.d,x,y,a,b}); break;
-    }
+  const meas=t=>measCtx.measureText(t).width/s;
+  function split(name,n){                                   // break a name into n balanced lines
+    const ws=name.split(" "); if(n<=1||ws.length<n) return [name];
+    let best=null;
+    const rec=(i,acc)=>{ if(acc.length===n-1){ const ls=[...acc,ws.slice(i).join(" ")];
+        const m=Math.max(...ls.map(meas)); if(!best||m<best.m) best={ls,m}; return; }
+      for(let j=i+1;j<=ws.length-(n-1-acc.length);j++) rec(j,[...acc,ws.slice(i,j).join(" ")]); };
+    rec(0,[]); return best.ls;
   }
+  function box(x,y,a,w,bh){ const x0=a==="start"?x:a==="end"?x-w:x-w/2; return [x0-pad,y-bh/2-pad,x0+w+pad,y+bh/2+pad]; }
+  function adjacent(o,ls){                                  // name right beside the ombrellino
+    const w=Math.max(...ls.map(meas)), bh=ls.length*h;
+    for(const [x,y,a] of [[o.x+hw+gap,o.y,"start"],[o.x-hw-gap,o.y,"end"],
+        [o.x,o.y-hh-gap-bh/2,"middle"],[o.x,o.y+hh+gap+bh/2,"middle"],
+        [o.x+hw+gap,o.y-hh-bh/2,"start"],[o.x+hw+gap,o.y+hh+bh/2,"start"],
+        [o.x-hw-gap,o.y-hh-bh/2,"end"],[o.x-hw-gap,o.y+hh+bh/2,"end"]]){
+      const b=box(x,y,a,w,bh); if(!clash(b)) return {d:o.d,x,y,a,b,ls};
+    } return null;
+  }
+  function leader(o,ls){                                    // name set a little way off, with a thin line
+    const w=Math.max(...ls.map(meas)), bh=ls.length*h;
+    for(const R of [26,40,58,80,110,150,200]) for(let i=0;i<16;i++){
+      const t=i*Math.PI/8, dx=Math.cos(t), dy=Math.sin(t);
+      const ex=o.x+dx*R/s, ey=o.y+dy*R/s, a=Math.abs(dx)<0.2?"middle":dx>0?"start":"end";
+      const x=a==="start"?ex+gap:a==="end"?ex-gap:ex, y=a==="middle"?ey+Math.sign(dy)*(bh/2+gap):ey;
+      const b=box(x,y,a,w,bh);
+      if(clash(b)||placed.some(p=>segHits(o.x,o.y,ex,ey,p.b))) continue;  // leader never crosses another name
+      return {d:o.d,x,y,a,b,ls,lx:o.x+dx*hh,ly:o.y+dy*hh,ex,ey};
+    } return null;
+  }
+  let todo=pts.slice();
+  const pass=fn=>{ todo=todo.filter(o=>{ const p=fn(o); if(!p) return true; obst.push(p.b); placed.push(p); return false; }); };
+  pass(o=>adjacent(o,[o.d.n]));
+  pass(o=>adjacent(o,split(o.d.n,2)));
+  if(curK>=LEADER_MIN_K){
+    pass(o=>leader(o,[o.d.n])); pass(o=>leader(o,split(o.d.n,2))); pass(o=>leader(o,split(o.d.n,3)));
+  }
+  labG.selectAll("line").data(placed.filter(p=>p.ex!==undefined)).enter().append("line").attr("class","leader")
+    .attr("x1",p=>p.lx).attr("y1",p=>p.ly).attr("x2",p=>p.ex).attr("y2",p=>p.ey).style("stroke-width",(1.2/s)+"px");
   labG.selectAll("text").data(placed).enter().append("text").attr("class","blabel")
-    .attr("x",p=>p.x).attr("y",p=>p.y).attr("dy","0.35em").attr("text-anchor",p=>p.a)
-    .style("font-size",fs+"px").style("stroke-width",(3/s)+"px").text(p=>p.d.n)
+    .attr("x",p=>p.x).attr("y",p=>p.y).attr("text-anchor",p=>p.a)
+    .style("font-size",fs+"px").style("stroke-width",(3/s)+"px")
+    .each(function(p){ const t=d3.select(this);
+      p.ls.forEach((l,i)=>t.append("tspan").attr("x",p.x).attr("y",p.y+(i-(p.ls.length-1)/2)*h).attr("dy","0.35em").text(l)); })
     .on("mousemove",(e,p)=>{const d=p.d; showTip(`<b>${d.n}</b><br><span class="tc">${d.c}, ${d.s}${d.yr?" · since "+d.yr:""} — click for photo &amp; facts</span>`,e.clientX,e.clientY);})
     .on("mouseleave",hideTip)
     .on("click",(e,p)=>openDetail(p.d));
