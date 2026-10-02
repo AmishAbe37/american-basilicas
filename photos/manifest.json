@@ -561,11 +561,11 @@
   "name": "Basilica of the National Shrine of St. Ann",
   "city": "Scranton",
   "state": "Pennsylvania",
-  "search": "St. Ann basilica Scranton",
+  "search": "St. Ann's Monastery Scranton",
   "must": [
-   "scranton",
    "ann"
-  ]
+  ],
+  "wikidata": "Q4867412"
  },
  {
   "slug": "loretto-basilica-of-st-michael-the-archangel",

@@ -17,7 +17,7 @@ OUT = os.path.join(ROOT, "images")
 CREDITS = os.path.join(OUT, "credits.json")
 MISSING = os.path.join(OUT, "missing.json")
 CANDIDATES = os.path.join(OUT, "candidates.json")
-SOURCE_KEYS = ("file", "wiki", "category", "search", "must")
+SOURCE_KEYS = ("file", "wiki", "wikidata", "category", "search", "must")
 AVOID = re.compile(r"sign|logo|coat.of.arms|arms\b|map|plaque|seal|diagram|plan\b|\.svg$|\.pdf$|\.tiff?$", re.I)
 PREFER = re.compile(r"exterior|front|fa[cç]ade|outside|view", re.I)
 CAND_LOG = {}
@@ -58,6 +58,16 @@ def resolve_file(entry):
             return "File:" + pages[0]["pageimage"].replace("_", " ")
         return None
     titles = []
+    if "wikidata" in entry:
+        r = S.get(f"https://www.wikidata.org/wiki/Special:EntityData/{entry['wikidata']}.json", timeout=30)
+        r.raise_for_status(); time.sleep(0.4)
+        claims = next(iter(r.json()["entities"].values())).get("claims", {})
+        val = lambda p: claims[p][0]["mainsnak"].get("datavalue", {}).get("value") if claims.get(p) else None
+        if val("P18"):
+            print(f"      wikidata image: {val('P18')}")
+            return "File:" + val("P18")
+        if val("P373"):
+            titles += category_files("Category:" + val("P373"))
     if "category" in entry:
         titles += category_files(entry["category"])
     if "search" in entry:
