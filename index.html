@@ -133,10 +133,10 @@
   .physio{fill:#8a7a55;font-size:8px;font-weight:700;letter-spacing:.22em;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:2.2px;stroke-linejoin:round;opacity:.85;pointer-events:none}
   .waterlab{fill:#5f8aa0;font-size:7.6px;font-style:italic;letter-spacing:.02em;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:2px;stroke-linejoin:round;pointer-events:none}
   .waterlab.lake-lab{fill:#4f7f96;font-weight:600}
-  .city .citymark{fill:#fff;stroke:#3a3226;stroke-width:1.3px;vector-effect:non-scaling-stroke;pointer-events:none}
+  .city .citymark{fill:#fff;stroke:#3a3226;stroke-width:.9px;vector-effect:non-scaling-stroke;pointer-events:none}
   .citylabel{fill:#3a3226;font-weight:600;paint-order:stroke;stroke:#f7f2e7;stroke-linejoin:round;pointer-events:none}
   .slabel.lead{fill:#7a6a45}
-  .legend .citychip{display:inline-block;width:7px;height:7px;border:1.3px solid #3a3226;background:#fff;flex:0 0 auto}
+  .legend .citychip{display:inline-block;box-sizing:content-box;width:3.5px;height:3.5px;min-width:3.5px;border:.9px solid #3a3226;background:#fff;flex:0 0 auto;align-self:center}
   .legend .waterchip{display:inline-block;width:16px;height:0;border-top:1.5px solid #8fb3c7;flex:0 0 auto}
   .legend .lakechip{display:inline-block;width:15px;height:9px;border-radius:5px;background:#b9d2d4;border:1px solid #9bbabd;flex:0 0 auto}
 
@@ -690,7 +690,7 @@ function iconUnits(){                                      // ombrellino size in
   const px=Math.max(8.5,Math.min(12,svg.node().getBoundingClientRect().width*0.015));   // 25% smaller
   const mh=px/s; return {mh, mw:mh*84/96};
 }
-const CITY_PX=6, CITY_LABEL_PX=10.5;
+const CITY_PX=3, CITY_LABEL_PX=7;   // 50% smaller squares, 33% smaller names
 function restyle(){                                          // counter-scale markers & text
   const k=curK;
   const ic=iconUnits(), mw=ic.mw/k, mh=ic.mh/k;
