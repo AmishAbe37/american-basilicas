@@ -1,0 +1,660 @@
+[
+ {
+  "slug": "mobile-cathedral-basilica-of-the-immaculate-conception",
+  "name": "Cathedral Basilica of the Immaculate Conception",
+  "city": "Mobile",
+  "state": "Alabama",
+  "wiki": "Cathedral Basilica of the Immaculate Conception (Mobile, Alabama)"
+ },
+ {
+  "slug": "phoenix-st-mary-s-basilica",
+  "name": "St. Mary's Basilica",
+  "city": "Phoenix",
+  "state": "Arizona",
+  "wiki": "St. Mary's Basilica (Phoenix)"
+ },
+ {
+  "slug": "san-francisco-basilica-of-st-francis-of-assisi-mission-dolores",
+  "name": "Basilica of St. Francis of Assisi (Mission Dolores)",
+  "city": "San Francisco",
+  "state": "California",
+  "wiki": "Mission San Francisco de Asís"
+ },
+ {
+  "slug": "carmel-by-the-sea-basilica-of-mission-san-carlos-borromeo-carmel-mission",
+  "name": "Basilica of Mission San Carlos Borromeo (Carmel Mission)",
+  "city": "Carmel-by-the-Sea",
+  "state": "California",
+  "wiki": "Mission San Carlos Borromeo de Carmelo"
+ },
+ {
+  "slug": "alameda-st-joseph-basilica",
+  "name": "St. Joseph Basilica",
+  "city": "Alameda",
+  "state": "California",
+  "wiki": "Basilica of St. Joseph, Alameda"
+ },
+ {
+  "slug": "san-diego-mission-basilica-san-diego-de-alcala",
+  "name": "Mission Basilica San Diego de Alcalá",
+  "city": "San Diego",
+  "state": "California",
+  "wiki": "Mission San Diego de Alcalá"
+ },
+ {
+  "slug": "san-jose-cathedral-basilica-of-st-joseph",
+  "name": "Cathedral Basilica of St. Joseph",
+  "city": "San Jose",
+  "state": "California",
+  "wiki": "Cathedral Basilica of St. Joseph (San Jose)"
+ },
+ {
+  "slug": "san-juan-capistrano-mission-basilica-san-juan-capistrano",
+  "name": "Mission Basilica San Juan Capistrano",
+  "city": "San Juan Capistrano",
+  "state": "California",
+  "file": "Mission_Basilica_San_Juan_Capistrano_01.jpg"
+ },
+ {
+  "slug": "ventura-mission-basilica-san-buenaventura",
+  "name": "Mission Basilica San Buenaventura",
+  "city": "Ventura",
+  "state": "California",
+  "wiki": "Mission San Buenaventura"
+ },
+ {
+  "slug": "denver-cathedral-basilica-of-the-immaculate-conception",
+  "name": "Cathedral Basilica of the Immaculate Conception",
+  "city": "Denver",
+  "state": "Colorado",
+  "wiki": "Cathedral Basilica of the Immaculate Conception (Denver)"
+ },
+ {
+  "slug": "waterbury-basilica-of-the-immaculate-conception",
+  "name": "Basilica of the Immaculate Conception",
+  "city": "Waterbury",
+  "state": "Connecticut",
+  "wiki": "Basilica of the Immaculate Conception (Waterbury, Connecticut)"
+ },
+ {
+  "slug": "stamford-basilica-of-st-john-the-evangelist",
+  "name": "Basilica of St. John the Evangelist",
+  "city": "Stamford",
+  "state": "Connecticut",
+  "wiki": "Basilica of Saint John the Evangelist"
+ },
+ {
+  "slug": "washington-basilica-of-the-national-shrine-of-the-immaculate-conception",
+  "name": "Basilica of the National Shrine of the Immaculate Conception",
+  "city": "Washington",
+  "state": "District of Columbia",
+  "wiki": "Basilica of the National Shrine of the Immaculate Conception"
+ },
+ {
+  "slug": "st-augustine-cathedral-basilica-of-st-augustine",
+  "name": "Cathedral Basilica of St. Augustine",
+  "city": "St. Augustine",
+  "state": "Florida",
+  "wiki": "Cathedral Basilica of St. Augustine"
+ },
+ {
+  "slug": "daytona-beach-basilica-of-st-paul",
+  "name": "Basilica of St. Paul",
+  "city": "Daytona Beach",
+  "state": "Florida",
+  "wiki": "Basilica of St. Paul (Daytona Beach, Florida)"
+ },
+ {
+  "slug": "orlando-basilica-of-the-national-shrine-of-mary-queen-of-the-universe",
+  "name": "Basilica of the National Shrine of Mary, Queen of the Universe",
+  "city": "Orlando",
+  "state": "Florida",
+  "wiki": "Basilica of Mary, Queen of the Universe"
+ },
+ {
+  "slug": "pensacola-basilica-of-st-michael-the-archangel",
+  "name": "Basilica of St. Michael the Archangel",
+  "city": "Pensacola",
+  "state": "Florida",
+  "file": "Pensacola_FL_St_Michaels_Church02.jpg"
+ },
+ {
+  "slug": "key-west-basilica-of-st-mary-star-of-the-sea",
+  "name": "Basilica of St. Mary Star of the Sea",
+  "city": "Key West",
+  "state": "Florida",
+  "file": "Basilica_of_Saint_Mary_Star_of_the_Sea,_Key_West,_Florida_1906.jpg"
+ },
+ {
+  "slug": "jacksonville-basilica-of-the-immaculate-conception",
+  "name": "Basilica of the Immaculate Conception",
+  "city": "Jacksonville",
+  "state": "Florida",
+  "file": "Jax_FL_Immaculate_Conception_Church_sq_pano01.jpg"
+ },
+ {
+  "slug": "palm-beach-basilica-of-st-edward",
+  "name": "Basilica of St. Edward",
+  "city": "Palm Beach",
+  "state": "Florida",
+  "category": "Category:Saint_Edward_Church_(Palm_Beach,_Florida)"
+ },
+ {
+  "slug": "atlanta-basilica-of-the-sacred-heart-of-jesus",
+  "name": "Basilica of the Sacred Heart of Jesus",
+  "city": "Atlanta",
+  "state": "Georgia",
+  "wiki": "Basilica of the Sacred Heart of Jesus (Atlanta)"
+ },
+ {
+  "slug": "savannah-cathedral-basilica-of-st-john-the-baptist",
+  "name": "Cathedral Basilica of St. John the Baptist",
+  "city": "Savannah",
+  "state": "Georgia",
+  "wiki": "Cathedral Basilica of St. John the Baptist (Savannah, Georgia)"
+ },
+ {
+  "slug": "honolulu-cathedral-basilica-of-our-lady-of-peace",
+  "name": "Cathedral Basilica of Our Lady of Peace",
+  "city": "Honolulu",
+  "state": "Hawaii",
+  "wiki": "Cathedral Basilica of Our Lady of Peace"
+ },
+ {
+  "slug": "chicago-our-lady-of-sorrows-basilica",
+  "name": "Our Lady of Sorrows Basilica",
+  "city": "Chicago",
+  "state": "Illinois",
+  "wiki": "Our Lady of Sorrows Basilica"
+ },
+ {
+  "slug": "chicago-queen-of-all-saints-basilica",
+  "name": "Queen of All Saints Basilica",
+  "city": "Chicago",
+  "state": "Illinois",
+  "wiki": "Queen of All Saints Basilica"
+ },
+ {
+  "slug": "chicago-basilica-of-st-hyacinth",
+  "name": "Basilica of St. Hyacinth",
+  "city": "Chicago",
+  "state": "Illinois",
+  "wiki": "Basilica of Saint Hyacinth"
+ },
+ {
+  "slug": "vincennes-basilica-of-st-francis-xavier-old-cathedral",
+  "name": "Basilica of St. Francis Xavier (Old Cathedral)",
+  "city": "Vincennes",
+  "state": "Indiana",
+  "wiki": "St. Francis Xavier Cathedral and Library"
+ },
+ {
+  "slug": "notre-dame-basilica-of-the-sacred-heart",
+  "name": "Basilica of the Sacred Heart",
+  "city": "Notre Dame",
+  "state": "Indiana",
+  "wiki": "Basilica of the Sacred Heart (Notre Dame)"
+ },
+ {
+  "slug": "dyersville-basilica-of-st-francis-xavier",
+  "name": "Basilica of St. Francis Xavier",
+  "city": "Dyersville",
+  "state": "Iowa",
+  "wiki": "Basilica of St. Francis Xavier, Dyersville"
+ },
+ {
+  "slug": "des-moines-basilica-of-st-john-the-apostle",
+  "name": "Basilica of St. John the Apostle",
+  "city": "Des Moines",
+  "state": "Iowa",
+  "wiki": "Basilica of St. John (Des Moines, Iowa)"
+ },
+ {
+  "slug": "victoria-basilica-of-st-fidelis-cathedral-of-the-plains",
+  "name": "Basilica of St. Fidelis (Cathedral of the Plains)",
+  "city": "Victoria",
+  "state": "Kansas",
+  "file": "Cathedral_of_the_plains_Victoria_Interior.jpg"
+ },
+ {
+  "slug": "trappist-basilica-of-the-blessed-virgin-of-gethsemani",
+  "name": "Basilica of the Blessed Virgin of Gethsemani",
+  "city": "Trappist",
+  "state": "Kentucky",
+  "wiki": "Abbey of Our Lady of Gethsemani"
+ },
+ {
+  "slug": "covington-cathedral-basilica-of-the-assumption",
+  "name": "Cathedral Basilica of the Assumption",
+  "city": "Covington",
+  "state": "Kentucky",
+  "wiki": "Cathedral Basilica of the Assumption (Covington, Kentucky)"
+ },
+ {
+  "slug": "bardstown-st-joseph-proto-cathedral-basilica",
+  "name": "St. Joseph Proto-Cathedral Basilica",
+  "city": "Bardstown",
+  "state": "Kentucky",
+  "wiki": "Basilica of St. Joseph Proto-Cathedral"
+ },
+ {
+  "slug": "new-orleans-cathedral-basilica-of-st-louis-king-of-france",
+  "name": "Cathedral Basilica of St. Louis, King of France",
+  "city": "New Orleans",
+  "state": "Louisiana",
+  "wiki": "St. Louis Cathedral (New Orleans)"
+ },
+ {
+  "slug": "natchitoches-basilica-of-the-immaculate-conception",
+  "name": "Basilica of the Immaculate Conception",
+  "city": "Natchitoches",
+  "state": "Louisiana",
+  "wiki": "Basilica of the Immaculate Conception (Natchitoches, Louisiana)"
+ },
+ {
+  "slug": "new-orleans-basilica-of-st-stephen",
+  "name": "Basilica of St. Stephen",
+  "city": "New Orleans",
+  "state": "Louisiana",
+  "wiki": "Basilica of St. Stephen (New Orleans)"
+ },
+ {
+  "slug": "lewiston-basilica-of-sts-peter-and-paul",
+  "name": "Basilica of Sts. Peter and Paul",
+  "city": "Lewiston",
+  "state": "Maine",
+  "wiki": "Basilica of Saints Peter and Paul (Lewiston, Maine)"
+ },
+ {
+  "slug": "baltimore-basilica-of-the-national-shrine-of-the-assumption-of-the-bvm",
+  "name": "Basilica of the National Shrine of the Assumption of the BVM",
+  "city": "Baltimore",
+  "state": "Maryland",
+  "wiki": "Basilica of the National Shrine of the Assumption of the Blessed Virgin Mary"
+ },
+ {
+  "slug": "emmitsburg-basilica-of-the-national-shrine-of-st-elizabeth-ann-seton",
+  "name": "Basilica of the National Shrine of St. Elizabeth Ann Seton",
+  "city": "Emmitsburg",
+  "state": "Maryland",
+  "wiki": "National Shrine of St. Elizabeth Ann Seton"
+ },
+ {
+  "slug": "boston-basilica-shrine-of-our-lady-of-perpetual-help-mission-church",
+  "name": "Basilica & Shrine of Our Lady of Perpetual Help (Mission Church)",
+  "city": "Boston",
+  "state": "Massachusetts",
+  "wiki": "Basilica and Shrine of Our Lady of Perpetual Help"
+ },
+ {
+  "slug": "chicopee-basilica-of-st-stanislaus",
+  "name": "Basilica of St. Stanislaus",
+  "city": "Chicopee",
+  "state": "Massachusetts",
+  "wiki": "Basilica of St. Stanislaus (Chicopee, Massachusetts)"
+ },
+ {
+  "slug": "webster-st-joseph-basilica",
+  "name": "St. Joseph Basilica",
+  "city": "Webster",
+  "state": "Massachusetts",
+  "wiki": "St. Joseph Basilica (Webster, Massachusetts)"
+ },
+ {
+  "slug": "grand-rapids-basilica-of-st-adalbert",
+  "name": "Basilica of St. Adalbert",
+  "city": "Grand Rapids",
+  "state": "Michigan",
+  "wiki": "Basilica of St. Adalbert (Grand Rapids, Michigan)"
+ },
+ {
+  "slug": "royal-oak-national-shrine-of-the-little-flower-basilica",
+  "name": "National Shrine of the Little Flower Basilica",
+  "city": "Royal Oak",
+  "state": "Michigan",
+  "wiki": "National Shrine of the Little Flower Basilica"
+ },
+ {
+  "slug": "detroit-basilica-of-ste-anne-de-detroit",
+  "name": "Basilica of Ste. Anne de Détroit",
+  "city": "Detroit",
+  "state": "Michigan",
+  "wiki": "Basilica of Sainte Anne de Détroit"
+ },
+ {
+  "slug": "minneapolis-basilica-of-st-mary",
+  "name": "Basilica of St. Mary",
+  "city": "Minneapolis",
+  "state": "Minnesota",
+  "wiki": "Basilica of Saint Mary (Minneapolis)"
+ },
+ {
+  "slug": "winona-basilica-of-st-stanislaus-kostka",
+  "name": "Basilica of St. Stanislaus Kostka",
+  "city": "Winona",
+  "state": "Minnesota",
+  "file": "Basilica_of_St_Stanislaus_Kostka_NW.jpg"
+ },
+ {
+  "slug": "natchez-st-mary-basilica",
+  "name": "St. Mary Basilica",
+  "city": "Natchez",
+  "state": "Mississippi",
+  "wiki": "St. Mary Basilica, Natchez"
+ },
+ {
+  "slug": "conception-basilica-of-the-immaculate-conception-conception-abbey",
+  "name": "Basilica of the Immaculate Conception (Conception Abbey)",
+  "city": "Conception",
+  "state": "Missouri",
+  "wiki": "Conception Abbey"
+ },
+ {
+  "slug": "st-louis-basilica-of-st-louis-king-of-france-old-cathedral",
+  "name": "Basilica of St. Louis, King of France (Old Cathedral)",
+  "city": "St. Louis",
+  "state": "Missouri",
+  "wiki": "Basilica of St. Louis, King of France"
+ },
+ {
+  "slug": "st-louis-cathedral-basilica-of-st-louis-new-cathedral",
+  "name": "Cathedral Basilica of St. Louis (New Cathedral)",
+  "city": "St. Louis",
+  "state": "Missouri",
+  "wiki": "Cathedral Basilica of Saint Louis (St. Louis)"
+ },
+ {
+  "slug": "newark-cathedral-basilica-of-the-sacred-heart",
+  "name": "Cathedral Basilica of the Sacred Heart",
+  "city": "Newark",
+  "state": "New Jersey",
+  "wiki": "Cathedral Basilica of the Sacred Heart (Newark)"
+ },
+ {
+  "slug": "santa-fe-cathedral-basilica-of-st-francis-of-assisi",
+  "name": "Cathedral Basilica of St. Francis of Assisi",
+  "city": "Santa Fe",
+  "state": "New Mexico",
+  "wiki": "Cathedral Basilica of St. Francis of Assisi (Santa Fe)"
+ },
+ {
+  "slug": "mesilla-basilica-of-san-albino",
+  "name": "Basilica of San Albino",
+  "city": "Mesilla",
+  "state": "New Mexico",
+  "wiki": "Basilica of San Albino"
+ },
+ {
+  "slug": "lackawanna-basilica-of-our-lady-of-victory-national-shrine",
+  "name": "Basilica of Our Lady of Victory (National Shrine)",
+  "city": "Lackawanna",
+  "state": "New York",
+  "wiki": "Our Lady of Victory Basilica (Lackawanna, New York)"
+ },
+ {
+  "slug": "brooklyn-basilica-of-our-lady-of-perpetual-help",
+  "name": "Basilica of Our Lady of Perpetual Help",
+  "city": "Brooklyn",
+  "state": "New York",
+  "wiki": "Basilica of Our Lady of Perpetual Help (Brooklyn)"
+ },
+ {
+  "slug": "lewiston-basilica-of-the-national-shrine-of-our-lady-of-fatima",
+  "name": "Basilica of the National Shrine of Our Lady of Fatima",
+  "city": "Lewiston",
+  "state": "New York",
+  "file": "Shrine_of_Our_Lady_of_Fatima,_Lewiston,_NY.jpg"
+ },
+ {
+  "slug": "brooklyn-cathedral-basilica-of-st-james",
+  "name": "Cathedral Basilica of St. James",
+  "city": "Brooklyn",
+  "state": "New York",
+  "wiki": "Cathedral Basilica of St. James (Brooklyn)"
+ },
+ {
+  "slug": "syracuse-basilica-of-the-sacred-heart-of-jesus",
+  "name": "Basilica of the Sacred Heart of Jesus",
+  "city": "Syracuse",
+  "state": "New York",
+  "wiki": "Basilica of the Sacred Heart of Jesus, Syracuse"
+ },
+ {
+  "slug": "new-york-basilica-of-st-patrick-s-old-cathedral",
+  "name": "Basilica of St. Patrick's Old Cathedral",
+  "city": "New York",
+  "state": "New York",
+  "wiki": "Basilica of St. Patrick's Old Cathedral"
+ },
+ {
+  "slug": "southampton-basilica-of-the-sacred-hearts-of-jesus-and-mary",
+  "name": "Basilica of the Sacred Hearts of Jesus and Mary",
+  "city": "Southampton",
+  "state": "New York",
+  "file": "Sacred_Hearts_of_Jesus_and_Mary_Roman_Catholic_Church_(Southampton,_New_York)_001.jpg"
+ },
+ {
+  "slug": "brooklyn-basilica-of-regina-pacis",
+  "name": "Basilica of Regina Pacis",
+  "city": "Brooklyn",
+  "state": "New York",
+  "wiki": "Regina Pacis Votive Shrine"
+ },
+ {
+  "slug": "olean-basilica-of-st-mary-of-the-angels",
+  "name": "Basilica of St. Mary of the Angels",
+  "city": "Olean",
+  "state": "New York",
+  "file": "Basilica_of_St._Mary_of_the_Angels_interior_-_Olean_03.jpg"
+ },
+ {
+  "slug": "asheville-basilica-of-st-lawrence",
+  "name": "Basilica of St. Lawrence",
+  "city": "Asheville",
+  "state": "North Carolina",
+  "wiki": "Basilica of St. Lawrence, Asheville"
+ },
+ {
+  "slug": "belmont-basilica-of-our-lady-help-of-christians-belmont-abbey",
+  "name": "Basilica of Our Lady Help of Christians (Belmont Abbey)",
+  "city": "Belmont",
+  "state": "North Carolina",
+  "wiki": "Belmont Abbey, North Carolina"
+ },
+ {
+  "slug": "wilmington-basilica-shrine-of-st-mary",
+  "name": "Basilica Shrine of St. Mary",
+  "city": "Wilmington",
+  "state": "North Carolina",
+  "file": "Basilica_Shrine_of_St._Mary_-_Wilmington,_North_Carolina_01.jpg"
+ },
+ {
+  "slug": "jamestown-basilica-of-st-james",
+  "name": "Basilica of St. James",
+  "city": "Jamestown",
+  "state": "North Dakota",
+  "file": "St._James_Basilica_(Jamestown,_ND)_N_window_1.jpg"
+ },
+ {
+  "slug": "carey-basilica-national-shrine-of-our-lady-of-consolation",
+  "name": "Basilica & National Shrine of Our Lady of Consolation",
+  "city": "Carey",
+  "state": "Ohio",
+  "wiki": "Basilica and National Shrine of Our Lady of Consolation"
+ },
+ {
+  "slug": "canton-basilica-of-st-john-the-baptist",
+  "name": "Basilica of St. John the Baptist",
+  "city": "Canton",
+  "state": "Ohio",
+  "file": "Canton,_Ohio_-_St._John's_2011-02-04.JPG"
+ },
+ {
+  "slug": "marietta-basilica-of-st-mary-of-the-assumption",
+  "name": "Basilica of St. Mary of the Assumption",
+  "city": "Marietta",
+  "state": "Ohio",
+  "file": "Basilica_of_St._Mary_of_the_Assumption,_Marietta,_OH.jpg"
+ },
+ {
+  "slug": "youngstown-basilica-of-our-lady-of-mount-carmel",
+  "name": "Basilica of Our Lady of Mount Carmel",
+  "city": "Youngstown",
+  "state": "Ohio",
+  "wiki": "Basilica of Our Lady of Mount Carmel (Youngstown, Ohio)"
+ },
+ {
+  "slug": "north-jackson-basilica-national-shrine-of-our-lady-of-lebanon",
+  "name": "Basilica & National Shrine of Our Lady of Lebanon",
+  "city": "North Jackson",
+  "state": "Ohio",
+  "wiki": "Basilica and National Shrine of Our Lady of Lebanon (North Jackson, Ohio)"
+ },
+ {
+  "slug": "cincinnati-cathedral-basilica-of-st-peter-in-chains",
+  "name": "Cathedral Basilica of St. Peter in Chains",
+  "city": "Cincinnati",
+  "state": "Ohio",
+  "wiki": "Cathedral Basilica of St. Peter in Chains"
+ },
+ {
+  "slug": "lancaster-basilica-of-st-mary-of-the-assumption",
+  "name": "Basilica of St. Mary of the Assumption",
+  "city": "Lancaster",
+  "state": "Ohio",
+  "file": "Saint_Mary_of_the_Assumption_Church_(Lancaster,_Ohio)_-_exterior.jpg"
+ },
+ {
+  "slug": "latrobe-st-vincent-archabbey-basilica",
+  "name": "St. Vincent Archabbey Basilica",
+  "city": "Latrobe",
+  "state": "Pennsylvania",
+  "wiki": "Saint Vincent Archabbey"
+ },
+ {
+  "slug": "hanover-basilica-of-the-sacred-heart-of-jesus-conewago-chapel",
+  "name": "Basilica of the Sacred Heart of Jesus (Conewago Chapel)",
+  "city": "Hanover",
+  "state": "Pennsylvania",
+  "wiki": "Basilica of the Sacred Heart of Jesus, Conewago"
+ },
+ {
+  "slug": "philadelphia-cathedral-basilica-of-sts-peter-and-paul",
+  "name": "Cathedral Basilica of Sts. Peter and Paul",
+  "city": "Philadelphia",
+  "state": "Pennsylvania",
+  "wiki": "Cathedral Basilica of Saints Peter and Paul (Philadelphia)"
+ },
+ {
+  "slug": "danville-basilica-of-sts-cyril-and-methodius",
+  "name": "Basilica of Sts. Cyril and Methodius",
+  "city": "Danville",
+  "state": "Pennsylvania",
+  "wiki": "Basilica of Saints Cyril and Methodius (Danville, Pennsylvania)"
+ },
+ {
+  "slug": "scranton-basilica-of-the-national-shrine-of-st-ann",
+  "name": "Basilica of the National Shrine of St. Ann",
+  "city": "Scranton",
+  "state": "Pennsylvania",
+  "wiki": "Basilica of the National Shrine of St. Ann"
+ },
+ {
+  "slug": "loretto-basilica-of-st-michael-the-archangel",
+  "name": "Basilica of St. Michael the Archangel",
+  "city": "Loretto",
+  "state": "Pennsylvania",
+  "wiki": "Basilica of St. Michael the Archangel (Loretto, Pennsylvania)"
+ },
+ {
+  "slug": "philadelphia-basilica-shrine-of-our-lady-of-the-miraculous-medal",
+  "name": "Basilica Shrine of Our Lady of the Miraculous Medal",
+  "city": "Philadelphia",
+  "state": "Pennsylvania",
+  "wiki": "Basilica Shrine of Our Lady of the Miraculous Medal"
+ },
+ {
+  "slug": "columbia-basilica-of-st-peter",
+  "name": "Basilica of St. Peter",
+  "city": "Columbia",
+  "state": "South Carolina",
+  "file": "St._Peter's_Roman_Catholic_Church_(Columbia,_South_Carolina).JPG"
+ },
+ {
+  "slug": "chattanooga-basilica-of-sts-peter-and-paul",
+  "name": "Basilica of Sts. Peter and Paul",
+  "city": "Chattanooga",
+  "state": "Tennessee",
+  "wiki": "Basilica of Sts. Peter and Paul (Chattanooga)"
+ },
+ {
+  "slug": "galveston-st-mary-cathedral-basilica",
+  "name": "St. Mary Cathedral Basilica",
+  "city": "Galveston",
+  "state": "Texas",
+  "wiki": "St. Mary Cathedral Basilica (Galveston, Texas)"
+ },
+ {
+  "slug": "san-antonio-basilica-of-the-national-shrine-of-the-little-flower",
+  "name": "Basilica of the National Shrine of the Little Flower",
+  "city": "San Antonio",
+  "state": "Texas",
+  "wiki": "Basilica of the National Shrine of the Little Flower"
+ },
+ {
+  "slug": "san-juan-basilica-of-the-national-shrine-of-our-lady-of-san-juan-del-valle",
+  "name": "Basilica of the National Shrine of Our Lady of San Juan del Valle",
+  "city": "San Juan",
+  "state": "Texas",
+  "wiki": "Basilica of the National Shrine of Our Lady of San Juan del Valle"
+ },
+ {
+  "slug": "beaumont-st-anthony-cathedral-basilica",
+  "name": "St. Anthony Cathedral Basilica",
+  "city": "Beaumont",
+  "state": "Texas",
+  "wiki": "Saint Anthony Cathedral Basilica"
+ },
+ {
+  "slug": "norfolk-basilica-of-st-mary-of-the-immaculate-conception",
+  "name": "Basilica of St. Mary of the Immaculate Conception",
+  "city": "Norfolk",
+  "state": "Virginia",
+  "wiki": "Basilica of Saint Mary of the Immaculate Conception (Norfolk, Virginia)"
+ },
+ {
+  "slug": "alexandria-basilica-of-st-mary",
+  "name": "Basilica of St. Mary",
+  "city": "Alexandria",
+  "state": "Virginia",
+  "file": "Basilica_of_St._Mary_-_Alexandria,_Virginia_01.jpg"
+ },
+ {
+  "slug": "roanoke-basilica-of-st-andrew",
+  "name": "Basilica of St. Andrew",
+  "city": "Roanoke",
+  "state": "Virginia",
+  "wiki": "Basilica of St. Andrew (Roanoke, Virginia)"
+ },
+ {
+  "slug": "charleston-basilica-of-the-co-cathedral-of-the-sacred-heart",
+  "name": "Basilica of the Co-Cathedral of the Sacred Heart",
+  "city": "Charleston",
+  "state": "West Virginia",
+  "wiki": "Basilica of the Co-Cathedral of the Sacred Heart"
+ },
+ {
+  "slug": "milwaukee-basilica-of-st-josaphat",
+  "name": "Basilica of St. Josaphat",
+  "city": "Milwaukee",
+  "state": "Wisconsin",
+  "wiki": "Basilica of St. Josaphat"
+ },
+ {
+  "slug": "hubertus-basilica-of-our-lady-of-holy-hill-help-of-christians",
+  "name": "Basilica of Our Lady of Holy Hill (Help of Christians)",
+  "city": "Hubertus",
+  "state": "Wisconsin",
+  "wiki": "Holy Hill National Shrine of Mary, Help of Christians"
+ }
+]

@@ -1,0 +1,57 @@
+name: Fetch basilica photos
+
+# Downloads each basilica's photo from Wikimedia Commons into images/ so the
+# site serves them itself. Runs when the photo list or script changes, or on
+# demand from the Actions tab ("Run workflow").
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "photos/manifest.json"
+      - "photos/fetch_photos.py"
+      - ".github/workflows/fetch-photos.yml"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: fetch-photos
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests pillow
+
+      - name: Download photos
+        run: python photos/fetch_photos.py
+
+      - name: Commit photos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add images
+          if git diff --cached --quiet; then
+            echo "No photo changes."
+            exit 0
+          fi
+          git commit -m "Update bundled basilica photos"
+          git push
+          echo "PUSHED=1" >> "$GITHUB_ENV"
+
+      - name: Rebuild the site
+        if: env.PUSHED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages will rebuild on its own."
