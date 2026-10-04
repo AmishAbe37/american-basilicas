@@ -1,0 +1,39 @@
+name: Fetch high-resolution shaded relief
+# One-off helper: downloads Natural Earth 1:10m shaded relief with land cover (public domain),
+# crops it to the United States and stores it on the `geodata` branch for the print posters.
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/fetch-relief.yml"]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Natural Earth NE1_HR_LC_SR_W
+        run: |
+          curl -fsSL -o ne1.zip https://naciscdn.org/naturalearth/10m/raster/NE1_HR_LC_SR_W.zip
+          unzip -o ne1.zip -d ne1 && ls -la ne1
+      - name: Crop to the United States
+        run: |
+          pip install pillow
+          python3 - <<'PY'
+          import glob
+          from PIL import Image
+          Image.MAX_IMAGE_PIXELS = None
+          src = glob.glob("ne1/**/*.tif", recursive=True)[0]
+          im = Image.open(src).convert("RGB"); W, H = im.size
+          px = lambda lo, la: (round((lo + 180) / 360 * W), round((90 - la) / 180 * H))
+          x0, y0 = px(-162, 53); x1, y1 = px(-64, 17)
+          im.crop((x0, y0, x1, y1)).save("relief_us.jpg", quality=92, subsampling=0)
+          print(W, H, (x0, y0, x1, y1))
+          PY
+          ls -la relief_us.jpg
+      - name: Add to geodata branch
+        run: |
+          git clone -q --depth 1 -b geodata "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" out
+          cp relief_us.jpg out/ && cd out
+          echo "relief_us.jpg: Natural Earth NE1_HR_LC_SR_W cropped to lon -162..-64, lat 17..53 (plate carree)" > README.txt
+          git config user.name "github-actions" && git config user.email "actions@github.com"
+          git add . && git commit -qm "Natural Earth 1:10m shaded relief, US crop" && git push -q origin geodata
