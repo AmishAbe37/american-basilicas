@@ -25,7 +25,7 @@ jobs:
           src = glob.glob("ne1/**/*.tif", recursive=True)[0]
           im = Image.open(src).convert("RGB"); W, H = im.size
           px = lambda lo, la: (round((lo + 180) / 360 * W), round((90 - la) / 180 * H))
-          x0, y0 = px(-162, 53); x1, y1 = px(-64, 17)
+          x0, y0 = px(-165, 58); x1, y1 = px(-50, 14)
           im.crop((x0, y0, x1, y1)).save("relief_us.jpg", quality=92, subsampling=0)
           print(W, H, (x0, y0, x1, y1))
           PY
@@ -34,6 +34,6 @@ jobs:
         run: |
           git clone -q --depth 1 -b geodata "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" out
           cp relief_us.jpg out/ && cd out
-          echo "relief_us.jpg: Natural Earth NE1_HR_LC_SR_W cropped to lon -162..-64, lat 17..53 (plate carree)" > README.txt
+          echo "relief_us.jpg: Natural Earth NE1_HR_LC_SR_W cropped to lon -165..-50, lat 14..58 (plate carree)" > README.txt
           git config user.name "github-actions" && git config user.email "actions@github.com"
           git add . && git commit -qm "Natural Earth 1:10m shaded relief, US crop" && git push -q origin geodata
