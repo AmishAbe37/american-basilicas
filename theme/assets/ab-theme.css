@@ -107,8 +107,9 @@ h1, h2, h3, .h1, .h2, .h3 { font-family: var(--ab-serif); font-weight: 600; lett
 .ab-btn--light { border-color: var(--ab-paper); color: var(--ab-paper); background: transparent; }
 .ab-btn--light:hover { background: var(--ab-paper); color: var(--ab-ink); }
 
-.ab-facts { display: flex; flex-wrap: wrap; gap: 0; margin: 2.25rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-stone-line); }
-.ab-facts li { padding: 14px 22px 0 0; margin-right: 22px; border-right: 1px solid var(--ab-stone-line); }
+.ab-facts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 0; margin: 2.25rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-stone-line); }
+.ab-facts li { padding: 14px 14px 0 0; margin-right: 14px; border-right: 1px solid var(--ab-stone-line); }
+@media (min-width: 750px) { .ab-facts li { padding-right: 22px; margin-right: 22px; } }
 .ab-facts li:last-child { border-right: 0; }
 .ab-facts b { display: block; font-family: var(--ab-serif); font-size: 1.75rem; font-weight: 600; color: var(--ab-ink); line-height: 1; }
 .ab-facts span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ab-muted); }
