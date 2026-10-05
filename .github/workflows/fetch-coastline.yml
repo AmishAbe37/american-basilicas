@@ -1,0 +1,29 @@
+name: Fetch detailed state boundaries
+# One-off helper: downloads the Census Bureau 1:500,000 state boundaries (public domain)
+# and stores them as TopoJSON on the `geodata` branch for building the map's coastline.
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/fetch-coastline.yml"]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Census cartographic boundaries
+        run: |
+          curl -fsSL -o states.zip https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_state_500k.zip
+          unzip -o states.zip -d states
+      - name: Convert to TopoJSON
+        run: |
+          npx -y mapshaper@0.6 states/cb_2023_us_state_500k.shp -filter-fields NAME,GEOID \
+            -o format=topojson quantization=1000000 states-500k.topo.json
+          ls -la states-500k.topo.json
+      - name: Commit to geodata branch
+        run: |
+          mkdir out && cd out && git init -q && git checkout -q -b geodata
+          cp ../states-500k.topo.json .
+          git config user.name "github-actions" && git config user.email "actions@github.com"
+          git add . && git commit -qm "Census cb_2023 1:500k state boundaries"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" geodata
