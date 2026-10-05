@@ -1,0 +1,33 @@
+{%- liquid
+  if section.settings.image != blank
+    assign plate_src = section.settings.image | image_url: width: 2000
+  else
+    assign plate_src = 'ab-map.jpg' | asset_url
+  endif
+-%}
+<section class="ab-plate">
+  <div class="ab-wrap">
+    <figure style="margin:0">
+      <div class="ab-plate__frame">
+        <img src="{{ plate_src }}" alt="{{ section.settings.image_alt | escape }}" width="2000" height="1030" loading="lazy">
+      </div>
+      <figcaption class="ab-plate__cap">
+        <h2>{{ section.settings.heading | escape }}</h2>
+        <p>{{ section.settings.note | escape }}</p>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Map plate",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the full map." },
+    { "type": "text", "id": "image_alt", "label": "Image description", "default": "Map of the United States marking all 94 Catholic minor basilicas" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Plate I · The minor basilicas of the United States" },
+    { "type": "text", "id": "note", "label": "Note", "default": "From St. Augustine to San Francisco, Maine to Hawaii" }
+  ],
+  "presets": [{ "name": "Map plate" }]
+}
+{% endschema %}

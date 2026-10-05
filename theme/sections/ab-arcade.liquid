@@ -1,0 +1,42 @@
+<section class="ab-arcade">
+  <div class="ab-wrap">
+    <div class="ab-arcade__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="ab-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2>{{ section.settings.heading | escape }}</h2>
+    </div>
+    <div class="ab-arcade__grid">
+      {%- for block in section.blocks -%}
+        <article class="ab-bay" {{ block.shopify_attributes }}>
+          <div class="ab-bay__mark">
+            {%- if block.settings.mark == 'ombrellino' -%}{% render 'ab-ombrellino' %}{%- else -%}{{ block.settings.mark | escape }}{%- endif -%}
+          </div>
+          <h3>{{ block.settings.title | escape }}</h3>
+          <div>{{ block.settings.text }}</div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Basilica arcade",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why these 94" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What makes a church a basilica" }
+  ],
+  "blocks": [
+    {
+      "type": "bay",
+      "name": "Arched panel",
+      "settings": [
+        { "type": "text", "id": "mark", "label": "Mark", "info": "A roman numeral, or the word ombrellino to show the canopy", "default": "I" },
+        { "type": "text", "id": "title", "label": "Title", "default": "A papal honor" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Text</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Basilica arcade" }]
+}
+{% endschema %}

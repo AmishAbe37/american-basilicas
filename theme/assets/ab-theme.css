@@ -1,0 +1,179 @@
+/* American Basilicas: Unigrid map style meets cathedral stone.
+   Black bands and a red-and-gold heraldic rule from the park-map tradition;
+   arches, carved serif capitals and warm stone from the basilicas themselves. */
+
+:root {
+  --ab-ink: #141109;
+  --ab-text: #241d12;
+  --ab-muted: #5a5142;
+  --ab-paper: #f7f2e7;
+  --ab-stone: #ede4cf;
+  --ab-stone-line: #c9b98d;
+  --ab-red: #8f1d1d;
+  --ab-gold: #d9a521;
+  --ab-gold-deep: #9c7b2e;
+
+  --ab-sans: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+  --ab-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+
+  --font-body--family: var(--ab-sans);
+  --font-subheading--family: var(--ab-sans);
+  --font-heading--family: var(--ab-serif);
+  --font-heading--weight: 600;
+  --font-accent--family: var(--ab-sans);
+  --font-accent--weight: 900;
+  --button-font-family-primary: var(--ab-sans);
+  --button-font-family-secondary: var(--ab-sans);
+}
+
+body { background: var(--ab-paper); color: var(--ab-text); }
+
+h1, h2, h3, .h1, .h2, .h3 { font-family: var(--ab-serif); font-weight: 600; letter-spacing: -0.005em; }
+
+/* Squared-off Unigrid buttons */
+.button, .button-secondary, button.button, a.button, .shopify-payment-button__button--unbranded {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  font-size: 0.8125rem;
+}
+
+/* The heraldic rule: red and gold, as on the poster and brochure */
+.ab-rule {
+  display: block;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--ab-red) 0 44px, var(--ab-gold) 44px 88px);
+}
+.ab-rule--thin { height: 4px; background-size: auto; }
+
+/* Shared section frame */
+.ab-wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; }
+@media (min-width: 750px) { .ab-wrap { padding-inline: 32px; } }
+
+.ab-eyebrow {
+  font-family: var(--ab-sans);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ab-red);
+  margin: 0 0 0.75rem;
+}
+
+/* ---------- Black band (top of every page) ---------- */
+.ab-band { background: var(--ab-ink); color: #fff; }
+.ab-band__inner { display: flex; align-items: center; gap: 14px; min-height: 64px; padding-block: 8px; }
+.ab-band a { color: inherit; text-decoration: none; }
+.ab-band__brand { display: flex; align-items: center; gap: 12px; }
+.ab-band .ab-omb { width: 30px; height: 45px; flex: none; }
+.ab-band__title { font-family: var(--ab-sans); font-weight: 700; font-size: 1.15rem; line-height: 1.05; letter-spacing: -0.01em; }
+.ab-band__title small { display: block; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.02em; color: #e7ddc7; margin-top: 3px; }
+.ab-band__right { margin-left: auto; font-size: 0.8rem; color: #cfc3a8; font-style: italic; display: none; }
+@media (min-width: 750px) {
+  .ab-band__inner { min-height: 78px; }
+  .ab-band .ab-omb { width: 36px; height: 54px; }
+  .ab-band__title { font-size: 1.6rem; }
+  .ab-band__title small { font-size: 0.82rem; }
+  .ab-band__right { display: block; }
+}
+
+/* ---------- Hero ---------- */
+.ab-hero { padding-block: 40px 56px; }
+.ab-hero__grid { display: grid; gap: 36px; align-items: center; }
+@media (min-width: 990px) { .ab-hero__grid { grid-template-columns: 1.05fr 1fr; gap: 64px; } .ab-hero { padding-block: 72px 88px; } }
+.ab-hero h1 {
+  font-family: var(--ab-serif);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 5.2vw, 4rem);
+  line-height: 1.04;
+  margin: 0 0 1.25rem;
+  color: var(--ab-ink);
+  text-wrap: balance;
+}
+.ab-hero__lede { font-size: 1.125rem; line-height: 1.6; color: var(--ab-text); max-width: 34em; margin: 0 0 1.75rem; }
+.ab-hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.ab-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 26px;
+  font-family: var(--ab-sans); font-weight: 700; font-size: 0.8125rem;
+  letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+  border: 2px solid var(--ab-ink); transition: background .15s, color .15s;
+}
+.ab-btn--solid { background: var(--ab-ink); color: var(--ab-paper); }
+.ab-btn--solid:hover { background: var(--ab-red); border-color: var(--ab-red); }
+.ab-btn--line { background: transparent; color: var(--ab-ink); }
+.ab-btn--line:hover { background: var(--ab-ink); color: var(--ab-paper); }
+.ab-btn--light { border-color: var(--ab-paper); color: var(--ab-paper); background: transparent; }
+.ab-btn--light:hover { background: var(--ab-paper); color: var(--ab-ink); }
+
+.ab-facts { display: flex; flex-wrap: wrap; gap: 0; margin: 2.25rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-stone-line); }
+.ab-facts li { padding: 14px 22px 0 0; margin-right: 22px; border-right: 1px solid var(--ab-stone-line); }
+.ab-facts li:last-child { border-right: 0; }
+.ab-facts b { display: block; font-family: var(--ab-serif); font-size: 1.75rem; font-weight: 600; color: var(--ab-ink); line-height: 1; }
+.ab-facts span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ab-muted); }
+
+/* The arch: a Romanesque window frame for imagery */
+.ab-arch {
+  position: relative;
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--ab-stone);
+  box-shadow: 0 0 0 1px var(--ab-stone-line), 0 0 0 10px var(--ab-paper), 0 0 0 11px var(--ab-stone-line);
+}
+.ab-arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ab-arch--wide { aspect-ratio: 5 / 4; }
+.ab-hero__media { max-width: 520px; width: 100%; justify-self: center; padding: 12px; }
+.ab-caption { font-size: 0.8rem; font-style: italic; color: var(--ab-muted); text-align: center; margin-top: 22px; }
+
+/* ---------- Arcade: three arched panels ---------- */
+.ab-arcade { padding-block: 64px; background: var(--ab-stone); border-block: 1px solid var(--ab-stone-line); }
+.ab-arcade__head { text-align: center; max-width: 40rem; margin: 0 auto 40px; }
+.ab-arcade__head h2 { font-size: clamp(1.9rem, 3.6vw, 2.75rem); margin: 0; color: var(--ab-ink); }
+.ab-arcade__grid { display: grid; gap: 22px; }
+@media (min-width: 750px) { .ab-arcade__grid { grid-template-columns: repeat(3, 1fr); gap: 26px; } }
+.ab-bay {
+  background: var(--ab-paper);
+  border: 1px solid var(--ab-stone-line);
+  border-radius: 999px 999px 0 0;
+  padding: 64px 26px 30px;
+  text-align: center;
+  position: relative;
+}
+.ab-bay::before {        /* inner moulding */
+  content: ""; position: absolute; inset: 8px 8px auto 8px; height: calc(100% - 16px);
+  border: 1px solid var(--ab-stone-line); border-radius: 999px 999px 0 0; pointer-events: none; opacity: .7;
+}
+.ab-bay__mark {
+  width: 64px; height: 64px; margin: 0 auto 18px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 2px solid var(--ab-gold-deep);
+  font-family: var(--ab-serif); font-size: 1.5rem; font-weight: 600; color: var(--ab-red);
+  background: radial-gradient(circle, #fff 0 52%, var(--ab-paper) 53%);
+}
+.ab-bay__mark .ab-omb { width: 30px; height: 45px; }
+.ab-bay h3 { font-size: 1.35rem; margin: 0 0 10px; color: var(--ab-ink); }
+.ab-bay p { margin: 0; line-height: 1.6; color: var(--ab-text); }
+
+/* ---------- Plate: the full map, framed like an engraving ---------- */
+.ab-plate { padding-block: 64px; }
+.ab-plate__frame { background: #fff; border: 1px solid var(--ab-stone-line); padding: 10px; box-shadow: 0 1px 0 var(--ab-stone-line), 0 18px 40px -28px rgba(20,17,9,.45); }
+.ab-plate__frame img { display: block; width: 100%; height: auto; }
+.ab-plate__cap { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; justify-content: space-between; margin-top: 14px; }
+.ab-plate__cap h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin: 0; color: var(--ab-ink); }
+.ab-plate__cap p { margin: 0; color: var(--ab-muted); font-size: 0.9rem; }
+
+/* ---------- Closing band ---------- */
+.ab-cta { background: var(--ab-ink); color: var(--ab-paper); }
+.ab-cta__inner { display: grid; gap: 22px; padding-block: 48px; align-items: center; }
+@media (min-width: 750px) { .ab-cta__inner { grid-template-columns: auto 1fr auto; gap: 32px; } }
+.ab-cta .ab-omb { width: 46px; height: 69px; }
+.ab-cta h2 { color: #fff; margin: 0 0 6px; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.ab-cta p { margin: 0; color: #e7ddc7; }
+
+/* ---------- Horizon touches ---------- */
+.header, header-component { border-bottom: 1px solid var(--ab-stone-line); }
+.product-card, product-card { border-radius: 0; }
+.product-grid .product-card__image, .card-gallery { background: var(--ab-stone); }
+.footer { border-top: 6px solid transparent; border-image: repeating-linear-gradient(90deg, var(--ab-red) 0 44px, var(--ab-gold) 44px 88px) 6; }

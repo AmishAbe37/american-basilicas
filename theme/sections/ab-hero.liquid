@@ -1,0 +1,59 @@
+{%- liquid
+  if section.settings.image != blank
+    assign hero_src = section.settings.image | image_url: width: 1200
+    assign hero_alt = section.settings.image.alt | default: section.settings.image_alt
+  else
+    assign hero_src = 'ab-map-northeast.jpg' | asset_url
+    assign hero_alt = section.settings.image_alt
+  endif
+-%}
+<section class="ab-hero">
+  <div class="ab-wrap ab-hero__grid">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="ab-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h1>{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.lede != blank -%}<div class="ab-hero__lede">{{ section.settings.lede }}</div>{%- endif -%}
+      <div class="ab-hero__actions">
+        {%- if section.settings.button_1_label != blank -%}
+          <a class="ab-btn ab-btn--solid" href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}">{{ section.settings.button_1_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_2_label != blank -%}
+          <a class="ab-btn ab-btn--line" href="{{ section.settings.button_2_link | default: 'https://americanbasilicas.org' }}">{{ section.settings.button_2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_facts -%}
+        <ul class="ab-facts">
+          <li><b>94</b><span>Minor basilicas</span></li>
+          <li><b>34</b><span>States &amp; D.C.</span></li>
+          <li><b>1</b><span>Pilgrimage log</span></li>
+        </ul>
+      {%- endif -%}
+    </div>
+    <div class="ab-hero__media">
+      <div class="ab-arch">
+        <img src="{{ hero_src }}" alt="{{ hero_alt | escape }}" width="1200" height="938" fetchpriority="high">
+      </div>
+      {%- if section.settings.caption != blank -%}<p class="ab-caption">{{ section.settings.caption | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Basilica hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The pilgrim’s map" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every minor basilica in America, on one map." },
+    { "type": "richtext", "id": "lede", "label": "Introduction", "default": "<p>All 94 Roman Catholic minor basilicas in the United States, drawn in the spirit of the classic national park maps, with a log to check off each one you visit.</p>" },
+    { "type": "text", "id": "button_1_label", "label": "First button label", "default": "Shop the collection" },
+    { "type": "url", "id": "button_1_link", "label": "First button link" },
+    { "type": "text", "id": "button_2_label", "label": "Second button label", "default": "Explore the map" },
+    { "type": "url", "id": "button_2_link", "label": "Second button link" },
+    { "type": "checkbox", "id": "show_facts", "label": "Show the 94 / 34 / 1 figures", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Arched image", "info": "A tall photo of a basilica facade or nave works well. Defaults to a detail of the map." },
+    { "type": "text", "id": "image_alt", "label": "Image description", "default": "Detail of the map showing basilicas from Baltimore to Boston" },
+    { "type": "text", "id": "caption", "label": "Caption", "default": "Detail: the Northeast, from Baltimore to Boston" }
+  ],
+  "presets": [{ "name": "Basilica hero" }]
+}
+{% endschema %}

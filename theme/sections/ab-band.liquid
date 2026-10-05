@@ -1,0 +1,30 @@
+{%- comment -%} Unigrid black band with the ombrellino and the heraldic rule. Sits above the header. {%- endcomment -%}
+{%- comment -%} Loads the store fonts and stylesheet on every page, since this band is in the header group. {%- endcomment -%}
+{% render 'ab-theme' %}
+<div class="ab-band">
+  <div class="ab-wrap ab-band__inner">
+    <a class="ab-band__brand" href="{{ routes.root_url }}">
+      {% render 'ab-ombrellino' %}
+      <span class="ab-band__title">
+        {{ section.settings.title | escape }}
+        {%- if section.settings.subtitle != blank -%}<small>{{ section.settings.subtitle | escape }}</small>{%- endif -%}
+      </span>
+    </a>
+    {%- if section.settings.right_text != blank -%}
+      <span class="ab-band__right">{{ section.settings.right_text | escape }}</span>
+    {%- endif -%}
+  </div>
+</div>
+<span class="ab-rule" aria-hidden="true"></span>
+
+{% schema %}
+{
+  "name": "Unigrid band",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Basilicas of the United States" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "A pilgrim’s map of the 94 Roman Catholic minor basilicas" },
+    { "type": "text", "id": "right_text", "label": "Right-hand note", "default": "americanbasilicas.org" }
+  ],
+  "presets": [{ "name": "Unigrid band" }]
+}
+{% endschema %}
