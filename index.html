@@ -106,6 +106,36 @@
   .bname{flex:1 1 auto;color:#2a2318}
   .st.active h3{background:#fbf1d8}
   /* ---------- Footer ---------- */
+  /* ---------- Band links, shop & contact (below the map) ---------- */
+  html{scroll-behavior:smooth}
+  header.band{position:relative}
+  .band-nav{position:absolute;top:14px;right:22px;display:flex;gap:18px}
+  .band-nav a{color:#d9c9a0;text-decoration:none;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+  .band-nav a:hover,.band-nav a:focus-visible{color:#fff}
+  @media(max-width:560px){header.band{display:flex;flex-direction:column;padding-top:10px}.band-nav{position:static;order:-1;align-self:flex-end;gap:16px;margin:0 -6px 6px 0}.band-nav a{font-size:10.5px;letter-spacing:.18em}}
+  .panel{scroll-margin-top:12px;border-top:1px solid #e3d8bd}
+  .panel-bar{display:flex;align-items:baseline;justify-content:space-between;gap:12px;background:var(--ink);color:#fff;padding:10px 22px}
+  .panel-bar h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .panel-bar span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#d9c9a0;font-weight:700}
+  .panel-body{padding:22px}
+  .shop-grid{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:26px;align-items:center}
+  @media(max-width:700px){.shop-grid{grid-template-columns:1fr}}
+  .shop-card{display:block;background:#fff;border:1px solid #d9cba6;padding:10px;text-decoration:none;color:inherit}
+  .shop-card img{display:block;width:100%;height:auto;background:var(--paper2)}
+  .shop-copy h3{margin:0 0 6px;font-size:21px;line-height:1.15}
+  .shop-copy p{margin:0 0 14px;max-width:58ch}
+  .price{font-weight:800;font-size:18px;margin:0 0 14px}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px}
+  .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border:2px solid var(--ink);
+    font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+  .btn.solid{background:var(--ink);color:#fff}
+  .btn.solid:hover{background:var(--red);border-color:var(--red)}
+  .btn:not(.solid):hover{background:var(--ink);color:#fff}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:700px){.contact-grid{grid-template-columns:1fr}}
+  .contact-grid h3{margin:0 0 4px;font-size:15px;font-weight:800}
+  .contact-grid p{margin:0;font-size:14px}
+  .mail{font-size:clamp(18px,3vw,24px);font-weight:800;word-break:break-all}
   footer{padding:16px 22px 26px;border-top:6px solid var(--ink);margin-top:6px}
   .fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
   @media(max-width:760px){.fgrid{grid-template-columns:1fr 1fr}}
@@ -195,6 +225,7 @@
         <p class="sub">A traveler&rsquo;s map to all <strong style="color:#fff">94 minor basilicas</strong> &mdash; churches raised by the Holy See for their history, art, and sacramental life &mdash; across 34 states and the District of Columbia.</p>
       </div>
     </div>
+    <nav class="band-nav" aria-label="Site"><a href="#shop">Shop</a><a href="#contact">Contact</a></nav>
   </header>
   <div class="rule"></div>
 
@@ -453,6 +484,35 @@
       </div>
     </div>
   </div>
+
+  <section id="shop" class="panel" aria-labelledby="shopTitle">
+    <div class="panel-bar"><h2 id="shopTitle">Shop</h2><span>Prints &amp; apparel</span></div>
+    <div class="panel-body shop-grid">
+      <a class="shop-card" href="https://americanbasilicas.myshopify.com/products/catholic-basilicas-of-the-united-states-map-poster">
+        <img src="https://cdn.shopify.com/s/files/1/0791/7541/8046/files/enhanced-matte-paper-poster-_in_-24x36-front-6ac401712ce20.jpg?v=1791230343&amp;width=600" width="600" height="600" loading="lazy" alt="The Basilicas of the United States wall poster">
+      </a>
+      <div class="shop-copy">
+        <h3>The Pilgrim&rsquo;s Map, 36&times;24 poster</h3>
+        <p>The print edition of this map: all 94 minor basilicas with a pilgrimage log to check off each one you visit. Printed on demand on heavyweight matte paper.</p>
+        <p class="price">$21.99</p>
+        <div class="btnrow">
+          <a class="btn solid" href="https://americanbasilicas.myshopify.com/products/catholic-basilicas-of-the-united-states-map-poster">View the poster</a>
+          <a class="btn" href="https://americanbasilicas.myshopify.com/collections/all">Browse the shop</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="panel" aria-labelledby="contactTitle">
+    <div class="panel-bar"><h2 id="contactTitle">Contact</h2><span>Corrections welcome</span></div>
+    <div class="panel-body">
+      <p class="mail"><a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a></p>
+      <div class="contact-grid" style="margin-top:16px">
+        <div><h3>Corrections &amp; photos</h3><p>Spot a wrong date, a moved address, or have a photo of a basilica you&rsquo;d like to share? Write in with the basilica&rsquo;s name and what to change.</p></div>
+        <div><h3>Orders</h3><p>For a question about an order from the shop, include your order number and we&rsquo;ll get back to you.</p></div>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div class="fgrid">
