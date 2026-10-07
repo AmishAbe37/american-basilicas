@@ -47,7 +47,7 @@
     -webkit-font-smoothing:antialiased;
     line-height:1.45;
   }
-  .sheet{max-width:1240px;margin:0 auto;background:var(--paper);
+  .sheet{max-width:none;margin:0;background:var(--paper);
     box-shadow:0 1px 0 rgba(0,0,0,.04);}
   /* ---------- Header band (Unigrid) ---------- */
   header.band{background:var(--ink);color:#fff;padding:18px 26px 20px;}
@@ -63,11 +63,11 @@
   /* gold+red heraldic rule under band */
   .rule{height:8px;background:repeating-linear-gradient(90deg,var(--red) 0 22px,var(--gold) 22px 44px)}
   /* ---------- Body layout ---------- */
-  .grid{display:grid;grid-template-columns:1.65fr 1fr;gap:0}
+  .grid{display:grid;grid-template-columns:1fr;gap:0}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
-  .mapwrap{position:relative;border-right:1px solid #e3d8bd;background:var(--water);}
+  .mapwrap{position:relative;border-bottom:1px solid #e3d8bd;background:var(--water);}
   @media(max-width:900px){.mapwrap{border-right:none;border-bottom:1px solid #e3d8bd}}
-  svg#map{display:block;width:100%;height:auto}
+  svg#map{display:block;width:min(100%,calc((100svh - 24px) * 1.6));height:auto;margin:0 auto}   /* full width, but never taller than the screen */
   .state{fill:var(--land1);stroke:var(--line);stroke-width:.6;transition:fill .12s ease}
   .state.q0{fill:var(--land0)} .state.q1{fill:var(--land1)} .state.q2{fill:var(--land2)}
   .state.q3{fill:var(--land3)} .state.q4{fill:var(--land4)}
@@ -92,7 +92,10 @@
   /* ---------- Index column ---------- */
   .index{padding:16px 20px 4px}
   .index .lead{font-size:12.5px;color:var(--muted);margin:0 0 12px;border-bottom:1px solid #e0d4b6;padding-bottom:10px}
-  .idxcols{column-width:220px;column-gap:22px}
+  .idxcols{column-count:3;column-gap:36px}
+  @media(max-width:1000px){.idxcols{column-count:2}}
+  @media(max-width:640px){.idxcols{column-count:1}}
+  .index{max-width:1500px;margin:0 auto;padding:22px 26px 8px}
   .st{break-inside:avoid;margin:0 0 12px}
   .st h3{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 4px;
     padding-bottom:3px;border-bottom:2px solid var(--rule)}
@@ -108,11 +111,6 @@
   /* ---------- Footer ---------- */
   /* ---------- Band links, shop & contact (below the map) ---------- */
   html{scroll-behavior:smooth}
-  header.band{position:relative}
-  .band-nav{position:absolute;top:14px;right:22px;display:flex;gap:18px}
-  .band-nav a{color:#d9c9a0;text-decoration:none;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
-  .band-nav a:hover,.band-nav a:focus-visible{color:#fff}
-  @media(max-width:560px){header.band{display:flex;flex-direction:column;padding-top:10px}.band-nav{position:static;order:-1;align-self:flex-end;gap:16px;margin:0 -6px 6px 0}.band-nav a{font-size:10.5px;letter-spacing:.18em}}
   .panel{scroll-margin-top:12px;border-top:1px solid #e3d8bd}
   .panel-bar{display:flex;align-items:baseline;justify-content:space-between;gap:12px;background:var(--ink);color:#fff;padding:10px 22px}
   .panel-bar h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.01em}
@@ -135,10 +133,13 @@
   @media(max-width:700px){.contact-grid{grid-template-columns:1fr}}
   .contact-grid h3{margin:0 0 4px;font-size:15px;font-weight:800}
   .contact-grid p{margin:0;font-size:14px}
+  .ig{margin:8px 0 0;font-size:16px;font-weight:700}
+  .ig a{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+  .ig a:hover{text-decoration:underline}
   .mail{font-size:clamp(18px,3vw,24px);font-weight:800;word-break:break-all}
   footer{padding:16px 22px 26px;border-top:6px solid var(--ink);margin-top:6px}
-  .fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  @media(max-width:760px){.fgrid{grid-template-columns:1fr 1fr}}
+  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr 1fr 1fr;gap:10px}.fgrid .stat b{font-size:26px}}
   .fgrid .stat b{display:block;font-size:30px;line-height:1;letter-spacing:-.02em}
   .fgrid .stat span{font-size:11px;color:var(--muted);letter-spacing:.04em}
   .note{font-size:11px;color:var(--muted);margin:14px 0 0;max-width:95ch}
@@ -225,7 +226,6 @@
         <p class="sub">A traveler&rsquo;s map to all <strong style="color:#fff">94 minor basilicas</strong> &mdash; churches raised by the Holy See for their history, art, and sacramental life &mdash; across 34 states and the District of Columbia.</p>
       </div>
     </div>
-    <nav class="band-nav" aria-label="Site"><a href="#shop">Shop</a><a href="#contact">Contact</a></nav>
   </header>
   <div class="rule"></div>
 
@@ -504,9 +504,10 @@
   </section>
 
   <section id="contact" class="panel" aria-labelledby="contactTitle">
-    <div class="panel-bar"><h2 id="contactTitle">Contact</h2><span>Corrections welcome</span></div>
+    <div class="panel-bar"><h2 id="contactTitle">Contact</h2><span>Questions welcome</span></div>
     <div class="panel-body">
       <p class="mail"><a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a></p>
+      <p class="ig"><a href="https://www.instagram.com/americanbasilicas/" rel="me noopener" target="_blank"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>@americanbasilicas on Instagram</a></p>
       <div class="contact-grid" style="margin-top:16px">
         <div><h3>Corrections &amp; photos</h3><p>Spot a wrong date, a moved address, or have a photo of a basilica you&rsquo;d like to share? Write in with the basilica&rsquo;s name and what to change.</p></div>
         <div><h3>Orders</h3><p>For a question about an order from the shop, include your order number and we&rsquo;ll get back to you.</p></div>
@@ -519,9 +520,8 @@
       <div class="stat"><b>94</b><span>MINOR BASILICAS</span></div>
       <div class="stat"><b>34</b><span>STATES, PLUS D.C.</span></div>
       <div class="stat"><b>9</b><span>MOST, IN NEW YORK</span></div>
-      <div class="stat"><b>0</b><span>MAJOR BASILICAS*</span></div>
     </div>
-    <p class="note"><strong>About the emblem.</strong> The red-and-gold striped umbrella above is the <em>ombrellino</em> (umbraculum); with the bell-on-a-pole <em>tintinnabulum</em>, it is the heraldic sign every minor basilica may display, recalling the canopy once carried over the pope. <strong>*Major basilicas</strong> (there are only four, all in Rome) are a papal category; every basilica in the United States is a <em>minor</em> basilica. <strong>Sources:</strong> GCatholic registry and Catholic News Service, cross-checked July 2026 (94 total). Site coordinates are city-level. Not affiliated with the U.S. National Park Service or the Holy See; the Unigrid layout is an homage.</p>
+    <p class="note"><strong>About the emblem.</strong> The red-and-gold striped umbrella above is the <em>ombrellino</em> (umbraculum); with the bell-on-a-pole <em>tintinnabulum</em>, it is the heraldic sign every minor basilica may display, recalling the canopy once carried over the pope. <strong>Major and minor.</strong> Major basilicas (there are only four, all in Rome) are a papal category; every basilica in the United States is a <em>minor</em> basilica. <strong>Sources:</strong> GCatholic registry and Catholic News Service, cross-checked July 2026 (94 total). Site coordinates are city-level. Not affiliated with the U.S. National Park Service or the Holy See; the Unigrid layout is an homage.</p>
   </footer>
 </div>
 <div id="detail" class="detail-overlay" hidden>
