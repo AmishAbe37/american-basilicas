@@ -29,7 +29,7 @@ def main():
         kind = "poster" if "poster" in (p["handle"] + p["title"]).lower() else \
                "tumbler" if "tumbler" in (p["handle"] + p["title"]).lower() else \
                "mug" if "mug" in (p["handle"] + p["title"]).lower() else "other"
-        m = re.search(r"standing over ([^.]+?)\.", re.sub(r"<[^>]+>", " ", p.get("body_html") or ""))
+        m = re.search(r"standing over (Washington, D\.C\.|[^.]+?)\.", re.sub(r"<[^>]+>", " ", p.get("body_html") or ""))
         out.append({"title": p["title"], "place": m.group(1).strip() if m else "", "url": f"{STORE}/products/{p['handle']}", "image": img,
                     "min": prices[0] if prices else None, "max": prices[-1] if prices else None, "kind": kind,
                     "created": p.get("created_at", "")})
