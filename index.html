@@ -800,13 +800,22 @@ function placeLabels(){
     rec(0,[]); return best.ls;
   }
   function box(x,y,a,w,bh){ const x0=a==="start"?x:a==="end"?x-w:x-w/2; return [x0-pad,y-bh/2-pad,x0+w+pad,y+bh/2+pad]; }
+  const bdist=(x,y,b)=>Math.hypot(Math.max(b[0]-x,0,x-b[2]),Math.max(b[1]-y,0,y-b[3]));
+  // same rule as the printed poster: a name may never sit closer to a different basilica than to its own,
+  // nor within 1.3 canopy-heights of one (keeps Vincennes' Old Cathedral from reading as St. Louis')
+  function misleads(o,b,strict){
+    const own=bdist(o.x,o.y,b), near=1.3*ic.mh;
+    return pts.some(q=>{ if(q===o) return false; const dq=bdist(q.x,q.y,b); return dq<near||(strict&&dq<own); });
+  }
+  // like the poster: names over 20 characters stack on 2 lines (3 if over 36); one line only as a fallback for short-ish names
+  const variants=n=>n.length>20?[split(n,n.length<=36?2:3)].concat(n.length<=26?[[n]]:[]):[[n]];
   function adjacent(o,ls){                                  // name right beside the ombrellino
     const w=Math.max(...ls.map(meas)), bh=ls.length*h;
     for(const [x,y,a] of [[o.x+hw+gap,o.y,"start"],[o.x-hw-gap,o.y,"end"],
         [o.x,o.y-hh-gap-bh/2,"middle"],[o.x,o.y+hh+gap+bh/2,"middle"],
         [o.x+hw+gap,o.y-hh-bh/2,"start"],[o.x+hw+gap,o.y+hh+bh/2,"start"],
         [o.x-hw-gap,o.y-hh-bh/2,"end"],[o.x-hw-gap,o.y+hh+bh/2,"end"]]){
-      const b=box(x,y,a,w,bh); if(!clash(b)) return {d:o.d,x,y,a,b,ls};
+      const b=box(x,y,a,w,bh); if(!clash(b)&&!misleads(o,b,true)) return {d:o.d,x,y,a,b,ls};
     } return null;
   }
   function leader(o,ls){                                    // name set a little way off, with a thin line
@@ -816,16 +825,16 @@ function placeLabels(){
       const ex=o.x+dx*R/s, ey=o.y+dy*R/s, a=Math.abs(dx)<0.2?"middle":dx>0?"start":"end";
       const x=a==="start"?ex+gap:a==="end"?ex-gap:ex, y=a==="middle"?ey+Math.sign(dy)*(bh/2+gap):ey;
       const b=box(x,y,a,w,bh);
-      if(clash(b)||placed.some(p=>segHits(o.x,o.y,ex,ey,p.b))) continue;  // leader never crosses another name
+      if(clash(b)||misleads(o,b,false)||placed.some(p=>segHits(o.x,o.y,ex,ey,p.b))) continue;  // leader never crosses another name
       return {d:o.d,x,y,a,b,ls,lx:o.x+dx*hh,ly:o.y+dy*hh,ex,ey};
     } return null;
   }
   let todo=pts.slice();
   const pass=fn=>{ todo=todo.filter(o=>{ const p=fn(o); if(!p) return true; obst.push(p.b); placed.push(p); return false; }); };
-  pass(o=>adjacent(o,[o.d.n]));
-  pass(o=>adjacent(o,split(o.d.n,2)));
+  pass(o=>adjacent(o,variants(o.d.n)[0]));
+  pass(o=>{ const v=variants(o.d.n); return v[1]?adjacent(o,v[1]):null; });
   if(curK>=LEADER_MIN_K){
-    pass(o=>leader(o,[o.d.n])); pass(o=>leader(o,split(o.d.n,2))); pass(o=>leader(o,split(o.d.n,3)));
+    pass(o=>leader(o,variants(o.d.n)[0])); pass(o=>leader(o,split(o.d.n,3)));
   }
   labG.selectAll("line").data(placed.filter(p=>p.ex!==undefined)).enter().append("line").attr("class","leader")
     .attr("x1",p=>p.lx).attr("y1",p=>p.ly).attr("x2",p=>p.ex).attr("y2",p=>p.ey).style("stroke-width",(1.2/s)+"px");
