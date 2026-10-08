@@ -1,0 +1,42 @@
+[
+ {
+  "title": "Poster",
+  "url": "https://americanbasilicas.myshopify.com/products/catholic-basilicas-of-the-united-states-map-poster",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/enhanced-matte-paper-poster-_in_-24x36-front-6ac401712ce20.jpg?v=1791230343",
+  "min": 21.99,
+  "max": 21.99,
+  "kind": "poster",
+  "created": "",
+  "place": ""
+ },
+ {
+  "title": "Basilica of the Immaculate Conception Travel Tumbler | Waterbury, CT",
+  "url": "https://americanbasilicas.myshopify.com/products/basilica-of-the-immaculate-conception-travel-tumbler-waterbury-ct",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/travel-mug-with-a-handle-white-25-oz-front-6ac80a283e182.jpg?v=1791494723",
+  "min": 28.38,
+  "max": 30.03,
+  "kind": "tumbler",
+  "created": "",
+  "place": "Waterbury, Connecticut"
+ },
+ {
+  "title": "Cathedral Basilica of the Immaculate Conception Tumbler",
+  "url": "https://americanbasilicas.myshopify.com/products/cathedral-basilica-of-the-immaculate-conception-tumbler",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/travel-mug-with-a-handle-white-40-oz-right-6ac807751444e.jpg?v=1791494031",
+  "min": 28.38,
+  "max": 30.03,
+  "kind": "tumbler",
+  "created": "",
+  "place": "Denver, Colorado"
+ },
+ {
+  "title": "National Shrine of the Immaculate Conception Tumbler",
+  "url": "https://americanbasilicas.myshopify.com/products/national-shrine-of-the-immaculate-conception-tumbler",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/travel-mug-with-a-handle-white-25-oz-front-6ac808dce0c7e.jpg?v=1791494392",
+  "min": 28.38,
+  "max": 30.03,
+  "kind": "tumbler",
+  "created": "",
+  "place": "Washington, D.C."
+ }
+]

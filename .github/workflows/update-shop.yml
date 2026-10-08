@@ -1,0 +1,35 @@
+name: Update shop products
+
+# Pulls the product list from the Shopify store so the Shop section on the site lists
+# everything for sale. Runs every 6 hours, on demand, and when the script changes.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["tools/update_shop.py", ".github/workflows/update-shop.yml"]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency: { group: update-shop, cancel-in-progress: false }
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python tools/update_shop.py
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add shop-products.json
+          if git diff --cached --quiet; then echo "No change."; exit 0; fi
+          git commit -m "Update shop product list"
+          git push

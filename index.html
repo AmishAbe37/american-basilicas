@@ -126,10 +126,22 @@
   .shop-grid{display:grid;grid-template-columns:minmax(0,300px) 1fr minmax(240px,320px);gap:26px;align-items:center}
   @media(max-width:900px){.shop-grid{grid-template-columns:minmax(0,300px) 1fr}}
   .support .support-q{margin:0;font-size:16px;font-weight:700}
+  .shop-grid .support a{overflow-wrap:anywhere}
   .shop-grid .support{align-self:stretch;display:flex;flex-direction:column;justify-content:center;border-left:2px solid var(--ink);padding:6px 0 6px 24px}
   #contact .support{margin-top:14px}
   .panel-bar h2 span,.panel-bar span span{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
   .narrow-only{display:none}
+  .shop-more{padding:0 22px 22px}
+  .shop-more .more-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:2px solid var(--ink);padding-top:12px;margin:6px 0 12px}
+  .shop-more h3{margin:0;font-size:18px;font-weight:800}
+  .shop-more .more-head a{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+  .shop-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,210px);gap:16px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+  .pcard{scroll-snap-align:start;display:flex;flex-direction:column;gap:3px;text-decoration:none;color:inherit}
+  .pcard img{width:100%;aspect-ratio:1;object-fit:cover;background:#fff;border:1px solid #d9cba6;display:block;margin-bottom:6px}
+  .pcard .pt{font-weight:700;font-size:14px;line-height:1.25}
+  .pcard .ploc{font-size:12px;color:var(--muted)}
+  .pcard .pp{font-weight:800;font-size:14px;margin-top:2px}
+  .pcard:hover .pt{text-decoration:underline}
   @media(max-width:900px){.wide-only{display:none!important}.narrow-only{display:revert}}
   @media(max-width:700px){.shop-grid{grid-template-columns:1fr}}
   .shop-card{display:block;background:#fff;border:1px solid #d9cba6;padding:10px;text-decoration:none;color:inherit}
@@ -516,6 +528,7 @@
       </div>
       <div class="support wide-only"><p class="support-q">Like what we&rsquo;re doing? Support our work</p><p class="ig"><a href="https://buymeacoffee.com/americanbasilicas" rel="noopener" target="_blank"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4.5h11v1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.5 8h12l-1.3 12.2a1.5 1.5 0 0 1-1.5 1.3H7.3a1.5 1.5 0 0 1-1.5-1.3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5.2 12.5h10.6" fill="none" stroke="currentColor" stroke-width="2"/></svg>buymeacoffee.com/americanbasilicas</a></p></div>
     </div>
+    <div id="shopMore" class="shop-more" hidden></div>
   </section>
 
   <section id="contact" class="panel" aria-labelledby="contactTitle">
@@ -852,6 +865,36 @@ function placeLabels(){
     if(placed.some(p=>!(b[2]<p.b[0]||b[0]>p.b[2]||b[3]<p.b[1]||b[1]>p.b[3]))) this.style.opacity=0; });
 }
 window.addEventListener("resize",()=>{restyle();scheduleLabels();});
+
+// ---------- shop: everything in the Shopify store, from shop-products.json ----------
+(function(){
+  const box=document.getElementById('shopMore'); if(!box||!window.fetch) return;
+  const money=v=>'$'+Number(v).toFixed(2);
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const where=name=>{ const n=name.toLowerCase();
+    const m=MARKERS.filter(d=>n.includes(d.n.toLowerCase().replace(/\s*\([^)]*\)/,''))||d.n.toLowerCase().includes(n));
+    return m.length===1?(m[0].s==='District of Columbia'?'Washington, D.C.':m[0].c+', '+m[0].s):''; };
+  const LABEL={tumbler:'Basilica tumblers',mug:'Basilica mugs',other:'More from the shop'};
+  fetch('shop-products.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).then(list=>{
+    const groups={};
+    list.forEach(p=>{ if(p.kind==='poster') return; (groups[p.kind]=groups[p.kind]||[]).push(p); });
+    let html='';
+    ['tumbler','mug','other'].forEach(k=>{ const g=groups[k]; if(!g||!g.length) return;
+      html+='<div class="more-head"><h3>'+LABEL[k]+'</h3><a href="https://americanbasilicas.myshopify.com/collections/all">See all &rsaquo;</a></div><div class="shop-row">';
+      g.forEach(p=>{
+        const parts=p.title.split('|'), name=parts[0].replace(/\s*(Travel\s+)?(Tumbler|Mug)\s*$/i,'').trim();
+        const loc=(parts[1]||'').trim()||p.place||where(name);
+        const price=p.min==null?'':(p.max>p.min?'From '+money(p.min):money(p.min));
+        const img=p.image?p.image+(p.image.includes('?')?'&':'?')+'width=420':'';
+        html+='<a class="pcard" href="'+esc(p.url)+'">'+(img?'<img loading="lazy" src="'+esc(img)+'" alt="'+esc(p.title)+'">':'')+
+              '<span class="pt">'+esc(name)+'</span>'+(loc?'<span class="ploc">'+esc(loc)+'</span>':'')+
+              '<span class="pp">'+price+'</span></a>';
+      });
+      html+='</div>';
+    });
+    if(html){ box.innerHTML=html; box.hidden=false; }
+  }).catch(()=>{});
+})();
 restyle(); scheduleLabels();
 
 // link index <-> map highlight
