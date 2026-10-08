@@ -1,0 +1,13 @@
+name: Fetch high-res basilica photos
+on: { push: { branches: [shop-assets], paths: [hires/fetch.py] } }
+permissions: { contents: write }
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests && python hires/fetch.py
+      - run: |
+          git config user.name "github-actions[bot]"; git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add hires; git commit -m "High-res photos for print products"; git push
