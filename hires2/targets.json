@@ -1,0 +1,218 @@
+[
+ {
+  "num": 3,
+  "slug": "alameda-st-joseph-basilica",
+  "name": "St. Joseph Basilica",
+  "city": "Alameda",
+  "state": "California",
+  "current": "File:St. Joseph's Basilica (Alameda, CA).JPG"
+ },
+ {
+  "num": 4,
+  "slug": "carmel-by-the-sea-basilica-of-mission-san-carlos-borromeo-carmel-mission",
+  "name": "Basilica of Mission San Carlos Borromeo (Carmel Mission)",
+  "city": "Carmel-by-the-Sea",
+  "state": "California",
+  "current": "File:16 21 0440 carmel mission (cropped) (cropped).jpg"
+ },
+ {
+  "num": 6,
+  "slug": "san-francisco-basilica-of-st-francis-of-assisi-mission-dolores",
+  "name": "Basilica of St. Francis of Assisi (Mission Dolores)",
+  "city": "San Francisco",
+  "state": "California",
+  "current": "File:Mission Dolores (1165072805).jpg"
+ },
+ {
+  "num": 9,
+  "slug": "ventura-mission-basilica-san-buenaventura",
+  "name": "Mission Basilica San Buenaventura",
+  "city": "Ventura",
+  "state": "California",
+  "current": "File:Mission San Buenaventura.jpg"
+ },
+ {
+  "num": 30,
+  "slug": "dyersville-basilica-of-st-francis-xavier",
+  "name": "Basilica of St. Francis Xavier",
+  "city": "Dyersville",
+  "state": "Iowa",
+  "current": "File:Xavier by juddfurlong.jpg"
+ },
+ {
+  "num": 34,
+  "slug": "trappist-basilica-of-the-blessed-virgin-of-gethsemani",
+  "name": "Basilica of the Blessed Virgin of Gethsemani",
+  "city": "Trappist",
+  "state": "Kentucky",
+  "current": "File:The Abbey of Our Lady of Gethsemani.jpg"
+ },
+ {
+  "num": 35,
+  "slug": "natchitoches-basilica-of-the-immaculate-conception",
+  "name": "Basilica of the Immaculate Conception",
+  "city": "Natchitoches",
+  "state": "Louisiana",
+  "current": "File:Church of the Immaculate Conception, 145 Church Street, Natchitoches (Natchitoches Parish, Louisiana).jpg"
+ },
+ {
+  "num": 37,
+  "slug": "new-orleans-cathedral-basilica-of-st-louis-king-of-france",
+  "name": "Cathedral Basilica of St. Louis, King of France",
+  "city": "New Orleans",
+  "state": "Louisiana",
+  "current": "File:Cathedral new orleans.jpg"
+ },
+ {
+  "num": 38,
+  "slug": "lewiston-basilica-of-sts-peter-and-paul",
+  "name": "Basilica of Sts. Peter and Paul",
+  "city": "Lewiston",
+  "state": "Maine",
+  "current": "File:Basilique Saint-Pierre et Saint-Paul2.JPG"
+ },
+ {
+  "num": 39,
+  "slug": "baltimore-basilica-of-the-national-shrine-of-the-assumption-of-the-bvm",
+  "name": "Basilica of the National Shrine of the Assumption of the BVM",
+  "city": "Baltimore",
+  "state": "Maryland",
+  "current": "File:BasilicaExterior.jpg"
+ },
+ {
+  "num": 46,
+  "slug": "royal-oak-national-shrine-of-the-little-flower-basilica",
+  "name": "National Shrine of the Little Flower Basilica",
+  "city": "Royal Oak",
+  "state": "Michigan",
+  "current": "File:National Shrine of the Little Flower Basilica.jpg"
+ },
+ {
+  "num": 49,
+  "slug": "natchez-st-mary-basilica",
+  "name": "St. Mary Basilica",
+  "city": "Natchez",
+  "state": "Mississippi",
+  "current": "File:Natchez On-Top-of-the-Hill Historic District-464.JPG"
+ },
+ {
+  "num": 53,
+  "slug": "newark-cathedral-basilica-of-the-sacred-heart",
+  "name": "Cathedral Basilica of the Sacred Heart",
+  "city": "Newark",
+  "state": "New Jersey",
+  "current": "File:Facade of Sacred Heart Cathedral, Newark.jpg"
+ },
+ {
+  "num": 54,
+  "slug": "mesilla-basilica-of-san-albino",
+  "name": "Basilica of San Albino",
+  "city": "Mesilla",
+  "state": "New Mexico",
+  "current": "File:San Albino Church Mesilla.jpg"
+ },
+ {
+  "num": 57,
+  "slug": "brooklyn-basilica-of-regina-pacis",
+  "name": "Basilica of Regina Pacis",
+  "city": "Brooklyn",
+  "state": "New York",
+  "current": "File:Basilica Regina Pacis Shrine.jpg"
+ },
+ {
+  "num": 60,
+  "slug": "lewiston-basilica-of-the-national-shrine-of-our-lady-of-fatima",
+  "name": "Basilica of the National Shrine of Our Lady of Fatima",
+  "city": "Lewiston",
+  "state": "New York",
+  "current": "File:Shrine of Our Lady of Fatima, Lewiston, NY.jpg"
+ },
+ {
+  "num": 64,
+  "slug": "syracuse-basilica-of-the-sacred-heart-of-jesus",
+  "name": "Basilica of the Sacred Heart of Jesus",
+  "city": "Syracuse",
+  "state": "New York",
+  "current": "File:Basilica Sacred Heart of Jesus ShiftN.jpg"
+ },
+ {
+  "num": 65,
+  "slug": "asheville-basilica-of-st-lawrence",
+  "name": "Basilica of St. Lawrence",
+  "city": "Asheville",
+  "state": "North Carolina",
+  "current": "File:The Catholic Basilica of St. Lawrence in Asheville, North Carolina.jpg"
+ },
+ {
+  "num": 68,
+  "slug": "jamestown-basilica-of-st-james",
+  "name": "Basilica of St. James",
+  "city": "Jamestown",
+  "state": "North Dakota",
+  "current": "File:St. James Basilica (Jamestown, ND) from E 1.jpg"
+ },
+ {
+  "num": 70,
+  "slug": "carey-basilica-national-shrine-of-our-lady-of-consolation",
+  "name": "Basilica & National Shrine of Our Lady of Consolation",
+  "city": "Carey",
+  "state": "Ohio",
+  "current": "File:Carey Ohio Shrine Basilica Exterior Front-2.jpg"
+ },
+ {
+  "num": 71,
+  "slug": "cincinnati-cathedral-basilica-of-st-peter-in-chains",
+  "name": "Cathedral Basilica of St. Peter in Chains",
+  "city": "Cincinnati",
+  "state": "Ohio",
+  "current": "File:StPeterInChains.jpg"
+ },
+ {
+  "num": 73,
+  "slug": "marietta-basilica-of-st-mary-of-the-assumption",
+  "name": "Basilica of St. Mary of the Assumption",
+  "city": "Marietta",
+  "state": "Ohio",
+  "current": "File:Basilica of St. Mary of the Assumption, Marietta, OH.jpg"
+ },
+ {
+  "num": 80,
+  "slug": "philadelphia-basilica-shrine-of-our-lady-of-the-miraculous-medal",
+  "name": "Basilica Shrine of Our Lady of the Miraculous Medal",
+  "city": "Philadelphia",
+  "state": "Pennsylvania",
+  "current": "File:The Basilica Shrine of Our Lady of the Miraculous Medal.jpg"
+ },
+ {
+  "num": 83,
+  "slug": "columbia-basilica-of-st-peter",
+  "name": "Basilica of St. Peter",
+  "city": "Columbia",
+  "state": "South Carolina",
+  "current": "File:St. Peter's Roman Catholic Church (Columbia, South Carolina).JPG"
+ },
+ {
+  "num": 90,
+  "slug": "norfolk-basilica-of-st-mary-of-the-immaculate-conception",
+  "name": "Basilica of St. Mary of the Immaculate Conception",
+  "city": "Norfolk",
+  "state": "Virginia",
+  "current": "File:St Marys, Norfolk 2.jpg"
+ },
+ {
+  "num": 91,
+  "slug": "roanoke-basilica-of-st-andrew",
+  "name": "Basilica of St. Andrew",
+  "city": "Roanoke",
+  "state": "Virginia",
+  "current": "File:St. Andrew's Roman Catholic Church.jpg"
+ },
+ {
+  "num": 93,
+  "slug": "hubertus-basilica-of-our-lady-of-holy-hill-help-of-christians",
+  "name": "Basilica of Our Lady of Holy Hill (Help of Christians)",
+  "city": "Hubertus",
+  "state": "Wisconsin",
+  "current": "File:Holy Hill.jpg"
+ }
+]
