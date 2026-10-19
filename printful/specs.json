@@ -1,0 +1,2813 @@
+{
+ "matches": [
+  {
+   "id": 713,
+   "title": "Men's Oversized Faded T-Shirt | AS Colour 5082",
+   "model": "5082",
+   "type_name": "AS Colour 5082 | Heavy Faded Tee",
+   "brand": "AS Colour",
+   "techniques": [
+    {
+     "key": "DTG",
+     "display_name": "DTG printing",
+     "is_default": true
+    },
+    {
+     "key": "EMBROIDERY",
+     "display_name": "Embroidery",
+     "is_default": false
+    },
+    {
+     "key": "DTFILM",
+     "display_name": "DTF printing",
+     "is_default": false
+    }
+   ],
+   "files": [
+    {
+     "id": "embroidery_chest_left",
+     "type": "embroidery_chest_left",
+     "title": "Left chest",
+     "additional_price": "2.95",
+     "options": [
+      {
+       "id": "full_color",
+       "type": "bool",
+       "title": "Unlimited color",
+       "additional_price": 3.5
+      }
+     ]
+    },
+    {
+     "id": "embroidery_chest_center",
+     "type": "embroidery_chest_center",
+     "title": "Center chest",
+     "additional_price": "2.95",
+     "options": [
+      {
+       "id": "full_color",
+       "type": "bool",
+       "title": "Unlimited color",
+       "additional_price": 3.5
+      }
+     ]
+    },
+    {
+     "id": "embroidery_sleeve_left_top",
+     "type": "embroidery_sleeve_left_top",
+     "title": "Left sleeve top",
+     "additional_price": "2.95",
+     "options": []
+    },
+    {
+     "id": "embroidery_sleeve_right_top",
+     "type": "embroidery_sleeve_right_top",
+     "title": "Right sleeve top",
+     "additional_price": "2.95",
+     "options": []
+    },
+    {
+     "id": "default",
+     "type": "front",
+     "title": "Front print",
+     "additional_price": null,
+     "options": []
+    },
+    {
+     "id": "back",
+     "type": "back",
+     "title": "Back print",
+     "additional_price": "5.95",
+     "options": []
+    },
+    {
+     "id": "label_outside",
+     "type": "label_outside",
+     "title": "Outside label",
+     "additional_price": "2.49",
+     "options": []
+    },
+    {
+     "id": "label_inside",
+     "type": "label_inside",
+     "title": "Inside label",
+     "additional_price": "0.99",
+     "options": []
+    },
+    {
+     "id": "sleeve_left",
+     "type": "sleeve_left",
+     "title": "Left sleeve",
+     "additional_price": "2.49",
+     "options": []
+    },
+    {
+     "id": "sleeve_right",
+     "type": "sleeve_right",
+     "title": "Right sleeve",
+     "additional_price": "2.49",
+     "options": []
+    },
+    {
+     "id": "front_dtf",
+     "type": "front_dtf",
+     "title": "Front print",
+     "additional_price": "5.95",
+     "options": []
+    },
+    {
+     "id": "short_sleeve_right_dtf",
+     "type": "short_sleeve_right_dtf",
+     "title": "Short right sleeve",
+     "additional_price": "2.49",
+     "options": []
+    },
+    {
+     "id": "short_sleeve_left_dtf",
+     "type": "short_sleeve_left_dtf",
+     "title": "Short left sleeve",
+     "additional_price": "2.49",
+     "options": []
+    },
+    {
+     "id": "back_dtf",
+     "type": "back_dtf",
+     "title": "Back print",
+     "additional_price": "5.95",
+     "options": []
+    },
+    {
+     "id": "label_inside_dtf",
+     "type": "label_inside_dtf",
+     "title": "Inside label",
+     "additional_price": "0.99",
+     "options": []
+    },
+    {
+     "id": "preview",
+     "type": "mockup",
+     "title": "Mockup",
+     "additional_price": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "id": 433,
+   "title": "Standard Postcard",
+   "model": "Postcard | Standard | White",
+   "type_name": "Postcard | Standard | White",
+   "brand": null,
+   "techniques": [
+    {
+     "key": "DIGITAL",
+     "display_name": "Digital printing",
+     "is_default": true
+    }
+   ],
+   "files": [
+    {
+     "id": "default",
+     "type": "default",
+     "title": "Print file",
+     "additional_price": null,
+     "options": []
+    },
+    {
+     "id": "preview",
+     "type": "mockup",
+     "title": "Mockup",
+     "additional_price": null,
+     "options": []
+    }
+   ]
+  }
+ ],
+ "v1_713": {
+  "code": 200,
+  "result": {
+   "product": {
+    "id": 713,
+    "main_category_id": 24,
+    "type": "EMBROIDERY",
+    "description": "Embrace the versatility of the Oversized faded t-shirt, designed for those who appreciate the art of layering and creating unique outfits that effortlessly fuse modern trends with a hint of nostalgia. Its loose fit allows you to play with textures and proportions, giving you the freedom to express your personality through your style.\n\n\u2022 100% carded cotton\n\u2022 Fabric weight: 7.1 oz. /yd. \u00b2 (240 g/m\u00b2)\n\u2022 Garment-dyed, pre-shrunk fabric\n\u2022 Boxy, oversized fit\n\u2022 Dropped shoulders\n\u2022 Wide neck ribbing\n\u2022 Tear-away label\n\u2022 Blank product sourced from China",
+    "type_name": "AS Colour 5082 | Heavy Faded Tee",
+    "title": "Men's Oversized Faded T-Shirt | AS Colour 5082",
+    "brand": "AS Colour",
+    "model": "5082",
+    "image": "https://files.cdn.printful.com/o/upload/product-catalog-img/bd/bd2b41a37d0c8bad6685e1528e5816b5_l",
+    "variant_count": 52,
+    "currency": "USD",
+    "options": [
+     {
+      "id": "thread_colors_chest_left",
+      "title": "Left chest thread colors",
+      "type": "multi_select",
+      "values": {
+       "#FFFFFF": "1801 White",
+       "#000000": "1800 Black",
+       "#96A1A8": "1718 Grey",
+       "#A67843": "1672 Old Gold",
+       "#FFCC00": "1951 Gold",
+       "#E25C27": "1987 Orange",
+       "#CC3366": "1910 Flamingo",
+       "#CC3333": "1839 Red",
+       "#660000": "1784 Maroon",
+       "#333366": "1966 Navy",
+       "#005397": "1842 Royal",
+       "#3399FF": "1695 Aqua/Teal",
+       "#6B5294": "1832 Purple",
+       "#01784E": "1751 Kelly Green",
+       "#7BA35A": "1848 Kiwi Green"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     },
+     {
+      "id": "thread_colors_chest_center",
+      "title": "Center chest thread colors",
+      "type": "multi_select",
+      "values": {
+       "#FFFFFF": "1801 White",
+       "#000000": "1800 Black",
+       "#96A1A8": "1718 Grey",
+       "#A67843": "1672 Old Gold",
+       "#FFCC00": "1951 Gold",
+       "#E25C27": "1987 Orange",
+       "#CC3366": "1910 Flamingo",
+       "#CC3333": "1839 Red",
+       "#660000": "1784 Maroon",
+       "#333366": "1966 Navy",
+       "#005397": "1842 Royal",
+       "#3399FF": "1695 Aqua/Teal",
+       "#6B5294": "1832 Purple",
+       "#01784E": "1751 Kelly Green",
+       "#7BA35A": "1848 Kiwi Green"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     },
+     {
+      "id": "thread_colors_sleeve_left_top",
+      "title": "Sleeve left top thread colors",
+      "type": "multi_select",
+      "values": {
+       "#FFFFFF": "1801 White",
+       "#000000": "1800 Black",
+       "#96A1A8": "1718 Grey",
+       "#A67843": "1672 Old Gold",
+       "#FFCC00": "1951 Gold",
+       "#E25C27": "1987 Orange",
+       "#CC3366": "1910 Flamingo",
+       "#CC3333": "1839 Red",
+       "#660000": "1784 Maroon",
+       "#333366": "1966 Navy",
+       "#005397": "1842 Royal",
+       "#3399FF": "1695 Aqua/Teal",
+       "#6B5294": "1832 Purple",
+       "#01784E": "1751 Kelly Green",
+       "#7BA35A": "1848 Kiwi Green"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     },
+     {
+      "id": "thread_colors_sleeve_right_top",
+      "title": "Sleeve right top thread colors",
+      "type": "multi_select",
+      "values": {
+       "#FFFFFF": "1801 White",
+       "#000000": "1800 Black",
+       "#96A1A8": "1718 Grey",
+       "#A67843": "1672 Old Gold",
+       "#FFCC00": "1951 Gold",
+       "#E25C27": "1987 Orange",
+       "#CC3366": "1910 Flamingo",
+       "#CC3333": "1839 Red",
+       "#660000": "1784 Maroon",
+       "#333366": "1966 Navy",
+       "#005397": "1842 Royal",
+       "#3399FF": "1695 Aqua/Teal",
+       "#6B5294": "1832 Purple",
+       "#01784E": "1751 Kelly Green",
+       "#7BA35A": "1848 Kiwi Green"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     },
+     {
+      "id": "notes",
+      "title": "Embroidery notes",
+      "type": "text",
+      "values": null,
+      "additional_price": null,
+      "additional_price_breakdown": []
+     },
+     {
+      "id": "license_type",
+      "title": "License type",
+      "type": "multi_select",
+      "values": {
+       "CLC": "Collegiate Licensing Company",
+       "AFFINITY": "Affinity",
+       "BR": "BR",
+       "EX": "EX",
+       "NCAA": "NCAA",
+       "FAN": "Fan",
+       "BCOMPLY": "BrandComply",
+       "TAG": "Tag",
+       "DLH": "DLH",
+       "CORE81": "Core81"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     }
+    ],
+    "dimensions": null,
+    "is_discontinued": false,
+    "avg_fulfillment_time": null,
+    "techniques": [
+     {
+      "key": "DTG",
+      "display_name": "DTG printing",
+      "is_default": true
+     },
+     {
+      "key": "EMBROIDERY",
+      "display_name": "Embroidery",
+      "is_default": false
+     },
+     {
+      "key": "DTFILM",
+      "display_name": "DTF printing",
+      "is_default": false
+     }
+    ],
+    "files": [
+     {
+      "id": "embroidery_chest_left",
+      "type": "embroidery_chest_left",
+      "title": "Left chest",
+      "additional_price": "2.95",
+      "options": [
+       {
+        "id": "full_color",
+        "type": "bool",
+        "title": "Unlimited color",
+        "additional_price": 3.5
+       }
+      ]
+     },
+     {
+      "id": "embroidery_chest_center",
+      "type": "embroidery_chest_center",
+      "title": "Center chest",
+      "additional_price": "2.95",
+      "options": [
+       {
+        "id": "full_color",
+        "type": "bool",
+        "title": "Unlimited color",
+        "additional_price": 3.5
+       }
+      ]
+     },
+     {
+      "id": "embroidery_sleeve_left_top",
+      "type": "embroidery_sleeve_left_top",
+      "title": "Left sleeve top",
+      "additional_price": "2.95",
+      "options": []
+     },
+     {
+      "id": "embroidery_sleeve_right_top",
+      "type": "embroidery_sleeve_right_top",
+      "title": "Right sleeve top",
+      "additional_price": "2.95",
+      "options": []
+     },
+     {
+      "id": "default",
+      "type": "front",
+      "title": "Front print",
+      "additional_price": null,
+      "options": []
+     },
+     {
+      "id": "back",
+      "type": "back",
+      "title": "Back print",
+      "additional_price": "5.95",
+      "options": []
+     },
+     {
+      "id": "label_outside",
+      "type": "label_outside",
+      "title": "Outside label",
+      "additional_price": "2.49",
+      "options": []
+     },
+     {
+      "id": "label_inside",
+      "type": "label_inside",
+      "title": "Inside label",
+      "additional_price": "0.99",
+      "options": []
+     },
+     {
+      "id": "sleeve_left",
+      "type": "sleeve_left",
+      "title": "Left sleeve",
+      "additional_price": "2.49",
+      "options": []
+     },
+     {
+      "id": "sleeve_right",
+      "type": "sleeve_right",
+      "title": "Right sleeve",
+      "additional_price": "2.49",
+      "options": []
+     },
+     {
+      "id": "front_dtf",
+      "type": "front_dtf",
+      "title": "Front print",
+      "additional_price": "5.95",
+      "options": []
+     },
+     {
+      "id": "short_sleeve_right_dtf",
+      "type": "short_sleeve_right_dtf",
+      "title": "Short right sleeve",
+      "additional_price": "2.49",
+      "options": []
+     },
+     {
+      "id": "short_sleeve_left_dtf",
+      "type": "short_sleeve_left_dtf",
+      "title": "Short left sleeve",
+      "additional_price": "2.49",
+      "options": []
+     },
+     {
+      "id": "back_dtf",
+      "type": "back_dtf",
+      "title": "Back print",
+      "additional_price": "5.95",
+      "options": []
+     },
+     {
+      "id": "label_inside_dtf",
+      "type": "label_inside_dtf",
+      "title": "Inside label",
+      "additional_price": "0.99",
+      "options": []
+     },
+     {
+      "id": "preview",
+      "type": "mockup",
+      "title": "Mockup",
+      "additional_price": null,
+      "options": []
+     }
+    ],
+    "origin_country": "China"
+   },
+   "variants": [
+    {
+     "id": 53498,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded Black / XS)",
+     "size": "XS",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 53499,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded Bone / XS)",
+     "size": "XS",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 53500,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded Eucalyptus / XS)",
+     "size": "XS",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 53501,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded Khaki / XS)",
+     "size": "XS",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52808,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / 2XL)",
+     "size": "2XL",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52809,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / 3XL)",
+     "size": "3XL",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52806,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / L)",
+     "size": "L",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52805,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / M)",
+     "size": "M",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52804,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / S)",
+     "size": "S",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 52807,
+     "product_id": 713,
+     "name": "AS Colour 5082 | Heavy Faded Tee (Faded White / XL)",
+     "size": "XL",
+     "color": "Faded White",
+     "color_code": "#ffffff",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/52804_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17589,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / 2XL)",
+     "size": "2XL",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17594,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / 3XL)",
+     "size": "3XL",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17579,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / L)",
+     "size": "L",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17574,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / M)",
+     "size": "M",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17569,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / S)",
+     "size": "S",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17584,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Black / XL)",
+     "size": "XL",
+     "color": "Faded Black",
+     "color_code": "#424242",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17569_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17590,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / 2XL)",
+     "size": "2XL",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17595,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / 3XL)",
+     "size": "3XL",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17580,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / L)",
+     "size": "L",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17575,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / M)",
+     "size": "M",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17570,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / S)",
+     "size": "S",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17585,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Bone / XL)",
+     "size": "XL",
+     "color": "Faded Bone",
+     "color_code": "#f3ede4",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17570_1787750427.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34472,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / 2XL)",
+     "size": "2XL",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34474,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / 3XL)",
+     "size": "3XL",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34468,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / L)",
+     "size": "L",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34466,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / M)",
+     "size": "M",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34464,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / S)",
+     "size": "S",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34470,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Coal / XL)",
+     "size": "XL",
+     "color": "Faded Coal",
+     "color_code": "#484946",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34474_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17591,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / 2XL)",
+     "size": "2XL",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17596,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / 3XL)",
+     "size": "3XL",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "US": "United States",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17581,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / L)",
+     "size": "L",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17576,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / M)",
+     "size": "M",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17571,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / S)",
+     "size": "S",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17586,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Eucalyptus / XL)",
+     "size": "XL",
+     "color": "Faded Eucalyptus",
+     "color_code": "#d1cbad",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17576_1787750429.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17592,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / 2XL)",
+     "size": "2XL",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17597,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / 3XL)",
+     "size": "3XL",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17582,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / L)",
+     "size": "L",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": false,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "supplier_out_of_stock"
+      },
+      {
+       "region": "EU",
+       "status": "supplier_out_of_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "supplier_out_of_stock"
+      },
+      {
+       "region": "UK",
+       "status": "supplier_out_of_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17577,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / M)",
+     "size": "M",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17572,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / S)",
+     "size": "S",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17587,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Grey / XL)",
+     "size": "XL",
+     "color": "Faded Grey",
+     "color_code": "#8c837e",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17577_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34471,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / 2XL)",
+     "size": "2XL",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34473,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / 3XL)",
+     "size": "3XL",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34467,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / L)",
+     "size": "L",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34465,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / M)",
+     "size": "M",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34463,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / S)",
+     "size": "S",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 34469,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Indigo / XL)",
+     "size": "XL",
+     "color": "Faded Indigo",
+     "color_code": "#546274",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/34465_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "Cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17593,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / 2XL)",
+     "size": "2XL",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "29.50",
+     "in_stock": true,
+     "availability_regions": {
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "US": "United States",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17598,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / 3XL)",
+     "size": "3XL",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "31.25",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17583,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / L)",
+     "size": "L",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17578,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / M)",
+     "size": "M",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17573,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / S)",
+     "size": "S",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    },
+    {
+     "id": 17588,
+     "product_id": 713,
+     "name": "Oversized Faded T-Shirt | AS Colour 5082 (Faded Khaki / XL)",
+     "size": "XL",
+     "color": "Faded Khaki",
+     "color_code": "#dbc4a2",
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/713/17598_1787750428.jpg",
+     "price": "27.95",
+     "in_stock": true,
+     "availability_regions": {
+      "US": "United States",
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "UK": "United Kingdom"
+     },
+     "availability_status": [
+      {
+       "region": "US",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "UK",
+       "status": "in_stock"
+      }
+     ],
+     "material": [
+      {
+       "name": "carded cotton",
+       "percentage": 100.0
+      }
+     ]
+    }
+   ]
+  },
+  "extra": []
+ },
+ "v2_catalog-products/713": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ },
+ "v2_catalog-products/713/mockup-templates": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ },
+ "v2_catalog-products/713/mockup-styles": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ },
+ "v1_433": {
+  "code": 200,
+  "result": {
+   "product": {
+    "id": 433,
+    "main_category_id": 197,
+    "type": "POSTCARD",
+    "description": "These postcards are made from thick high-quality matte paper, so they serve as a great addition to a gift or just a thoughtful written note to a friend.\n\u2022 Cardboard paper\n\u2022 Paper weight: 7.67\u201310.32 oz/yd\u00b2 (260\u2013350 g/m\u00b2)\n\u2022 Size: 4\u2033 \u00d7 6\u2033 (101 \u00d7 152 mm)\n\u2022 Paper thickness: 0.013\u2033 (0.34 mm)\n\u2022 Coated outer surface\n\u2022 Blank product materials sourced from Sweden, US, Brazil, or China",
+    "type_name": "Postcard | Standard | White",
+    "title": "Standard Postcard",
+    "brand": null,
+    "model": "Postcard | Standard | White",
+    "image": "https://files.cdn.printful.com/o/products/433/product_1602054891.jpg",
+    "variant_count": 1,
+    "currency": "USD",
+    "options": [
+     {
+      "id": "license_type",
+      "title": "License type",
+      "type": "multi_select",
+      "values": {
+       "CLC": "Collegiate Licensing Company",
+       "AFFINITY": "Affinity",
+       "BR": "BR",
+       "EX": "EX",
+       "NCAA": "NCAA",
+       "FAN": "Fan",
+       "BCOMPLY": "BrandComply",
+       "TAG": "Tag",
+       "DLH": "DLH",
+       "CORE81": "Core81"
+      },
+      "additional_price": null,
+      "additional_price_breakdown": []
+     }
+    ],
+    "dimensions": null,
+    "is_discontinued": false,
+    "avg_fulfillment_time": null,
+    "techniques": [
+     {
+      "key": "DIGITAL",
+      "display_name": "Digital printing",
+      "is_default": true
+     }
+    ],
+    "files": [
+     {
+      "id": "default",
+      "type": "default",
+      "title": "Print file",
+      "additional_price": null,
+      "options": []
+     },
+     {
+      "id": "preview",
+      "type": "mockup",
+      "title": "Mockup",
+      "additional_price": null,
+      "options": []
+     }
+    ],
+    "origin_country": null
+   },
+   "variants": [
+    {
+     "id": 11513,
+     "product_id": 433,
+     "name": "Standard Postcards (4\u2033\u00d76\u2033)",
+     "size": "4\u2033\u00d76\u2033",
+     "color": null,
+     "color_code": null,
+     "color_code2": null,
+     "image": "https://files.cdn.printful.com/products/433/11513_1592384192.jpg",
+     "price": "1.53",
+     "in_stock": true,
+     "availability_regions": {
+      "EU": "Europe",
+      "EU_LV": "Latvia",
+      "AU": "Australia",
+      "US": "United States"
+     },
+     "availability_status": [
+      {
+       "region": "EU",
+       "status": "in_stock"
+      },
+      {
+       "region": "EU_LV",
+       "status": "in_stock"
+      },
+      {
+       "region": "AU",
+       "status": "in_stock"
+      },
+      {
+       "region": "US",
+       "status": "in_stock"
+      }
+     ],
+     "material": []
+    }
+   ]
+  },
+  "extra": []
+ },
+ "v2_catalog-products/433": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ },
+ "v2_catalog-products/433/mockup-templates": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ },
+ "v2_catalog-products/433/mockup-styles": {
+  "data": "This endpoint requires Oauth authentication!",
+  "error": {
+   "reason": "Unauthorized",
+   "message": "This endpoint requires Oauth authentication!"
+  }
+ }
+}
