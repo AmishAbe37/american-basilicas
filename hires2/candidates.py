@@ -35,33 +35,36 @@ def info(titles):
                             page=ii.get("descriptionurl")))
     return out
 
-T = json.load(open("hires2/targets.json")); res = {}
-for t in T:
-    titles = set([t["current"]])
-    for q in (f'{t["name"]} {t["city"]}', f'{t["name"]} {t["state"]}', f'{t["city"]} {t["name"].split("(")[0]}'):
-        j = get(dict(action="query", list="search", srsearch=q, srnamespace=6, srlimit=50))
-        titles |= {s["title"] for s in j.get("query", {}).get("search", [])}
-    # every file in the categories of the current photo
-    j = get(dict(action="query", titles=t["current"], prop="categories", clshow="!hidden", cllimit=50))
-    for p in j.get("query", {}).get("pages", []):
-        for c in p.get("categories", [])[:6]:
-            k = get(dict(action="query", list="categorymembers", cmtitle=c["title"], cmtype="file", cmlimit=200))
-            titles |= {m["title"] for m in k.get("query", {}).get("categorymembers", [])}
-    c = [x for x in info(sorted(titles)) if x["license_ok"]]
-    cur = next((x for x in c if x["file"] == t["current"]), None)
-    c.sort(key=lambda x: -x["eff"])
-    keep = [x for x in c if x["eff"] >= 2400][:12]
-    os.makedirs(f"hires2/cand/{t['slug']}", exist_ok=True)
-    for n, x in enumerate(keep):
-        x["n"] = n
-        for a in range(4):
-            try:
-                d = S.get(x["thumb"], timeout=60)
-                if d.status_code == 200:
-                    open(f"hires2/cand/{t['slug']}/{n:02d}.jpg", "wb").write(d.content); break
-            except Exception: pass
-            time.sleep(4 * (a + 1))
-        time.sleep(0.5)
-    res[t["slug"]] = dict(num=t["num"], name=t["name"], current=cur, candidates=keep, searched=len(titles))
-    print(t["num"], t["slug"], len(titles), len(keep), keep[0]["eff"] if keep else "-", flush=True)
-json.dump(res, open("hires2/candidates.json", "w"), indent=1)
+def main():
+  T = json.load(open("hires2/targets.json")); res = {}
+  for t in T:
+      titles = set([t["current"]])
+      for q in (f'{t["name"]} {t["city"]}', f'{t["name"]} {t["state"]}', f'{t["city"]} {t["name"].split("(")[0]}'):
+          j = get(dict(action="query", list="search", srsearch=q, srnamespace=6, srlimit=50))
+          titles |= {s["title"] for s in j.get("query", {}).get("search", [])}
+      # every file in the categories of the current photo
+      j = get(dict(action="query", titles=t["current"], prop="categories", clshow="!hidden", cllimit=50))
+      for p in j.get("query", {}).get("pages", []):
+          for c in p.get("categories", [])[:6]:
+              k = get(dict(action="query", list="categorymembers", cmtitle=c["title"], cmtype="file", cmlimit=200))
+              titles |= {m["title"] for m in k.get("query", {}).get("categorymembers", [])}
+      c = [x for x in info(sorted(titles)) if x["license_ok"]]
+      cur = next((x for x in c if x["file"] == t["current"]), None)
+      c.sort(key=lambda x: -x["eff"])
+      keep = [x for x in c if x["eff"] >= 2400][:12]
+      os.makedirs(f"hires2/cand/{t['slug']}", exist_ok=True)
+      for n, x in enumerate(keep):
+          x["n"] = n
+          for a in range(4):
+              try:
+                  d = S.get(x["thumb"], timeout=60)
+                  if d.status_code == 200:
+                      open(f"hires2/cand/{t['slug']}/{n:02d}.jpg", "wb").write(d.content); break
+              except Exception: pass
+              time.sleep(4 * (a + 1))
+          time.sleep(0.5)
+      res[t["slug"]] = dict(num=t["num"], name=t["name"], current=cur, candidates=keep, searched=len(titles))
+      print(t["num"], t["slug"], len(titles), len(keep), keep[0]["eff"] if keep else "-", flush=True)
+  json.dump(res, open("hires2/candidates.json", "w"), indent=1)
+
+if __name__ == "__main__": main()

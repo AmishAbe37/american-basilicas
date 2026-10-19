@@ -1,5 +1,5 @@
 name: Find and fetch larger basilica photos (shirts)
-on: { push: { branches: [shop-assets], paths: [hires2/candidates.py, hires2/fetch.py] } }
+on: { push: { branches: [shop-assets], paths: [hires2/candidates.py, hires2/candidates2.py, hires2/fetch.py] } }
 permissions: { contents: write }
 concurrency: { group: hires2, cancel-in-progress: false }
 jobs:
@@ -12,6 +12,9 @@ jobs:
       - name: Candidates
         if: ${{ !hashFiles('hires2/candidates.json') }}
         run: python hires2/candidates.py
+      - name: Candidates (second pass)
+        if: ${{ !hashFiles('hires2/candidates2.json') }}
+        run: python hires2/candidates2.py
       - name: Fetch chosen originals
         if: ${{ hashFiles('hires2/choices.json') != '' }}
         run: python hires2/fetch.py
