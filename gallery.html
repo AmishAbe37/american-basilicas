@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Members’ Gallery — American Basilicas</title>
+<meta name="description" content="Photos of the U.S. minor basilicas shared by American Basilicas members.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+</head>
+<body>
+<main id="main" aria-live="polite"></main>
+<footer class="mf">Photos are shared by members and reviewed before they appear here. They’re visible only to signed-in members; please don’t copy them elsewhere without the photographer’s permission.</footer>
+<script>
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main");
+  AB.shell({ active: "gallery", title: 'Members’ <span class="thin">Gallery</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+  AB.onAuth((u) => (u ? gallery() : signin()));
+
+  function signin() {
+    main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Members only</h2><span class="tag">Sign in to see the gallery</span></div><div class="panel-body" id="form"></div></section>';
+    AB.signinForm(document.getElementById("form"), { lead: "The gallery holds photos members have taken at the basilicas. It’s open to everyone with a free account." });
+  }
+
+  let BY = {}, items = [], urls = {}, oldest = null, filt = "", busy = false;
+  async function gallery() {
+    main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Photos from members</h2><span class="tag" id="tot"></span></div><div class="panel-body">' +
+      '<label class="fld" for="pick">Basilica</label><select id="pick"><option value="">All basilicas</option></select>' +
+      '<p class="hint">Add your own from <a href="account.html">My pilgrimage</a> or from any basilica on the <a href="index.html">map</a>.</p>' +
+      '<div class="grid-ph" id="grid" style="margin-top:18px"></div><div class="btnrow" style="margin-top:18px"><button class="btn" id="more" hidden>Load more</button></div>' +
+      '<p class="msg" id="gmsg" role="status"></p></div></section>';
+    let counts = {};
+    try { (await AB.basilicas()).forEach((b) => (BY[b.id] = b)); counts = await AB.galleryCounts(); }
+    catch (e) { document.getElementById("gmsg").className = "msg err"; document.getElementById("gmsg").textContent = e.message; return; }
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    document.getElementById("tot").textContent = total.toLocaleString() + " photo" + (total === 1 ? "" : "s");
+    const pick = document.getElementById("pick"), groups = {};
+    Object.keys(counts).map((id) => BY[id]).filter(Boolean).forEach((b) => (groups[b.state] = groups[b.state] || []).push(b));
+    pick.innerHTML += Object.keys(groups).sort().map((st) => '<optgroup label="' + E(st) + '">' + groups[st].sort((a, b) => a.city.localeCompare(b.city))
+      .map((b) => '<option value="' + b.id + '">' + E(b.city) + " · " + E(b.name) + " (" + counts[b.id] + ")</option>").join("") + "</optgroup>").join("");
+    const want = (location.hash.match(/[#&]b=([a-z0-9-]+)/) || [])[1];
+    if (want && BY[want]) {
+      if (!counts[want]) pick.innerHTML += '<option value="' + want + '">' + E(BY[want].city) + " · " + E(BY[want].name) + " (0)</option>";
+      pick.value = want;
+    }
+    pick.onchange = () => { history.replaceState(null, "", pick.value ? "#b=" + pick.value : location.pathname); load(true); };
+    document.getElementById("more").onclick = () => load(false);
+    load(true);
+  }
+
+  async function load(reset) {
+    if (busy) return; busy = true;
+    const grid = document.getElementById("grid"), more = document.getElementById("more"), msg = document.getElementById("gmsg");
+    if (reset) { items = []; oldest = null; grid.innerHTML = ""; filt = document.getElementById("pick").value; }
+    msg.className = "msg"; msg.innerHTML = '<span class="spin"></span> Loading…';
+    try {
+      const batch = await AB.gallery({ basilica: filt, before: oldest, limit: 24 });
+      Object.assign(urls, await AB.urls(batch.map((p) => p.thumb_path)));
+      const start = items.length; items = items.concat(batch);
+      if (batch.length) oldest = batch[batch.length - 1].created_at;
+      grid.insertAdjacentHTML("beforeend", batch.map((p, k) => {
+        const b = BY[p.basilica_id] || { name: "", city: "", state: "" }, who = (p.profiles && p.profiles.display_name) || "A member";
+        return '<figure class="ph"><button class="open" type="button" data-i="' + (start + k) + '" aria-label="Open photo of ' + E(b.name) + '">' +
+          '<img loading="lazy" src="' + E(urls[p.thumb_path] || "") + '" alt="' + E(p.caption || b.name) + '"></button>' +
+          "<figcaption><b>" + E(b.name) + "</b><span>" + E(b.city) + ", " + E(b.state) + " · by " + E(who) + "</span>" +
+          (p.caption ? '<br><span style="color:var(--text)">' + E(p.caption) + "</span>" : "") + "</figcaption></figure>";
+      }).join(""));
+      grid.querySelectorAll("[data-i]").forEach((btn) => (btn.onclick = () => openAt(+btn.dataset.i)));
+      more.hidden = batch.length < 24;
+      msg.textContent = items.length ? "" : filt ? "No member photos of this basilica yet. Been there? Add yours from your visit." : "No member photos yet. Be the first — add photos to a visit.";
+      msg.className = items.length ? "msg" : "msg empty";
+    } catch (e) { msg.className = "msg err"; msg.textContent = e.message; }
+    busy = false;
+  }
+
+  function openAt(i) {
+    AB.lightbox(items.map((p) => {
+      const b = BY[p.basilica_id] || { name: "" }, who = (p.profiles && p.profiles.display_name) || "A member";
+      return { thumb: urls[p.thumb_path], alt: p.caption || b.name, full: async () => (await AB.urls([p.storage_path]))[p.storage_path],
+        caption: "<b>" + E(b.name) + "</b>, " + E(b.city) + " — photo by " + E(who) + (p.caption ? "<br>" + E(p.caption) : "") };
+    }), i);
+  }
+})();
+</script>
+</body>
+</html>

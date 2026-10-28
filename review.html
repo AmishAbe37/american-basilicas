@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Photos — American Basilicas</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+</head>
+<body>
+<main id="main" aria-live="polite"></main>
+<footer class="mf">Approve puts a photo in the members’ gallery. Not shared keeps it in the member’s own visit only. Delete removes it for good (use for anything inappropriate).</footer>
+<script>
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main");
+  AB.shell({ active: "review", title: 'Review <span class="thin">Photos</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+  AB.onAuth(async (u) => {
+    if (!u) {
+      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Sign in</h2></div><div class="panel-body" id="form"></div></section>';
+      return AB.signinForm(document.getElementById("form"), { lead: "For site administrators." });
+    }
+    if (!(await AB.isAdmin().catch(() => false))) {
+      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Not available</h2></div><div class="panel-body"><p>This page is for site administrators.</p></div></section>';
+      return;
+    }
+    queue();
+  });
+
+  async function queue() {
+    main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Waiting for review</h2><span class="tag" id="cnt"></span></div><div class="panel-body"><div class="rq" id="rq"></div><p class="msg" id="rmsg"></p></div></section>';
+    const rq = document.getElementById("rq"), msg = document.getElementById("rmsg");
+    let BY = {}, list = [];
+    try { BY = await AB.basilicaMap(); list = await AB.pending(); } catch (e) { msg.className = "msg err"; msg.textContent = e.message; return; }
+    const count = () => (document.getElementById("cnt").textContent = rq.children.length + " photo" + (rq.children.length === 1 ? "" : "s"));
+    if (!list.length) { rq.innerHTML = '<p class="empty">Nothing waiting. 🎉</p>'; document.getElementById("cnt").textContent = "0 photos"; return; }
+    const urls = await AB.urls(list.map((p) => p.storage_path), 7200);
+    rq.innerHTML = list.map((p, i) => {
+      const b = BY[p.basilica_id] || { name: p.basilica_id, city: "", state: "" };
+      return '<div class="ritem" data-i="' + i + '"><a href="' + E(urls[p.storage_path] || "") + '" target="_blank" rel="noopener"><img loading="lazy" src="' + E(urls[p.storage_path] || "") + '" alt=""></a>' +
+        "<div><h3>" + E(b.name) + '</h3><p class="hint" style="margin:0 0 8px">' + E(b.city) + ", " + E(b.state) + " · by <b>" + E((p.profiles && p.profiles.display_name) || "?") + "</b> · " +
+        E(AB.fmtDate(p.created_at)) + " · " + (p.width || "?") + "×" + (p.height || "?") + "</p>" +
+        (p.caption ? '<p style="margin:0 0 10px">“' + E(p.caption) + "”</p>" : '<p class="empty" style="margin:0 0 10px">No caption</p>') +
+        '<div class="btnrow"><button class="btn solid" data-a="approved">Approve</button><button class="btn" data-a="rejected">Not shared</button><button class="btn danger" data-a="delete">Delete</button></div>' +
+        '<p class="msg" role="status"></p></div></div>';
+    }).join("");
+    count();
+    rq.querySelectorAll(".ritem").forEach((row) => row.querySelectorAll("[data-a]").forEach((btn) => (btn.onclick = async () => {
+      const p = list[+row.dataset.i], a = btn.dataset.a, m = row.querySelector(".msg");
+      if (a === "delete" && !confirm("Delete this photo permanently? The member will no longer have it in their visit.")) return;
+      row.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      try {
+        if (a === "delete") await AB.deletePhoto(p); else await AB.review(p.id, a);
+        row.remove(); count();
+        if (!rq.children.length) rq.innerHTML = '<p class="empty">All done. 🎉</p>';
+      } catch (e) { row.querySelectorAll("button").forEach((b) => (b.disabled = false)); m.className = "msg err"; m.textContent = e.message; }
+    })));
+  }
+})();
+</script>
+</body>
+</html>
