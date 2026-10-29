@@ -32,8 +32,16 @@
   // ---------- session ----------
   let cache = {};
   AB.user = null; AB.ready = false;
+  // each subscriber hears about each signed-in (or signed-out) state exactly once, even if it subscribes
+  // while a notification is already on its way
   const subs = [];
-  AB.onAuth = (fn) => { subs.push(fn); if (AB.ready) fn(AB.user); };
+  const notify = (s) => {
+    const id = AB.user ? AB.user.id : null;
+    if (s.heard && s.last === id) return;
+    s.heard = true; s.last = id;
+    try { s.fn(AB.user); } catch (e) { console.error(e); }
+  };
+  AB.onAuth = (fn) => { const s = { fn }; subs.push(s); if (AB.ready) notify(s); };
   sb.auth.onAuthStateChange((event, session) => {
     const u = session ? session.user : null, changed = !AB.ready || (u && u.id) !== (AB.user && AB.user.id);
     AB.user = u;
@@ -42,7 +50,7 @@
     // a sign-in link lands on the page with tokens in the address; tidy the address bar
     if (u && /access_token|refresh_token|[?&]code=/.test(location.hash + location.search))
       history.replaceState(null, "", location.pathname + location.search.replace(/[?&]code=[^&]*/, "").replace(/^&/, "?"));
-    setTimeout(() => subs.forEach((f) => { try { f(u); } catch (e) { console.error(e); } }));
+    setTimeout(() => subs.forEach(notify));
   });
 
   const here = () => location.origin + location.pathname;
@@ -59,9 +67,22 @@
   AB.basilicaMap = async () => { const m = {}; (await AB.basilicas()).forEach((b) => (m[b.id] = b)); return m; };
 
   // ---------- profile ----------
-  AB.profile = async () => cache.prof || (cache.prof = must(await sb.from("profiles").select("id,display_name,created_at").eq("id", AB.user.id).single()));
+  AB.profile = async () => cache.prof || (cache.prof = must(await sb.from("profiles").select("id,display_name").eq("id", AB.user.id).single()));
   AB.rename = async (name) => { must(await sb.from("profiles").update({ display_name: name.trim() }).eq("id", AB.user.id)); cache.prof = null; };
   AB.isAdmin = async () => (cache.admin != null ? cache.admin : (cache.admin = !!must(await sb.rpc("is_admin"))));
+
+  // ---------- gallery membership ----------
+  // { access, kind: "trial" | "subscriber" | "admin" | "expired", joined, free_until, paid_through, email, welcomed_at }
+  // The members' gallery is free for 3 months from sign-up, then for subscribers. The database enforces it;
+  // this is only so the pages can explain where a member stands.
+  AB.SUBSCRIBE_URL = C.subscribeUrl || "https://buymeacoffee.com/americanbasilicas/membership";
+  AB.membership = async (force) => {
+    if (cache.mem && !force) return cache.mem;
+    const rows = must(await sb.rpc("membership"));
+    return (cache.mem = (rows && rows[0]) || { access: false, kind: "expired" });
+  };
+  AB.markWelcomed = async () => { must(await sb.rpc("mark_welcomed")); if (cache.mem) cache.mem.welcomed_at = new Date().toISOString(); };
+  AB.daysLeft = (ts) => Math.max(0, Math.ceil((new Date(ts) - Date.now()) / 86400000));
 
   // ---------- visits ----------
   AB.visits = async (force) => {
@@ -84,7 +105,9 @@
   };
 
   // ---------- photos ----------
-  const PHOTO_COLS = "id,user_id,basilica_id,storage_path,thumb_path,caption,width,height,status,created_at";
+  const PHOTO_COLS = "id,user_id,basilica_id,storage_path,thumb_path,caption,width,height,status,like_count,created_at";
+  // the uploader's display name; the likes tables also link photos/reviews to profiles, so name the foreign key
+  const PHOTO_BY = ",profiles!photos_user_id_fkey(display_name)", REVIEW_BY = ",profiles!reviews_user_id_fkey(display_name)";
   AB.myPhotos = async (bid) => {
     let q = sb.from("photos").select(PHOTO_COLS).eq("user_id", AB.user.id).order("created_at");
     if (bid) q = q.eq("basilica_id", bid);
@@ -134,19 +157,58 @@
     must(await sb.from("photos").delete().eq("id", p.id));
   };
 
-  // ---------- members' gallery ----------
-  AB.gallery = async ({ basilica, before, limit } = {}) => {
-    let q = sb.from("photos").select(PHOTO_COLS + ",profiles(display_name)").eq("status", "approved")
-      .order("created_at", { ascending: false }).limit(limit || 24);
-    if (basilica) q = q.eq("basilica_id", basilica);
-    if (before) q = q.lt("created_at", before);
-    return must(await q);
+  // ---------- members' gallery: photos and reviews by basilica, most liked or latest ----------
+  const sorted = (q, sort) => sort === "latest"
+    ? q.order("created_at", { ascending: false }).order("id")
+    : q.order("like_count", { ascending: false }).order("created_at", { ascending: false }).order("id");
+  AB.photosFor = async (bid, { sort, offset, limit } = {}) => {
+    const from = offset || 0, n = limit || 24;
+    return must(await sorted(sb.from("photos").select(PHOTO_COLS + PHOTO_BY)
+      .eq("status", "approved").eq("basilica_id", bid), sort).range(from, from + n - 1));
   };
-  AB.galleryCounts = async () => { const m = {}; must(await sb.rpc("gallery_counts")).forEach((r) => (m[r.basilica_id] = Number(r.n))); return m; };
+  const REVIEW_COLS = "id,user_id,basilica_id,body,status,like_count,created_at,updated_at";
+  AB.reviewsFor = async (bid, { sort, offset, limit } = {}) => {
+    const from = offset || 0, n = limit || 20;
+    return must(await sorted(sb.from("reviews").select(REVIEW_COLS + REVIEW_BY)
+      .eq("status", "approved").eq("basilica_id", bid), sort).range(from, from + n - 1));
+  };
+  // { basilica_id: { photos, reviews } } for every basilica; open to all members, so the map can show what's there
+  AB.galleryCounts = async () => {
+    const m = {};
+    must(await sb.rpc("gallery_counts")).forEach((r) => (m[r.basilica_id] = { photos: Number(r.photos) || 0, reviews: Number(r.reviews) || 0 }));
+    return m;
+  };
 
-  // ---------- review queue (admins) ----------
-  AB.pending = async () => must(await sb.from("photos").select(PHOTO_COLS + ",profiles(display_name)").eq("status", "pending").order("created_at").limit(200));
-  AB.review = async (id, decision) => must(await sb.rpc("review_photo", { photo_id: id, decision }));
+  // likes: kind is "photo" or "review"
+  const LIKES = { photo: ["photo_likes", "photo_id"], review: ["review_likes", "review_id"] };
+  AB.myLikes = async (kind, ids) => {
+    const [t, col] = LIKES[kind], out = new Set();
+    for (let i = 0; i < ids.length; i += 100) must(await sb.from(t).select(col).eq("user_id", AB.user.id).in(col, ids.slice(i, i + 100))).forEach((r) => out.add(r[col]));
+    return out;
+  };
+  AB.like = async (kind, id) => { const [t, col] = LIKES[kind]; must(await sb.from(t).insert({ [col]: id })); };
+  AB.unlike = async (kind, id) => { const [t, col] = LIKES[kind]; must(await sb.from(t).delete().eq("user_id", AB.user.id).eq(col, id)); };
+
+  // the member's own review of a basilica (one each); writing one needs a logged visit with at least one photo
+  AB.myReview = async (bid) => must(await sb.from("reviews").select(REVIEW_COLS).eq("user_id", AB.user.id).eq("basilica_id", bid).maybeSingle());
+  AB.myReviews = async () => must(await sb.from("reviews").select(REVIEW_COLS).eq("user_id", AB.user.id));
+  AB.saveReview = async (bid, body, id) => {
+    body = String(body || "").trim();
+    if (body.length < 20) throw new Error("Write at least 20 characters.");
+    if (body.length > 2000) throw new Error("Keep it under 2,000 characters.");
+    const q = id ? sb.from("reviews").update({ body }).eq("id", id) : sb.from("reviews").insert({ basilica_id: bid, body });
+    try { return must(await q.select(REVIEW_COLS).single()); }
+    catch (e) { throw /row-level security|violates/.test(e.message) ? new Error("Add at least one photo from your visit first, then you can leave a review.") : e; }
+  };
+  AB.deleteReview = async (id) => must(await sb.from("reviews").delete().eq("id", id));
+
+  // ---------- moderation and memberships (admins) ----------
+  AB.pending = async () => must(await sb.from("photos").select(PHOTO_COLS + PHOTO_BY).eq("status", "pending").order("created_at").limit(200));
+  AB.pendingReviews = async () => must(await sb.from("reviews").select(REVIEW_COLS + REVIEW_BY).eq("status", "pending").order("updated_at").limit(200));
+  AB.moderate = async (kind, id, decision) => must(await sb.rpc("moderate", { kind, item_id: id, decision }));
+  AB.review = (id, decision) => AB.moderate("photo", id, decision);
+  AB.grantAccess = async (email, months, why) => must(await sb.rpc("admin_grant_access", { member_email: email, months: +months, why: why || null }));
+  AB.subscriptions = async () => must(await sb.rpc("admin_subscriptions"));
 
   // ---------- server functions: purchase history, account deletion ----------
   async function fn(action) {

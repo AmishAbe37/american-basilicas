@@ -1,4 +1,5 @@
-/* Shared page furniture for the member pages: header band, nav, sign-in card, lightbox. */
+/* Shared page furniture for the member pages: header band, nav, sign-in card, welcome message,
+   gallery-membership wording, like buttons, lightbox. Also loaded on the map page. */
 (function () {
   "use strict";
   const AB = window.AB, E = AB.esc;
@@ -13,7 +14,7 @@
       '<a href="' + AB.page("") + '">&larr; The map</a>' +
       '<a href="' + AB.page("account.html") + '" data-k="account">My pilgrimage</a>' +
       '<a href="' + AB.page("gallery.html") + '" data-k="gallery">Members&rsquo; gallery</a>' +
-      '<a href="' + AB.page("review.html") + '" data-k="review" hidden>Review photos</a>' +
+      '<a href="' + AB.page("review.html") + '" data-k="review" hidden>Review queue</a>' +
       '<span class="who" hidden></span></div></nav>';
     document.body.prepend(top);
     const cur = top.querySelector('[data-k="' + active + '"]'); if (cur) cur.setAttribute("aria-current", "page");
@@ -40,7 +41,9 @@
   AB.signinForm = function (el, { lead } = {}) {
     el.innerHTML =
       '<div class="signin"><h3>Sign in or create your account</h3>' +
-      '<p class="hint" style="margin:0 0 16px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos from other members.") + "</p>" +
+      '<p class="hint" style="margin:0 0 12px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos and reviews from other members.") + "</p>" +
+      '<p class="perk"><b>New accounts get the members’ gallery free for three months.</b> After that, the gallery is for subscribers. ' +
+      "Your own map, visits and photos are always free.</p>" +
       '<button class="btn gbtn" data-g type="button">' + GOOGLE + "Continue with Google</button>" +
       '<div class="or">or</div>' +
       '<form data-f1><label class="fld" for="sie">Email</label><input id="sie" type="email" autocomplete="email" required placeholder="you@example.com">' +
@@ -70,7 +73,100 @@
     };
   };
 
-  /* Lightbox over a list of {thumb, full(path), caption(html)}; full-size links are fetched on demand. */
+  /* ---------- gallery membership: one wording everywhere ---------- */
+  // returns { tag, html } describing where the member stands; m comes from AB.membership()
+  AB.memberLine = function (m) {
+    const until = (t) => "<b>" + E(AB.fmtDate(t)) + "</b>";
+    if (m.kind === "admin") return { tag: "Administrator", html: "You have full access to the members’ gallery as a site administrator." };
+    if (m.kind === "subscriber") return { tag: "Subscriber", html: "Thank you for subscribing. Your gallery access runs through " + until(m.paid_through) + " and renews with your membership." };
+    if (m.kind === "trial") {
+      const d = AB.daysLeft(m.free_until);
+      return { tag: "Free for " + d + " more day" + (d === 1 ? "" : "s"), html: "The members’ gallery is included free until " + until(m.free_until) +
+        " — your first three months. After that, it’s for subscribers. Your own map, visits and photos stay free." };
+    }
+    return { tag: "Subscribers only", html: "Your free three months of the members’ gallery ended on " + until(m.free_until) +
+      ". Subscribe to see members’ photos and reviews again. Your own map, visits and photos stay free." };
+  };
+  AB.subscribeButtons = (m) =>
+    '<a class="btn solid" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Become a subscriber</a>' +
+    '<button class="btn" type="button" data-recheck>Already subscribed? Check again</button>';
+  AB.subscribeNote = (m) => '<p class="hint">Subscribe with the same email you sign in with' + (m && m.email ? " (<b>" + E(m.email) + "</b>)" : "") +
+    " so we can match your membership. It can take a minute to show up here.</p>";
+  AB.wireRecheck = (el, after) => {
+    const b = el.querySelector("[data-recheck]"); if (!b) return;
+    b.onclick = async () => {
+      b.disabled = true; b.textContent = "Checking…";
+      try {
+        const m = await AB.membership(true);
+        if (m.access) { after(m); return; }
+        b.textContent = "Not found yet — try again in a minute";
+      } catch (e) { b.textContent = "Couldn’t check: " + e.message; }
+      setTimeout(() => { b.disabled = false; b.textContent = "Already subscribed? Check again"; }, 4000);
+    };
+  };
+
+  /* ---------- welcome message, once, the first time a member signs in ---------- */
+  async function welcome() {
+    let m, p;
+    try { [m, p] = await Promise.all([AB.membership(), AB.profile()]); } catch (e) { return; }
+    if (!m || m.welcomed_at || document.querySelector(".mb-welcome")) return;
+    const first = p && p.display_name && p.display_name !== "Pilgrim" ? ", " + E(p.display_name) : "";
+    const gal = m.kind === "trial"
+      ? "<h3>The members’ gallery — free until " + E(AB.fmtDate(m.free_until)) + "</h3><p>Browse every member’s photos and reviews basilica by basilica on the gallery map, " +
+        "like your favourites, and sort by most liked or latest. <b>It’s included free for your first three months.</b> After " + E(AB.fmtDate(m.free_until)) +
+        ", the gallery is for paid subscribers.</p>"
+      : "<h3>The members’ gallery</h3><p>" + AB.memberLine(m).html + "</p>";
+    const el = document.createElement("div");
+    el.className = "mb-modal mb-welcome"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "mbwT");
+    el.innerHTML = '<div class="mb-card"><div class="mb-cardbar"><p class="kicker">American Basilicas · Members</p><h2 id="mbwT">Welcome' + first + "!</h2></div>" +
+      '<div class="mb-cardbody"><p style="margin-top:0">Your account is ready. Here’s what it includes:</p>' +
+      "<h3>Always free</h3><p>Your own edition of the map: check off the basilicas you’ve visited, record the date and a private note, and keep your photos with each visit.</p>" +
+      gal +
+      (m.kind === "trial" ? '<p class="hint">If you subscribe later, use the same email you sign in with' + (m.email ? " (<b>" + E(m.email) + "</b>)" : "") + ".</p>" : "") +
+      '<div class="btnrow" style="margin-top:18px"><a class="btn solid" href="' + AB.page("account.html") + '" data-go>Start my pilgrimage</a>' +
+      '<a class="btn" href="' + AB.page("gallery.html") + '" data-go>Open the gallery map</a></div></div>' +
+      '<button class="x" type="button" aria-label="Close">&times;</button></div>';
+    const done = () => { el.remove(); document.removeEventListener("keydown", key, true); AB.markWelcomed().catch(() => {}); };
+    const key = (e) => { if (e.key === "Escape") { e.stopPropagation(); done(); } };
+    el.querySelector(".x").onclick = done;
+    el.addEventListener("click", (e) => { if (e.target === el) done(); });
+    el.querySelectorAll("[data-go]").forEach((a) => (a.onclick = (e) => {
+      const here = location.pathname.split("/").pop() === a.getAttribute("href").split("/").pop();
+      done(); if (here) e.preventDefault();
+    }));
+    document.addEventListener("keydown", key, true);
+    document.body.appendChild(el); el.querySelector(".btn").focus();
+  }
+  if (AB.enabled) AB.onAuth((u) => { if (u) welcome(); });
+
+  /* ---------- like button (photos and reviews) ---------- */
+  const HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.6 1.1 4.4 2.4h1.6c.8-1.3 2.3-2.4 4.4-2.4 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>';
+  AB.likeButton = function ({ kind, id, count, liked, own, locked, onChange }) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "like";
+    const draw = () => {
+      b.setAttribute("aria-pressed", String(!!liked));
+      b.innerHTML = HEART + "<span>" + count + "</span>";
+      b.title = own ? "Likes on your " + kind : locked ? "Subscribe to like" : liked ? "Unlike" : "Like";
+      b.setAttribute("aria-label", (own ? "Likes on your " + kind : (liked ? "Unlike" : "Like") + " this " + kind) + ": " + count);
+    };
+    if (own || locked) b.disabled = true;
+    b.onclick = async (e) => {
+      e.stopPropagation();
+      if (b.dataset.busy) return; b.dataset.busy = "1";
+      liked = !liked; count += liked ? 1 : -1; draw();
+      try { await (liked ? AB.like(kind, id) : AB.unlike(kind, id)); if (onChange) onChange(liked, count); }
+      catch (err) { liked = !liked; count += liked ? 1 : -1; draw(); AB.toast("Couldn’t save your like: " + err.message); }
+      delete b.dataset.busy;
+    };
+    draw(); return b;
+  };
+  AB.toast = function (text) {
+    const t = document.createElement("div"); t.className = "mb-toast"; t.setAttribute("role", "status"); t.textContent = text;
+    document.body.appendChild(t); setTimeout(() => t.remove(), 4500);
+  };
+
+  /* Lightbox over a list of {thumb, full(path), caption(html), render(captionEl)}; full-size links are fetched on demand. */
   AB.lightbox = function (items, start) {
     let i = start, el = document.createElement("div");
     el.className = "lb"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true");
@@ -79,6 +175,7 @@
     const img = el.querySelector("img"), cap = el.querySelector("figcaption");
     const show = async () => {
       const it = items[i]; img.src = it.thumb || ""; img.alt = it.alt || ""; cap.innerHTML = it.caption || "";
+      if (it.render) it.render(cap);
       if (it.full) { try { const u = await it.full(); if (items[i] === it && u) img.src = u; } catch (e) {} }
     };
     const close = () => { el.remove(); window.removeEventListener("keydown", key, true); document.body.style.overflow = prevOverflow; };

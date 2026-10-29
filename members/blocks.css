@@ -72,3 +72,42 @@ input:focus,select:focus,textarea:focus,.btn:focus-visible,a:focus-visible{outli
 .vb-up{cursor:pointer}
 .vb-ph .grid-ph{margin-top:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 .ph figcaption input{width:100%}
+
+/* sign-in card: the gallery perk */
+.perk{margin:0 0 18px;padding:10px 12px;background:#fbf1d8;border-left:4px solid var(--gold);font-size:13.5px;line-height:1.45;color:#3f3522}
+
+/* welcome message (first sign-in) */
+.mb-modal{position:fixed;inset:0;z-index:120;background:rgba(10,8,4,.62);display:flex;align-items:center;justify-content:center;padding:16px}
+.mb-card{position:relative;background:var(--paper,#f7f2e7);max-width:560px;width:100%;max-height:calc(100svh - 32px);overflow:auto;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.mb-cardbar{background:var(--ink,#000);color:#fff;padding:16px 22px 14px;border-bottom:8px solid transparent;
+  border-image:repeating-linear-gradient(90deg,var(--red,#8f1d1d) 0 22px,var(--gold,#d9a521) 22px 44px) 8}
+.mb-cardbar .kicker{font-size:11px;letter-spacing:.28em;color:#d9c9a0;text-transform:uppercase;font-weight:700;margin:0 0 4px}
+.mb-cardbar h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.mb-cardbody{padding:18px 22px 22px;font-size:15px;line-height:1.5}
+.mb-cardbody h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:16px 0 4px;padding-bottom:3px;border-bottom:2px solid var(--ink,#000)}
+.mb-cardbody p{margin:6px 0}
+.mb-card .x{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+
+/* likes */
+.like{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 10px;border:1.5px solid #cdbb8f;background:#fff;color:#5d523d;
+  font:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:16px}
+.like svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.like[aria-pressed=true]{color:var(--red,#8f1d1d);border-color:var(--red,#8f1d1d);background:#fbeeee}
+.like[aria-pressed=true] svg{fill:currentColor}
+.like:not(:disabled):hover{border-color:var(--red,#8f1d1d);color:var(--red,#8f1d1d)}
+.like:disabled{cursor:default;opacity:.75}
+.lb .like{margin-left:10px;vertical-align:middle;background:rgba(255,255,255,.12);color:#f2ead6;border-color:rgba(255,255,255,.4)}
+.lb .like[aria-pressed=true]{background:#f6e2e0;color:var(--red,#8f1d1d)}
+.mb-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:130;background:#221c14;color:#fff;padding:10px 16px;font-size:14px;max-width:90vw}
+
+/* the member's review, under their visit photos */
+.vb-rv{margin-top:18px}
+.vb-rv:empty{display:none}
+.rv-prompt{border:1.5px solid #e3c97b;background:#fffaf0;padding:14px 16px}
+.rv-prompt h4{margin:0 0 4px;font-size:16px}
+.rv-prompt > p:first-of-type{margin:0 0 12px;font-size:14px;color:#3f3522}
+.rv-prompt textarea{max-width:none}
+.rv-mine{border-top:2px solid var(--ink,#000);padding-top:10px}
+.rv-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rv-likes{font-size:13px;font-weight:700;color:var(--red,#8f1d1d)}
+.rv-body{white-space:pre-wrap;margin:8px 0 10px;font-size:14.5px;max-width:70ch}

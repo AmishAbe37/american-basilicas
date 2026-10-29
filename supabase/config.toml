@@ -1,0 +1,10 @@
+# Supabase CLI settings. Only used if you deploy the server functions with the Supabase CLI
+# (supabase functions deploy ...); deploying from the dashboard, as SETUP.md describes, doesn't need this file.
+project_id = "american-basilicas"
+
+[functions.account]
+verify_jwt = true
+
+[functions.bmc-webhook]
+# Buy Me a Coffee can't send a Supabase login, so the function checks the webhook's signature instead.
+verify_jwt = false

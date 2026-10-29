@@ -58,11 +58,12 @@
   body.appendChild(box);
   async function fill(d) {
     if (!AB.user) {
-      box.innerHTML = '<h3>Been here?</h3><p>Sign in to check off ' + E(d.n) + ', keep your photos from the visit, and see photos from other members.</p>' +
+      box.innerHTML = '<h3>Been here?</h3><p>Sign in to check off ' + E(d.n) + ', keep your photos from the visit, and see members’ photos and reviews.</p>' +
+        '<p class="perk">New accounts get the members’ gallery free for three months.</p>' +
         '<a class="btn solid" href="' + AB.page("account.html#b=" + d.ph) + '">Sign in or create an account</a>';
       return;
     }
-    box.innerHTML = '<h3>Your visit</h3><div class="mb-vb"></div><p class="mb-gal"><a href="' + AB.page("gallery.html#b=" + d.ph) + '">Members’ photos of this basilica</a>' +
+    box.innerHTML = '<h3>Your visit</h3><div class="mb-vb"></div><p class="mb-gal"><a href="' + AB.page("gallery.html#b=" + d.ph) + '">Members’ photos &amp; reviews of this basilica</a>' +
       ' · <a href="' + AB.page("account.html#b=" + d.ph) + '">My pilgrimage</a></p>';
     AB.visitBlock(box.querySelector(".mb-vb"), { id: d.ph, name: d.n }, { onChange: paint });
   }
