@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Members’ Gallery — American Basilicas</title>
+<meta name="description" content="Photos and reviews of the U.S. minor basilicas from American Basilicas members, basilica by basilica on the map.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+<script src="members/visit.js"></script>
+<script src="members/gallery-map.js"></script>
+</head>
+<body>
+<main id="main" aria-live="polite"></main>
+<footer class="mf">Photos and reviews are shared by members and checked before they appear here. They’re visible only to signed-in members with gallery access; please don’t copy them elsewhere without the member’s permission.</footer>
+<script>
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main"), G = window.AB_GMAP;
+  AB.shell({ active: "gallery", title: 'Members’ <span class="thin">Gallery</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+  AB.onAuth((u) => (u ? start() : signin()));
+
+  function signin() {
+    main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Members only</h2><span class="tag">Sign in to see the gallery</span></div><div class="panel-body" id="form"></div></section>';
+    AB.signinForm(document.getElementById("form"), { lead: "The members’ gallery holds photos and reviews from members, basilica by basilica on the map." });
+  }
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  let M = null, BY = {}, COUNTS = {}, VISITS = new Map(), LIST = [];
+  let selState = null, selB = null, tab = "photos", sort = "popular";
+
+  async function start() {
+    main.innerHTML =
+      '<div class="gnote" id="gnote"><span class="spin"></span> Loading…</div>' +
+      '<div class="gwrap">' +
+      '<section class="panel gmapcol" aria-labelledby="gmH"><div class="panel-bar"><h2 id="gmH">Gallery map</h2><span class="tag">Tap a state, then a basilica</span></div>' +
+      '<div class="gmapbox"><svg id="gmap" viewBox="0 0 ' + G.w + " " + G.h + '" role="img" aria-label="Map of the basilicas with members’ photos and reviews"></svg>' +
+      '<button class="btn small greset" type="button" id="greset" hidden>&larr; Whole country</button></div>' +
+      '<div class="glegend"><span class="gkey"><svg viewBox="0 0 100 100" width="12" height="15" aria-hidden="true"><use href="#omb" width="100" height="100"/></svg> Has photos or reviews</span>' +
+      '<span class="gkey none"><svg viewBox="0 0 100 100" width="12" height="15" aria-hidden="true"><use href="#omb" width="100" height="100"/></svg> Nothing shared yet</span>' +
+      '<span class="gtot" id="gtot"></span></div>' +
+      '<div class="gpick"><label class="fld" for="gpick">Or choose a basilica</label><select id="gpick"><option value="">Choose…</option></select></div></section>' +
+      '<section class="panel gside" id="gside" aria-labelledby="gsH"><div class="panel-bar"><h2 id="gsH">Choose a basilica</h2><span class="tag" id="gsT"></span></div><div class="panel-body" id="gsB"></div></section>' +
+      "</div>";
+    try {
+      const [m, bs, counts, vs] = await Promise.all([AB.membership(), AB.basilicas(), AB.galleryCounts(), AB.visits()]);
+      M = m; COUNTS = counts; VISITS = vs; LIST = bs; bs.forEach((b) => (BY[b.id] = b));
+    } catch (e) { document.getElementById("gnote").innerHTML = '<p class="msg err">Couldn’t open the gallery: ' + E(e.message) + "</p>"; return; }
+    note(); drawMap(); fillPick();
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+  }
+
+  const cnt = (id) => COUNTS[id] || { photos: 0, reviews: 0 };
+  const plural = (n, w) => n.toLocaleString() + " " + w + (n === 1 ? "" : "s");
+  const countLine = (c) => plural(c.photos, "photo") + " · " + plural(c.reviews, "review");
+
+  // ---------- membership note ----------
+  function note() {
+    const el = document.getElementById("gnote"), line = AB.memberLine(M);
+    el.className = "gnote " + M.kind;
+    el.innerHTML = '<span class="chip">' + E(line.tag) + "</span><span>" + line.html + "</span>" +
+      (M.kind === "trial" ? '<a class="btn small" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Subscribe</a>' : "") +
+      (M.kind === "expired" ? '<span class="btnrow">' + AB.subscribeButtons(M) + "</span>" + AB.subscribeNote(M) : "");
+    AB.wireRecheck(el, (m) => { M = m; note(); if (selB) openBasilica(selB, false); });
+  }
+
+  // ---------- the map ----------
+  let zoomG, mks = [], view = { k: 1, x: 0, y: 0 }, anim = 0;
+  function drawMap() {
+    const svg = document.getElementById("gmap");
+    const el = (n, a) => { const e = document.createElementNS(svgNS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    zoomG = el("g", { class: "gz" }); svg.appendChild(zoomG);
+    const counts = {};
+    G.markers.forEach((m) => { const c = cnt(m.id); (counts[m.s] = counts[m.s] || { b: 0, items: 0 }); counts[m.s].b++; counts[m.s].items += c.photos + c.reviews; });
+    G.states.forEach((s) => {
+      const c = counts[s.n];
+      const p = el("path", { d: s.d, class: "gst" + (c ? " has" : ""), "data-n": s.n });
+      const t = el("title", {}); t.textContent = s.n + (c ? " — " + plural(c.b, "basilica") : ""); p.appendChild(t);
+      if (c) p.addEventListener("click", () => openState(s.n, true));
+      zoomG.appendChild(p);
+    });
+    zoomG.appendChild(el("path", { d: G.lakes, class: "glake" }));
+    const mg = el("g", { class: "gmk" }); zoomG.appendChild(mg);
+    const ordered = G.markers.slice().sort((a, b) => (cnt(a.id).photos + cnt(a.id).reviews > 0) - (cnt(b.id).photos + cnt(b.id).reviews > 0));
+    ordered.forEach((m) => {
+      const b = BY[m.id]; if (!b) return;
+      const c = cnt(m.id), has = c.photos + c.reviews > 0;
+      const g = el("g", { class: "gm" + (has ? "" : " none"), "data-id": m.id, tabindex: "0", role: "button", "aria-label": b.name + ", " + b.city + ": " + countLine(c) });
+      const t = el("title", {}); t.textContent = b.name + " — " + b.city + "\n" + countLine(c); g.appendChild(t);
+      g.appendChild(el("circle", { r: 8, class: "hit" }));
+      g.appendChild(el("use", { href: "#omb", x: -5.33, y: -8, width: 10.67, height: 16 }));
+      const go = () => { selState = m.s; openBasilica(m.id, true); };
+      g.addEventListener("click", (e) => { e.stopPropagation(); go(); });
+      g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+      mg.appendChild(g); mks.push({ g, m });
+    });
+    const tot = Object.values(COUNTS).reduce((a, c) => ({ photos: a.photos + c.photos, reviews: a.reviews + c.reviews }), { photos: 0, reviews: 0 });
+    document.getElementById("gtot").textContent = countLine(tot) + " shared so far";
+    document.getElementById("greset").onclick = () => { selState = null; selB = null; setHash(""); zoomTo(null); intro(); };
+    window.addEventListener("resize", place);
+    place();
+  }
+  function place() {                         // keep markers about 14 px tall on screen at any zoom
+    const svg = document.getElementById("gmap"); if (!svg) return;
+    const s = (svg.getBoundingClientRect().width || G.w) / G.w, px = s < 0.6 ? 15 : 14, q = px / 16 / s / view.k;
+    zoomG.setAttribute("transform", "translate(" + view.x.toFixed(2) + " " + view.y.toFixed(2) + ") scale(" + view.k.toFixed(4) + ")");
+    mks.forEach(({ g, m }) => g.setAttribute("transform", "translate(" + m.x + " " + m.y + ") scale(" + q.toFixed(4) + ")"));
+  }
+  function zoomTo(stateName) {
+    let to = { k: 1, x: 0, y: 0 };
+    document.querySelectorAll("#gmap .gst").forEach((p) => p.classList.toggle("on", p.dataset.n === stateName));
+    document.getElementById("gmap").classList.toggle("zoomed", !!stateName);
+    if (stateName) {
+      const p = document.querySelector('#gmap .gst[data-n="' + CSS.escape(stateName) + '"]'), bb = p.getBBox();
+      const k = Math.max(1, Math.min(9, 0.82 * Math.min(G.w / Math.max(bb.width, 1), G.h / Math.max(bb.height, 1))));
+      to = { k, x: G.w / 2 - k * (bb.x + bb.width / 2), y: G.h / 2 - k * (bb.y + bb.height / 2) };
+    }
+    document.getElementById("greset").hidden = !stateName;
+    const from = Object.assign({}, view), t0 = performance.now(), dur = matchMedia("(prefers-reduced-motion:reduce)").matches ? 0 : 450;
+    cancelAnimationFrame(anim);
+    const step = (t) => {
+      const f = dur ? Math.min(1, (t - t0) / dur) : 1, e = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+      const lk = Math.log(from.k) + (Math.log(to.k) - Math.log(from.k)) * e;
+      view = { k: Math.exp(lk), x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e };
+      place(); if (f < 1) anim = requestAnimationFrame(step);
+    };
+    anim = requestAnimationFrame(step);
+  }
+  function markSel() { mks.forEach(({ g, m }) => g.classList.toggle("sel", m.id === selB)); }
+
+  function fillPick() {
+    const pick = document.getElementById("gpick"), groups = {};
+    LIST.forEach((b) => (groups[b.state] = groups[b.state] || []).push(b));
+    pick.innerHTML += Object.keys(groups).sort().map((st) => '<optgroup label="' + E(st) + '">' + groups[st].slice().sort((a, b) => a.city.localeCompare(b.city))
+      .map((b) => { const c = cnt(b.id); return '<option value="' + b.id + '">' + E(b.city) + " · " + E(b.name) + " (" + (c.photos + c.reviews) + ")</option>"; }).join("") + "</optgroup>").join("");
+    pick.onchange = () => { if (pick.value) { selState = BY[pick.value].state; openBasilica(pick.value, true); } };
+  }
+
+  // ---------- side panel ----------
+  const side = () => ({ h: document.getElementById("gsH"), t: document.getElementById("gsT"), b: document.getElementById("gsB") });
+  function setHash(h) { history.replaceState(null, "", h ? "#" + h : location.pathname); }
+  function fromHash() {
+    const h = location.hash, b = (h.match(/[#&]b=([a-z0-9-]+)/) || [])[1], s = (h.match(/[#&]s=([^&]+)/) || [])[1], t = (h.match(/[#&]t=(photos|reviews)/) || [])[1];
+    if (t) tab = t;
+    if (b && BY[b]) { selState = BY[b].state; openBasilica(b, false); }
+    else if (s && decodeURIComponent(s) in stateIndex()) openState(decodeURIComponent(s), false);
+    else intro();
+  }
+  function stateIndex() { const o = {}; LIST.forEach((b) => (o[b.state] = (o[b.state] || 0) + 1)); return o; }
+  function scrollSide(go) { if (go && innerWidth < 1000) document.getElementById("gside").scrollIntoView({ behavior: "smooth", block: "start" }); }
+
+  function row(b) {
+    const c = cnt(b.id);
+    return '<li><a href="#b=' + b.id + '" data-b="' + b.id + '"><span class="gl-n"><b>' + E(b.city) + "</b> · " + E(b.name) + (VISITS.has(b.id) ? ' <span class="gl-v" title="You’ve visited">✓</span>' : "") +
+      '</span><span class="gl-c' + (c.photos + c.reviews ? "" : " zero") + '">' + countLine(c) + "</span></a></li>";
+  }
+  function wireRows(el) { el.querySelectorAll("[data-b]").forEach((a) => (a.onclick = (e) => { e.preventDefault(); selState = BY[a.dataset.b].state; openBasilica(a.dataset.b, true); })); }
+
+  function intro() {
+    const S = side(); selB = null; markSel();
+    S.h.textContent = "Choose a basilica"; S.t.textContent = "";
+    const top = LIST.slice().sort((a, b) => (cnt(b.id).photos + cnt(b.id).reviews) - (cnt(a.id).photos + cnt(a.id).reviews)).filter((b) => cnt(b.id).photos + cnt(b.id).reviews).slice(0, 8);
+    S.b.innerHTML = '<p style="margin-top:0">Tap a state on the map to zoom in, then tap a basilica to see what members have shared: photos you can like, and reviews of what they enjoyed. Sort either by <b>most liked</b> or <b>latest</b>.</p>' +
+      (top.length ? '<h3 class="gsub">Most shared so far</h3><ul class="glist">' + top.map(row).join("") + "</ul>"
+        : '<p class="empty">Nothing has been shared yet. Add photos to your visits in <a href="account.html">My pilgrimage</a> and they’ll appear here once approved.</p>');
+    wireRows(S.b);
+  }
+
+  function openState(name, go) {
+    selState = name; selB = null; markSel(); zoomTo(name); setHash("s=" + encodeURIComponent(name));
+    const S = side(), list = LIST.filter((b) => b.state === name).sort((a, b) => a.city.localeCompare(b.city) || a.name.localeCompare(b.name));
+    S.h.textContent = name; S.t.textContent = plural(list.length, "basilica");
+    S.b.innerHTML = '<ul class="glist">' + list.map(row).join("") + "</ul>";
+    wireRows(S.b); scrollSide(go);
+  }
+
+  // ---------- one basilica: photos and reviews ----------
+  let seq = 0;
+  function openBasilica(id, go) {
+    const b = BY[id]; if (!b) return intro();
+    selB = id; markSel();
+    if (!document.querySelector('#gmap .gst.on[data-n="' + CSS.escape(b.state) + '"]')) zoomTo(b.state);
+    setHash("b=" + id + (tab === "reviews" ? "&t=reviews" : ""));
+    document.getElementById("gpick").value = id;
+    const S = side(), c = cnt(id);
+    S.h.textContent = b.name; S.t.textContent = b.city + ", " + b.state;
+    const back = '<p class="gback"><a href="#s=' + encodeURIComponent(b.state) + '" data-st>&larr; ' + E(b.state) + "</a> · " +
+      '<a href="index.html#b=' + id + '">On the main map</a>' + (VISITS.has(id) ? ' · <a href="account.html#b=' + id + '">Your visit</a>' : "") + "</p>";
+    if (!M.access) {
+      S.b.innerHTML = back + '<div class="paywall"><p class="pw-n">' + (c.photos + c.reviews
+        ? "<b>" + countLine(c) + "</b> of " + E(b.name) + " are waiting in the members’ gallery."
+        : "No one has shared photos or reviews of " + E(b.name) + " yet.") + "</p>" +
+        "<p>" + AB.memberLine(M).html + "</p>" +
+        '<div class="btnrow">' + AB.subscribeButtons(M) + "</div>" + AB.subscribeNote(M) + "</div>";
+      AB.wireRecheck(S.b, (m) => { M = m; note(); openBasilica(id, false); });
+    } else {
+      S.b.innerHTML = back +
+        '<div class="gtabs" role="tablist"><button role="tab" type="button" data-tab="photos" aria-selected="' + (tab === "photos") + '">Photos <span>' + c.photos + "</span></button>" +
+        '<button role="tab" type="button" data-tab="reviews" aria-selected="' + (tab === "reviews") + '">Reviews <span>' + c.reviews + "</span></button></div>" +
+        '<div class="gsort" role="group" aria-label="Sort"><span>Sort</span><button type="button" data-sort="popular" aria-pressed="' + (sort === "popular") + '">Most liked</button>' +
+        '<button type="button" data-sort="latest" aria-pressed="' + (sort === "latest") + '">Latest</button></div>' +
+        '<div id="gmine"></div><div id="gitems"></div><div class="btnrow" style="margin-top:14px"><button class="btn small" type="button" id="gmore" hidden>Load more</button></div><p class="msg" id="gmsg" role="status"></p>';
+      S.b.querySelectorAll("[data-tab]").forEach((t) => (t.onclick = () => { tab = t.dataset.tab; openBasilica(id, false); }));
+      S.b.querySelectorAll("[data-sort]").forEach((t) => (t.onclick = () => { sort = t.dataset.sort; openBasilica(id, false); }));
+      load(b, true);
+    }
+    S.b.querySelector("[data-st]").onclick = (e) => { e.preventDefault(); openState(b.state, false); };
+    scrollSide(go);
+  }
+
+  const PAGE = { photos: 24, reviews: 10 };
+  let items = [], urls = {}, liked = new Set(), offset = 0, busy = false;
+  async function load(b, reset) {
+    if (busy && !reset) return;
+    const my = reset ? ++seq : seq; busy = true;
+    const box = document.getElementById("gitems"), more = document.getElementById("gmore"), msg = document.getElementById("gmsg");
+    if (reset) {
+      items = []; offset = 0; liked = new Set(); box.className = tab === "photos" ? "grid-ph gph" : "grv"; box.innerHTML = "";
+      more.onclick = () => load(b, false);
+      if (tab === "reviews") mine(b);
+    }
+    msg.className = "msg"; msg.innerHTML = '<span class="spin"></span> Loading…';
+    try {
+      const kind = tab === "photos" ? "photo" : "review";
+      const batch = await (tab === "photos" ? AB.photosFor : AB.reviewsFor)(b.id, { sort, offset, limit: PAGE[tab] });
+      const fresh = batch.filter((x) => !items.some((y) => y.id === x.id));
+      const [u, l] = await Promise.all([
+        tab === "photos" ? AB.urls(fresh.map((p) => p.thumb_path)) : Promise.resolve({}),
+        AB.myLikes(kind, fresh.map((x) => x.id))
+      ]);
+      if (my !== seq) return;
+      Object.assign(urls, u); l.forEach((x) => liked.add(x));
+      offset += batch.length;
+      const start = items.length; items = items.concat(fresh);
+      fresh.forEach((x, k) => box.appendChild(tab === "photos" ? photoCard(b, x, start + k) : reviewCard(x)));
+      more.hidden = batch.length < PAGE[tab];
+      msg.className = items.length ? "msg" : "msg empty";
+      msg.textContent = items.length ? "" : tab === "photos"
+        ? "No member photos of this basilica yet." + (VISITS.has(b.id) ? " Add yours from your visit." : " Been here? Check it off and add yours.")
+        : "No reviews of this basilica yet.";
+    } catch (e) { if (my === seq) { msg.className = "msg err"; msg.textContent = e.message; } }
+    if (my === seq) busy = false;
+  }
+
+  const who = (x) => (x.profiles && x.profiles.display_name) || "A member";
+  const own = (x) => x.user_id === AB.user.id;
+  function heart(kind, x, after) {
+    return AB.likeButton({ kind, id: x.id, count: x.like_count, liked: liked.has(x.id), own: own(x),
+      onChange: (on, n) => { x.like_count = n; if (on) liked.add(x.id); else liked.delete(x.id); if (after) after(); } });
+  }
+  function photoCard(b, p, i) {
+    const f = document.createElement("figure"); f.className = "ph"; f.dataset.id = p.id;
+    f.innerHTML = '<button class="open" type="button" aria-label="Open photo by ' + E(who(p)) + '"><img loading="lazy" src="' + E(urls[p.thumb_path] || "") + '" alt="' + E(p.caption || b.name) + '"></button>' +
+      '<figcaption><div class="gph-meta"><span>by <b>' + E(who(p)) + "</b><br>" + E(AB.fmtDate(p.created_at)) + "</span></div>" +
+      (p.caption ? '<p class="gph-cap">' + E(p.caption) + "</p>" : "") + "</figcaption>";
+    const slot = () => {                 // (re)draw this card's like button; likes made in the lightbox redraw it too
+      const old = f.querySelector(".like");
+      const nb = heart("photo", p, () => { const lb = document.querySelector(".lb .like"); if (lb && lb.dataset.id === p.id) lb.replaceWith(lbHeart(p)); });
+      if (old) old.replaceWith(nb); else f.querySelector(".gph-meta").appendChild(nb);
+    };
+    slot();
+    f._slot = slot;
+    f.querySelector(".open").onclick = () => AB.lightbox(items.map((x) => ({
+      thumb: urls[x.thumb_path], alt: x.caption || b.name,
+      full: async () => (await AB.urls([x.storage_path]))[x.storage_path],
+      caption: "<b>" + E(b.name) + "</b> — photo by " + E(who(x)) + (x.caption ? "<br>" + E(x.caption) : ""),
+      render: (cap) => cap.appendChild(lbHeart(x))
+    })), i);
+    return f;
+  }
+  function lbHeart(x) {
+    const btn = heart("photo", x, () => { const f = document.querySelector('.gph .ph[data-id="' + x.id + '"]'); if (f && f._slot) f._slot(); });
+    btn.dataset.id = x.id; return btn;
+  }
+  function reviewCard(r) {
+    const a = document.createElement("article"); a.className = "rv";
+    a.innerHTML = '<header><b>' + E(who(r)) + "</b><span>" + E(AB.fmtDate(r.created_at)) + (r.updated_at && new Date(r.updated_at) - new Date(r.created_at) > 60000 ? " · edited" : "") + "</span></header>" +
+      '<p class="rv-body">' + E(r.body) + "</p><footer></footer>";
+    a.querySelector("footer").appendChild(heart("review", r));
+    return a;
+  }
+  async function mine(b) {               // the member's own review: prompt only after a logged visit with photos
+    const el = document.getElementById("gmine");
+    if (!VISITS.has(b.id)) {
+      el.innerHTML = '<p class="hint gmine-h">Reviews come from members who’ve logged a visit with photos. Been here? <a href="account.html#b=' + b.id + '">Add your visit</a>.</p>';
+      return;
+    }
+    let n = 0; try { n = (await AB.myPhotos(b.id)).length; } catch (e) {}
+    el.className = "gmine";
+    AB.reviewBlock(el, b, { photos: n, ineligible: '<p class="hint gmine-h">Add a photo from your visit in <a href="account.html#b=' + b.id + '">My pilgrimage</a> to leave a review.</p>' });
+  }
+})();
+</script>
+</body>
+</html>

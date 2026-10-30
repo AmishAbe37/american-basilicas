@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Queue — American Basilicas</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+</head>
+<body>
+<main id="main" aria-live="polite"></main>
+<footer class="mf">Approve puts a photo or review in the members’ gallery. Not shared keeps it with the member only. Delete removes it for good (use for anything inappropriate). Memberships: Buy Me a Coffee subscribers appear automatically; grant access by hand for gifts and fixes.</footer>
+<script>
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main");
+  AB.shell({ active: "review", title: 'Review <span class="thin">Queue</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+  AB.onAuth(async (u) => {
+    if (!u) {
+      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Sign in</h2></div><div class="panel-body" id="form"></div></section>';
+      return AB.signinForm(document.getElementById("form"), { lead: "For site administrators." });
+    }
+    if (!(await AB.isAdmin().catch(() => false))) {
+      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Not available</h2></div><div class="panel-body"><p>This page is for site administrators.</p></div></section>';
+      return;
+    }
+    main.innerHTML = '<div class="gtabs rtabs" role="tablist"><button role="tab" type="button" data-t="photos">Photos <span id="nP">…</span></button>' +
+      '<button role="tab" type="button" data-t="reviews">Reviews <span id="nR">…</span></button><button role="tab" type="button" data-t="members">Memberships</button></div><div id="pane"></div>';
+    main.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => show(b.dataset.t)));
+    BY = await AB.basilicaMap().catch(() => ({}));
+    AB.pending().then((l) => (document.getElementById("nP").textContent = l.length)).catch(() => {});
+    AB.pendingReviews().then((l) => (document.getElementById("nR").textContent = l.length)).catch(() => {});
+    show((location.hash.match(/^#(photos|reviews|members)$/) || [])[1] || "photos");
+  });
+
+  let BY = {};
+  function show(t) {
+    history.replaceState(null, "", "#" + t);
+    main.querySelectorAll("[data-t]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.t === t)));
+    ({ photos, reviews, members })[t]();
+  }
+  const where = (id) => { const b = BY[id] || { name: id, city: "", state: "" }; return b; };
+  const shell = (title) => {
+    document.getElementById("pane").innerHTML = '<section class="panel"><div class="panel-bar"><h2>' + title + '</h2><span class="tag" id="cnt"></span></div><div class="panel-body"><div class="rq" id="rq"></div><p class="msg" id="rmsg"></p></div></section>';
+    return { rq: document.getElementById("rq"), msg: document.getElementById("rmsg") };
+  };
+  function wire(rq, list, kind, label, del) {
+    const count = () => {
+      const n = rq.querySelectorAll(".ritem").length;
+      document.getElementById("cnt").textContent = n + " " + label + (n === 1 ? "" : "s");
+      document.getElementById(kind === "photo" ? "nP" : "nR").textContent = n;
+      if (!n) rq.innerHTML = '<p class="empty">Nothing waiting. 🎉</p>';
+    };
+    count();
+    rq.querySelectorAll(".ritem").forEach((row) => row.querySelectorAll("[data-a]").forEach((btn) => (btn.onclick = async () => {
+      const x = list[+row.dataset.i], a = btn.dataset.a, m = row.querySelector(".msg");
+      if (a === "delete" && !confirm("Delete this " + label + " permanently?")) return;
+      row.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      try {
+        if (a === "delete") await del(x); else await AB.moderate(kind, x.id, a);
+        row.remove(); count();
+      } catch (e) { row.querySelectorAll("button").forEach((b) => (b.disabled = false)); m.className = "msg err"; m.textContent = e.message; }
+    })));
+  }
+  const BTNS = '<div class="btnrow"><button class="btn solid" data-a="approved">Approve</button><button class="btn" data-a="rejected">Not shared</button><button class="btn danger" data-a="delete">Delete</button></div><p class="msg" role="status"></p>';
+
+  async function photos() {
+    const { rq, msg } = shell("Photos waiting for review");
+    let list;
+    try { list = await AB.pending(); } catch (e) { msg.className = "msg err"; msg.textContent = e.message; return; }
+    const urls = list.length ? await AB.urls(list.map((p) => p.storage_path), 7200) : {};
+    rq.innerHTML = list.map((p, i) => {
+      const b = where(p.basilica_id);
+      return '<div class="ritem" data-i="' + i + '"><a href="' + E(urls[p.storage_path] || "") + '" target="_blank" rel="noopener"><img loading="lazy" src="' + E(urls[p.storage_path] || "") + '" alt=""></a>' +
+        "<div><h3>" + E(b.name) + '</h3><p class="hint" style="margin:0 0 8px">' + E(b.city) + ", " + E(b.state) + " · by <b>" + E((p.profiles && p.profiles.display_name) || "?") + "</b> · " +
+        E(AB.fmtDate(p.created_at)) + " · " + (p.width || "?") + "×" + (p.height || "?") + "</p>" +
+        (p.caption ? '<p style="margin:0 0 10px">“' + E(p.caption) + "”</p>" : '<p class="empty" style="margin:0 0 10px">No caption</p>') + BTNS + "</div></div>";
+    }).join("");
+    wire(rq, list, "photo", "photo", (p) => AB.deletePhoto(p));
+  }
+
+  async function reviews() {
+    const { rq, msg } = shell("Reviews waiting for review");
+    let list;
+    try { list = await AB.pendingReviews(); } catch (e) { msg.className = "msg err"; msg.textContent = e.message; return; }
+    rq.innerHTML = list.map((r, i) => {
+      const b = where(r.basilica_id), edited = new Date(r.updated_at) - new Date(r.created_at) > 60000;
+      return '<div class="ritem rrev" data-i="' + i + '"><div><h3>' + E(b.name) + '</h3><p class="hint" style="margin:0 0 8px">' + E(b.city) + ", " + E(b.state) + " · by <b>" +
+        E((r.profiles && r.profiles.display_name) || "?") + "</b> · " + E(AB.fmtDate(r.updated_at)) + (edited ? " · edited" : "") + "</p>" +
+        '<p class="rv-body" style="background:#fff;border:1px solid #d9cba6;padding:10px 12px">' + E(r.body) + "</p>" + BTNS + "</div></div>";
+    }).join("");
+    wire(rq, list, "review", "review", (r) => AB.deleteReview(r.id));
+  }
+
+  async function members() {
+    document.getElementById("pane").innerHTML =
+      '<section class="panel"><div class="panel-bar"><h2>Give gallery access</h2><span class="tag">Gifts · helpers · fixes</span></div><div class="panel-body">' +
+      '<form id="gf" class="grant"><div><label class="fld" for="ge">Member’s email</label><input id="ge" type="email" required placeholder="name@example.com"></div>' +
+      '<div><label class="fld" for="gm">How long</label><select id="gm"><option value="1">1 month</option><option value="3">3 months</option><option value="6">6 months</option><option value="12" selected>12 months</option><option value="120">10 years</option></select></div>' +
+      '<div style="flex-basis:100%"><label class="fld" for="gw">Note (only you see this)</label><input id="gw" type="text" maxlength="200" placeholder="e.g. Christmas gift, parish photographer"></div>' +
+      '<div class="btnrow"><button class="btn solid" type="submit">Give access</button></div></form>' +
+      '<p class="hint">Added on top of any access they already have. It works whether or not they’ve signed up yet; it’s matched by email.</p><p class="msg" id="gmsg" role="status"></p></div></section>' +
+      '<section class="panel"><div class="panel-bar"><h2>Memberships</h2><span class="tag" id="scnt"></span></div><div class="panel-body"><div id="slist"><p><span class="spin"></span> Loading…</p></div>' +
+      '<p class="hint">Members in their free first three months aren’t listed here; only subscribers and access you’ve given.</p></div></section>';
+    const f = document.getElementById("gf"), m = document.getElementById("gmsg");
+    f.onsubmit = async (e) => {
+      e.preventDefault(); m.className = "msg"; m.textContent = "";
+      try {
+        const until = await AB.grantAccess(document.getElementById("ge").value, document.getElementById("gm").value, document.getElementById("gw").value.trim());
+        m.className = "msg ok"; m.textContent = "Done — " + document.getElementById("ge").value.trim() + " has gallery access through " + AB.fmtDate(until) + ".";
+        f.reset(); document.getElementById("gm").value = "12"; list();
+      } catch (err) { m.className = "msg err"; m.textContent = err.message; }
+    };
+    list();
+  }
+  async function list() {
+    const box = document.getElementById("slist");
+    let rows;
+    try { rows = await AB.subscriptions(); } catch (e) { box.innerHTML = '<p class="msg err">' + E(e.message) + "</p>"; return; }
+    document.getElementById("scnt").textContent = rows.filter((r) => new Date(r.paid_through) > Date.now()).length + " active";
+    if (!rows.length) { box.innerHTML = '<p class="empty">No subscribers yet.</p>'; return; }
+    const label = (r) => r.source === "manual" ? "Given by you" : ({ "membership.started": "Subscribed", "membership.updated": "Renewed / changed", "membership.cancelled": "Cancelled", "membership.paused": "Paused" })[r.status] || r.status || "";
+    box.innerHTML = '<div class="tbl"><table><thead><tr><th>Email</th><th>Member</th><th>Source</th><th>Level</th><th>Access through</th><th>Note</th></tr></thead><tbody>' +
+      rows.map((r) => { const on = r.paid_through && new Date(r.paid_through) > Date.now();
+        return "<tr" + (on ? "" : ' class="off"') + "><td>" + E(r.email) + "</td><td>" + E(r.member || "— not signed up") + "</td><td>" + E(label(r)) + "</td><td>" + E(r.level || "") +
+          "</td><td>" + (r.paid_through ? E(AB.fmtDate(r.paid_through)) + (on ? "" : " (ended)") : "—") + "</td><td>" + E(r.note || "") + "</td></tr>"; }).join("") +
+      "</tbody></table></div>";
+  }
+})();
+</script>
+</body>
+</html>

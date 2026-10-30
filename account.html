@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Pilgrimage — American Basilicas</title>
+<meta name="description" content="Your American Basilicas account: check off the minor basilicas you've visited, keep your photos with each visit, browse the members' gallery and see your orders.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+<script src="members/visit.js"></script>
+<script src="members/gallery-map.js"></script>
+</head>
+<body>
+<main id="main" aria-live="polite"></main>
+<footer class="mf">American Basilicas · <a href="index.html">The map</a> · <a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a>
+  · Your visits, notes and photos are private to you unless a photo is approved for the members’ gallery.</footer>
+<script>
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main");
+  AB.shell({ active: "account", title: 'My <span class="thin">Pilgrimage</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+  AB.onAuth((u) => (u ? member() : signin()));
+
+  function panel(id, title, tag, body) {
+    return '<section class="panel" id="' + id + '" aria-labelledby="' + id + 'H"><div class="panel-bar"><h2 id="' + id + 'H">' + title +
+      "</h2>" + (tag ? '<span class="tag">' + tag + "</span>" : "") + '</div><div class="panel-body">' + (body || "") + "</div></section>";
+  }
+
+  function signin() {
+    main.innerHTML = panel("in", "Sign in", "Members", '<div id="form"></div>');
+    AB.signinForm(document.getElementById("form"));
+  }
+
+  let B = [], BY = {}, sel = null;
+  async function member() {
+    main.innerHTML =
+      '<nav class="amenu" aria-label="On this page"><div class="in"><a href="#prog">Progress</a><a class="gal" href="gallery.html">Members’ gallery &rarr;</a>' +
+      '<a href="#list">Checklist</a><a href="#visit">Visit</a><a href="#near">Near you</a><a href="#orders">Orders</a><a href="#acct">Account</a></div></nav>' +
+      panel("prog", "Your pilgrimage", "Progress", '<p><span class="spin"></span> Loading…</p>') +
+      panel("gal", "Members’ gallery", "", '<p><span class="spin"></span> Loading…</p>') +
+      panel("list", "Checklist", "All 94 minor basilicas", '<p class="hint" style="margin:0 0 14px">Tick a basilica when you’ve been there. Tap a name to add the date, a note and your photos.</p><div class="idxcols" id="cols"></div>') +
+      panel("visit", "Visit", "Date · note · photos", '<div id="vhead"></div><div id="vblock"></div>') +
+      panel("near", "Basilicas near you", "Trip planning",
+        '<p style="margin:0 0 12px;max-width:70ch">Find the basilicas closest to where you are right now. Your location is used on this page only; it isn’t saved or sent anywhere.</p>' +
+        '<button class="btn solid" type="button" id="locBtn">Use my location</button><p class="msg" id="locMsg" role="status"></p><ul class="near" id="nearList"></ul>') +
+      panel("orders", "Orders", "From the shop", '<div id="orderBox"><p><span class="spin"></span> Looking up your orders…</p></div>') +
+      panel("acct", "Account", "Settings", '<div id="acctBox"></div>');
+    try { B = await AB.basilicas(); B.forEach((b) => (BY[b.id] = b)); }
+    catch (e) { main.querySelector("#prog .panel-body").innerHTML = '<p class="msg err">Couldn’t load your account: ' + E(e.message) + "</p>"; return; }
+    await drawList();
+    const want = (location.hash.match(/[#&]b=([a-z0-9-]+)/) || [])[1];
+    const vs = await AB.visits();
+    const recent = [...vs.values()].sort((a, b) => String(b.visited_on || b.created_at).localeCompare(String(a.visited_on || a.created_at)))[0];
+    openVisit(want && BY[want] ? want : recent ? recent.basilica_id : null, false);
+    document.getElementById("locBtn").onclick = nearby;
+    galleryPanel(); orders(); account();
+  }
+
+  async function drawProgress() {
+    const vs = await AB.visits(), ps = await AB.myPhotos();
+    const n = vs.size, states = new Set([...vs.keys()].map((id) => BY[id] && BY[id].state)).size;
+    const allStates = new Set(B.map((b) => b.state)).size;
+    main.querySelector("#prog .panel-body").innerHTML =
+      '<div class="progress"><div class="stat"><b>' + n + "<small style=\"font-size:20px;color:var(--muted)\">/" + B.length + "</small></b><span>Basilicas visited</span></div>" +
+      '<div class="stat"><b>' + states + "<small style=\"font-size:20px;color:var(--muted)\">/" + allStates + "</small></b><span>States &amp; D.C.</span></div>" +
+      '<div class="stat"><b>' + ps.length + "</b><span>Photos</span></div>" +
+      '<div class="bar" role="img" aria-label="' + Math.round((100 * n) / B.length) + '% of basilicas visited"><i style="width:' + ((100 * n) / B.length).toFixed(1) + '%"></i></div></div>' +
+      (n ? "" : '<p class="hint" style="margin-top:14px">Start by ticking the basilicas you’ve already visited in the checklist below, or open the <a href="index.html">map</a> and tap a basilica.</p>');
+    return ps;
+  }
+
+  async function drawList() {
+    const ps = await drawProgress(), vs = await AB.visits(), pc = {};
+    ps.forEach((p) => (pc[p.basilica_id] = (pc[p.basilica_id] || 0) + 1));
+    const byState = {};
+    B.forEach((b) => (byState[b.state] = byState[b.state] || []).push(b));
+    document.getElementById("cols").innerHTML = Object.keys(byState).sort().map((st) => {
+      const list = byState[st], done = list.filter((b) => vs.has(b.id)).length;
+      return '<div class="st"><h3>' + E(st) + "<small>" + done + "/" + list.length + "</small></h3><ul>" + list.map((b) => {
+        const v = vs.get(b.id);
+        return '<li class="' + (v ? "done" : "") + '"><input type="checkbox" data-id="' + b.id + '"' + (v ? " checked" : "") +
+          ' aria-label="Visited ' + E(b.name) + '"><span class="nm"><a href="#b=' + b.id + '" data-open="' + b.id + '"><b>' + E(b.city) + "</b> · " + E(b.name) + "</a></span>" +
+          (pc[b.id] ? '<span class="cam" title="Your photos">' + pc[b.id] + " ◫</span>" : "") +
+          (v && v.visited_on ? '<span class="dt">' + E(AB.fmtDate(v.visited_on)) + "</span>" : "") + "</li>";
+      }).join("") + "</ul></div>";
+    }).join("");
+    document.querySelectorAll("#cols [data-open]").forEach((a) => (a.onclick = (e) => { e.preventDefault(); openVisit(a.dataset.open, true); }));
+    document.querySelectorAll("#cols input[type=checkbox]").forEach((cb) => (cb.onchange = () => tick(cb)));
+  }
+
+  async function tick(cb) {
+    const id = cb.dataset.id, b = BY[id];
+    cb.disabled = true;
+    try {
+      if (cb.checked) { await AB.saveVisit(id, { visited_on: AB.today() }); openVisit(id, false); }
+      else {
+        const n = (await AB.myPhotos(id)).length;
+        if (n && !confirm("Remove " + b.name + " from your visited list?\n\nThis also deletes your " + n + " photo" + (n > 1 ? "s" : "") + " from this visit.")) { cb.checked = true; cb.disabled = false; return; }
+        await AB.removeVisit(id);
+        if (sel === id) openVisit(id, false);
+      }
+      await drawList();
+    } catch (e) { cb.checked = !cb.checked; cb.disabled = false; alert(e.message); }
+  }
+
+  function openVisit(id, scroll) {
+    sel = id;
+    const head = document.getElementById("vhead"), blk = document.getElementById("vblock");
+    if (!id) { head.innerHTML = '<p class="empty" style="margin:0">Tick a basilica in the checklist, or tap its name, to record your visit here.</p>'; blk.innerHTML = ""; return; }
+    const b = BY[id];
+    head.innerHTML = '<h3 style="margin:0;font-size:20px">' + E(b.name) + '</h3><p class="hint" style="margin:2px 0 14px">' + E(b.city) + ", " + E(b.state) +
+      ' · <a href="index.html#b=' + b.id + '">See on the map</a> · <a href="gallery.html#b=' + b.id + '">Members’ photos</a></p>';
+    AB.visitBlock(blk, b, { onChange: () => drawList() });
+    if (scroll) document.getElementById("visit").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function nearby() {
+    const msg = document.getElementById("locMsg"), out = document.getElementById("nearList"), btn = document.getElementById("locBtn");
+    if (!navigator.geolocation) { msg.className = "msg err"; msg.textContent = "This browser can’t share its location."; return; }
+    btn.disabled = true; msg.className = "msg"; msg.innerHTML = '<span class="spin"></span> Finding you…';
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      btn.disabled = false; msg.textContent = "";
+      const { latitude: la, longitude: lo } = pos.coords, vs = await AB.visits();
+      const list = B.map((b) => ({ b, d: AB.miles(la, lo, b.lat, b.lng) })).sort((x, y) => x.d - y.d);
+      const next = list.find((x) => !vs.has(x.b.id));
+      const top = list.slice(0, 8);
+      if (next && !top.includes(next)) top.push(next);
+      out.innerHTML = top.map((x) => {
+        const dest = encodeURIComponent(x.b.name + ", " + x.b.city + ", " + x.b.state);
+        return '<li><span class="mi">' + (x.d < 10 ? x.d.toFixed(1) : Math.round(x.d).toLocaleString()) + ' mi</span><span class="nm"><b>' + E(x.b.name) + "</b><br><span>" + E(x.b.city) + ", " + E(x.b.state) +
+          (vs.has(x.b.id) ? " · ✓ visited" : x === next ? " · <b style=\"color:var(--red)\">nearest you haven’t visited</b>" : "") +
+          '</span></span><a class="btn small" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + dest + '">Directions</a></li>';
+      }).join("");
+    }, (err) => {
+      btn.disabled = false; msg.className = "msg err";
+      msg.textContent = err.code === 1 ? "Location access was declined. You can allow it in your browser’s site settings and try again." : "Couldn’t get your location. Try again in a moment.";
+    }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
+  }
+
+  // the members' gallery: where the member stands (free 3 months, then subscribers) and the way in, by the map
+  async function galleryPanel() {
+    const sec = document.getElementById("gal"), body = sec.querySelector(".panel-body"), bar = sec.querySelector(".panel-bar");
+    let m, ps = [], rs = [];
+    try { [m, ps, rs] = await Promise.all([AB.membership(), AB.myPhotos(), AB.myReviews()]); }
+    catch (e) { body.innerHTML = '<p class="msg err">Couldn’t load your gallery membership: ' + E(e.message) + "</p>"; return; }
+    const line = AB.memberLine(m);
+    bar.querySelector(".tag") ? (bar.querySelector(".tag").textContent = line.tag) : bar.insertAdjacentHTML("beforeend", '<span class="tag">' + E(line.tag) + "</span>");
+    const shared = ps.filter((p) => p.status === "approved"), sharedR = rs.filter((r) => r.status === "approved");
+    const likes = shared.reduce((a, p) => a + p.like_count, 0) + sharedR.reduce((a, r) => a + r.like_count, 0);
+    let mini = "";
+    if (window.AB_GMAP) {
+      const G = window.AB_GMAP, vs = await AB.visits();
+      mini = '<a class="mini" href="gallery.html" aria-label="Open the gallery map"><svg viewBox="0 0 ' + G.w + " " + G.h + '" aria-hidden="true">' +
+        G.states.map((st) => '<path class="gst" d="' + st.d + '"/>').join("") +
+        G.markers.map((k) => '<use href="#omb" x="' + (k.x - 6) + '" y="' + (k.y - 9) + '" width="12" height="18"' + (vs.has(k.id) ? "" : ' opacity=".45"') + "/>").join("") +
+        "</svg><span>Open the gallery map &rarr;</span></a>";
+    }
+    body.innerHTML = '<div class="gpanel"><div><p style="margin-top:0;max-width:70ch">Every member’s photos and reviews, basilica by basilica on the map. Like your favourites and sort by most liked or latest.</p>' +
+      "<p style=\"max-width:70ch\">" + line.html + "</p>" +
+      '<div class="btnrow">' + (m.access ? '<a class="btn solid" href="gallery.html">Open the gallery map</a>' : "") +
+      (m.kind === "trial" ? '<a class="btn" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Subscribe</a>' : "") +
+      (m.kind === "expired" ? AB.subscribeButtons(m) + '<a class="btn" href="gallery.html">See what’s there</a>' : "") + "</div>" +
+      (m.kind === "expired" ? AB.subscribeNote(m) : "") +
+      '<div class="gstats"><span><b>' + shared.length + "</b> of your photos in the gallery</span><span><b>" + sharedR.length + "</b> review" + (sharedR.length === 1 ? "" : "s") +
+      "</span><span><b>" + likes + "</b> like" + (likes === 1 ? "" : "s") + " from other members</span></div></div>" + mini + "</div>";
+    AB.wireRecheck(body, () => galleryPanel());
+  }
+
+  async function orders() {
+    const box = document.getElementById("orderBox");
+    let r;
+    try { r = await AB.orders(); }
+    catch (e) { box.innerHTML = '<p class="empty">Order history isn’t available right now. Questions about an order? Write to <a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a>.</p>'; return; }
+    const list = (r && r.orders) || [];
+    if (!list.length) {
+      box.innerHTML = '<p class="empty" style="margin:0 0 12px">No orders yet for ' + E(AB.user.email) + '. Orders placed with this email address appear here.</p>' +
+        '<a class="btn" href="https://americanbasilicas.myshopify.com/collections/all">Visit the shop</a>';
+      return;
+    }
+    const money = (m) => m ? new Intl.NumberFormat(undefined, { style: "currency", currency: m.currencyCode }).format(+m.amount) : "";
+    box.innerHTML = '<p class="hint" style="margin:0 0 12px">Orders placed with ' + E(AB.user.email) + ".</p><div class=\"orders\">" + list.map((o) =>
+      '<div class="order"><div><h3>Order ' + E(o.name) + '</h3><div class="meta">' + E(AB.fmtDate(o.date)) + " · " + E(o.status) + "</div></div>" +
+      '<div class="tot">' + money(o.total) + (o.statusUrl ? '<br><a class="btn small" style="margin-top:6px" target="_blank" rel="noopener" href="' + E(o.statusUrl) + '">Track</a>' : "") + "</div>" +
+      "<ul>" + (o.items || []).map((li) => "<li>" + (li.image ? '<img loading="lazy" alt="" src="' + E(li.image) + '">' : "") + "<span>" + E(li.title) +
+        (li.variant ? ' <span style="color:var(--muted)">· ' + E(li.variant) + "</span>" : "") + (li.quantity > 1 ? " × " + li.quantity : "") + "</span></li>").join("") + "</ul></div>"
+    ).join("") + "</div>";
+  }
+
+  async function account() {
+    const box = document.getElementById("acctBox");
+    let p = { display_name: "" };
+    try { p = await AB.profile(); } catch (e) {}
+    box.innerHTML =
+      '<form id="nameF"><label class="fld" for="dn">Display name</label><input id="dn" type="text" maxlength="40" required value="' + E(p.display_name) + '">' +
+      '<p class="hint">Shown with your photos in the members’ gallery. Your email address is never shown to other members.</p>' +
+      '<div class="btnrow" style="margin-top:10px"><button class="btn solid" type="submit">Save name</button></div><p class="msg" role="status"></p></form>' +
+      '<p style="margin:22px 0 4px"><b>Email</b><br>' + E(AB.user.email || "") + "</p>" +
+      '<div class="btnrow" style="margin-top:18px"><button class="btn" type="button" id="outBtn">Sign out</button></div>' +
+      '<details style="margin-top:28px"><summary style="cursor:pointer;font-weight:700">Delete my account</summary>' +
+      '<p style="max-width:70ch">This permanently deletes your account, your visits and notes, and all your photos, including any in the members’ gallery. Your shop orders are not affected. It can’t be undone.</p>' +
+      '<label class="fld" for="delC">Type DELETE to confirm</label><input id="delC" type="text" autocomplete="off" style="max-width:200px">' +
+      '<div class="btnrow" style="margin-top:10px"><button class="btn danger" type="button" id="delBtn" disabled>Delete my account</button></div><p class="msg" id="delMsg" role="status"></p></details>';
+    const f = document.getElementById("nameF"), m = f.querySelector(".msg");
+    f.onsubmit = async (e) => {
+      e.preventDefault();
+      try { await AB.rename(document.getElementById("dn").value); m.className = "msg ok"; m.textContent = "Saved."; }
+      catch (err) { m.className = "msg err"; m.textContent = /check/.test(err.message) ? "Use 1 to 40 characters." : err.message; }
+    };
+    document.getElementById("outBtn").onclick = () => AB.signOut();
+    const c = document.getElementById("delC"), d = document.getElementById("delBtn"), dm = document.getElementById("delMsg");
+    c.oninput = () => (d.disabled = c.value.trim() !== "DELETE");
+    d.onclick = async () => {
+      d.disabled = true; dm.className = "msg"; dm.innerHTML = '<span class="spin"></span> Deleting…';
+      try { await AB.deleteAccount(); } catch (e) { d.disabled = false; dm.className = "msg err"; dm.textContent = "Couldn’t delete the account: " + e.message; }
+    };
+  }
+})();
+</script>
+</body>
+</html>
