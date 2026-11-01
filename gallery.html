@@ -9,6 +9,7 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="members/members.css">
 <link rel="stylesheet" href="members/blocks.css">
+<link rel="stylesheet" href="texture/texture.css">
 <script src="members/vendor/supabase-2.117.3.js"></script>
 <script src="members/config.js"></script>
 <script src="members/core.js"></script>
@@ -16,7 +17,7 @@
 <script src="members/visit.js"></script>
 <script src="members/gallery-map.js"></script>
 </head>
-<body>
+<body class="mp">
 <main id="main" aria-live="polite"></main>
 <footer class="mf">Photos and reviews are shared by members and checked before they appear here. They’re visible only to signed-in members with gallery access; please don’t copy them elsewhere without the member’s permission.</footer>
 <script>
@@ -87,6 +88,8 @@
       if (c) p.addEventListener("click", () => openState(s.n, true));
       zoomG.appendChild(p);
     });
+    // shaded relief printed over the tints (same projection as the main map; tools/build_relief.py)
+    zoomG.appendChild(el("image", { href: "texture/relief.webp", x: 0, y: 0, width: G.w, height: G.h, preserveAspectRatio: "none", class: "relief" }));
     zoomG.appendChild(el("path", { d: G.lakes, class: "glake" }));
     const mg = el("g", { class: "gmk" }); zoomG.appendChild(mg);
     const ordered = G.markers.slice().sort((a, b) => (cnt(a.id).photos + cnt(a.id).reviews > 0) - (cnt(b.id).photos + cnt(b.id).reviews > 0));
@@ -96,7 +99,7 @@
       const g = el("g", { class: "gm" + (has ? "" : " none"), "data-id": m.id, tabindex: "0", role: "button", "aria-label": b.name + ", " + b.city + ": " + countLine(c) });
       const t = el("title", {}); t.textContent = b.name + " — " + b.city + "\n" + countLine(c); g.appendChild(t);
       g.appendChild(el("circle", { r: 8, class: "hit" }));
-      g.appendChild(el("use", { href: "#omb", x: -5.33, y: -8, width: 10.67, height: 16 }));
+      g.appendChild(el("use", { href: "#omb-pin", x: -5.33, y: -8, width: 10.67, height: 16 }));
       const go = () => { selState = m.s; openBasilica(m.id, true); };
       g.addEventListener("click", (e) => { e.stopPropagation(); go(); });
       g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
@@ -112,6 +115,8 @@
     const svg = document.getElementById("gmap"); if (!svg) return;
     const s = (svg.getBoundingClientRect().width || G.w) / G.w, px = s < 0.6 ? 15 : 14, q = px / 16 / s / view.k;
     zoomG.setAttribute("transform", "translate(" + view.x.toFixed(2) + " " + view.y.toFixed(2) + ") scale(" + view.k.toFixed(4) + ")");
+    const rl = zoomG.querySelector(".relief"), rz = (Math.round(Math.min(1, 2.6 / view.k) * 10) / 10).toFixed(1);
+    if (rl && rl.dataset.rz !== rz) { rl.dataset.rz = rz; rl.style.setProperty("--rz", rz); }
     mks.forEach(({ g, m }) => g.setAttribute("transform", "translate(" + m.x + " " + m.y + ") scale(" + q.toFixed(4) + ")"));
   }
   function zoomTo(stateName) {

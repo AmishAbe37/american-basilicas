@@ -9,6 +9,7 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="members/members.css">
 <link rel="stylesheet" href="members/blocks.css">
+<link rel="stylesheet" href="texture/texture.css">
 <script src="members/vendor/supabase-2.117.3.js"></script>
 <script src="members/config.js"></script>
 <script src="members/core.js"></script>
@@ -16,7 +17,7 @@
 <script src="members/visit.js"></script>
 <script src="members/gallery-map.js"></script>
 </head>
-<body>
+<body class="mp">
 <main id="main" aria-live="polite"></main>
 <footer class="mf">American Basilicas · <a href="index.html">The map</a> · <a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a>
   · Your visits, notes and photos are private to you unless a photo is approved for the members’ gallery.</footer>
@@ -159,6 +160,7 @@
       const G = window.AB_GMAP, vs = await AB.visits();
       mini = '<a class="mini" href="gallery.html" aria-label="Open the gallery map"><svg viewBox="0 0 ' + G.w + " " + G.h + '" aria-hidden="true">' +
         G.states.map((st) => '<path class="gst" d="' + st.d + '"/>').join("") +
+        '<image href="texture/relief.webp" x="0" y="0" width="' + G.w + '" height="' + G.h + '" preserveAspectRatio="none" class="relief"/>' +
         G.markers.map((k) => '<use href="#omb" x="' + (k.x - 6) + '" y="' + (k.y - 9) + '" width="12" height="18"' + (vs.has(k.id) ? "" : ' opacity=".45"') + "/>").join("") +
         "</svg><span>Open the gallery map &rarr;</span></a>";
     }

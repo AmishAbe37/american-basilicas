@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- A check mark from a pilgrim's stamp pad: blue-violet ink, pressed unevenly. -->
+  <defs><filter id="ink" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/>
+  </filter></defs>
+  <g filter="url(#ink)" transform="rotate(-6 12 12)">
+    <path d="M4.2 12.6 9.4 17.6 19.6 5.8" fill="none" stroke="#33418a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>
+    <path d="M5 12.4 9.6 16.8" stroke="#2a3678" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+  </g>
+</svg>
