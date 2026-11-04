@@ -15,8 +15,7 @@ One to-do per message. If something goes wrong, help fix it before moving on.
 
 Values to keep in a password manager as he goes (secret ones go straight into Supabase, never into the chat):
 Supabase database password · Project URL · publishable key · Resend API key (secret) · Google client ID and secret (secret) ·
-Shopify client ID and secret (secret) · Buy Me a Coffee webhook secret (secret) ·
-Apple Team ID, Key ID and Services ID · the Apple `.p8` key file (secret; keep the file) · Apple client secret (secret).
+Shopify client ID and secret (secret) · Buy Me a Coffee webhook secret (secret).
 The Project URL and publishable key are public by design and can be pasted into the chat.
 
 ## Progress (Nov 3, 2026)
@@ -32,7 +31,7 @@ Done by Claude through the Supabase connector (project `american-basilicas`, ref
 - 1.7 and 6.1 Project URL and publishable key are in `members/config.js` on this branch.
 - Corrected: `SHOPIFY_STORE` is `qzmnhn-mf.myshopify.com` (the store's permanent Shopify address).
 
-Still to do: 1.3, 1.4, then Sites 2, 3, 3b (Apple; added Nov 4), 4 and 5, then 6.2–6.6. All of it works on a phone except 3b.5, which needs Chrome or Firefox on a computer or an Android phone.
+Still to do, all of it workable on a phone: 1.3, 1.4, then Sites 2–5, then 6.2–6.6.
 
 ---
 
@@ -41,7 +40,6 @@ Still to do: 1.3, 1.4, then Sites 2, 3, 3b (Apple; added Nov 4), 4 and 5, then 6
 1. **Supabase** (supabase.com): the database, sign-in and server functions. About 45 minutes.
 2. **Resend** (resend.com) **+ the domain's DNS provider**: sends the sign-in emails. About 20 minutes, plus waiting for DNS.
 3. **Google Cloud** (console.cloud.google.com): the "Continue with Google" button. About 20 minutes.
-3b. **Apple Developer** (developer.apple.com): the "Continue with Apple" button. About 30 minutes, after Apple approves the membership ($99 a year).
 4. **Shopify** (dev.shopify.com): order history on the account page. About 15 minutes.
 5. **Buy Me a Coffee** (buymeacoffee.com): paid gallery subscriptions. About 20 minutes.
 6. **GitHub** (github.com): switch the site on, then test everything. About 30 minutes. **This is the step that makes the features live.**
@@ -238,71 +236,6 @@ To-dos:
 
 ---
 
-## Site 3b — Apple Developer (Sign in with Apple)
-
-Needs a paid Apple Developer Program membership ($99 a year). The button stays hidden until the last to-do.
-
-To-dos:
-1. Join the Apple Developer Program
-2. Create the App ID
-3. Create the Services ID (the website's sign-in)
-4. Create the sign-in key and download it
-5. Generate the client secret
-6. Turn on Apple in Supabase
-7. Show the button on the site
-8. Set the 6-month reminder
-
-### 3b.1 Join the Apple Developer Program
-1. Install the **Apple Developer** app on your iPhone (or go to **developer.apple.com/programs/enroll**) and sign in with the Apple Account you want to own it. It needs two-factor authentication on.
-2. Tap **Enroll now**, choose **Individual / Sole Proprietor** (no D-U-N-S number needed), confirm your legal name and address, and pay the $99.
-3. Wait for Apple's "Welcome to the Apple Developer Program" email. It can take up to a couple of days.
-4. In **developer.apple.com/account → Membership details**, copy the **Team ID** (10 characters) into your password manager.
-
-### 3b.2 Create the App ID
-1. **developer.apple.com/account → Certificates, Identifiers & Profiles → Identifiers → +**.
-2. Choose **App IDs → Continue → App → Continue**.
-3. **Description:** `American Basilicas` · **Bundle ID:** Explicit, `org.americanbasilicas.app`.
-4. In the capabilities list, tick **Sign in with Apple**. Leave its server-to-server notification address blank.
-5. **Continue → Register**.
-
-### 3b.3 Create the Services ID
-1. **Identifiers → +** → **Services IDs → Continue**.
-2. **Description:** `American Basilicas website` · **Identifier:** `org.americanbasilicas.web` → **Continue → Register**.
-3. Open the new Services ID, tick **Sign in with Apple**, then **Configure**:
-   - **Primary App ID:** American Basilicas (`org.americanbasilicas.app`)
-   - **Domains and Subdomains:** `doivutqhoggdacwbynsj.supabase.co`
-   - **Return URLs:** `https://doivutqhoggdacwbynsj.supabase.co/auth/v1/callback`
-4. **Next → Done → Continue → Save**.
-
-### 3b.4 Create the sign-in key and download it
-1. **Keys → +** → **Key Name:** `American Basilicas sign-in`.
-2. Tick **Sign in with Apple → Configure** → Primary App ID: American Basilicas → **Save → Continue → Register**.
-3. **Download** the `AuthKey_XXXXXXXXXX.p8` file. Apple lets you download it only once. Keep it somewhere safe (a password manager that holds files, or a private folder); you'll need it again every 6 months.
-4. Copy the **Key ID** (10 characters) into your password manager.
-5. Never paste the `.p8` file's contents into the chat.
-
-### 3b.5 Generate the client secret
-This step needs **Chrome or Firefox on a computer or an Android phone**. Supabase's generator doesn't work in Safari, and every browser on an iPhone uses Safari's engine.
-1. Open **supabase.com/docs/guides/auth/social-sign-in/auth-apple** and scroll to the secret generator (in the "Configuration" part of the web section).
-2. Enter the **Team ID**, **Key ID**, **Services ID** (`org.americanbasilicas.web`) and choose the `.p8` file. Nothing leaves your browser.
-3. Copy the generated secret (a long string starting with `eyJ`) into your password manager, and note today's date.
-
-### 3b.6 Turn on Apple in Supabase
-1. Supabase → **Authentication → Sign In / Providers → Apple** → switch on **Enable Sign in with Apple**.
-2. **Client IDs:** `org.americanbasilicas.web`
-3. **Secret Key (for OAuth):** the secret from 3b.5.
-4. **Save**.
-
-### 3b.7 Show the button on the site
-Say "Apple is on" in the chat. Claude sets `appleSignIn: true` in `members/config.js` on the branch. After the merge in Site 6, test it in 6.5 with an Apple account.
-
-### 3b.8 Set the 6-month reminder
-Apple's client secret expires after 6 months, and Apple sign-in stops working when it does. Ask Claude to set a reminder about a week before that date; renewing is 3b.5 and 3b.6 again with the same `.p8` file.
-
-Good to know: members who choose **Hide My Email** sign in with a private Apple relay address. Order history and gallery subscriptions are matched by email, so they'd need to use that same relay address at the shop and on Buy Me a Coffee.
-
----
-
 ## Site 4 — Shopify
 
 To-dos:
@@ -433,7 +366,6 @@ Either:
 
 ### 6.5 Run the test checklist
 1. **Google sign-in:** in a private/incognito window, open account.html → **Continue with Google** with a different Google account. You should come back signed in, with the welcome message.
-   **Apple sign-in** (if 3b is done): the same, with **Continue with Apple** and an Apple account.
 2. **Visit, photo and review:** as yourself, tick a basilica you've visited → add a photo → the review prompt appears → post a short review.
 3. **Approval:** Review queue → **Photos** → Approve; **Reviews** → Approve.
 4. **Gallery:** in the private window (second account) → **Members' gallery** → tap Missouri → the basilica. You should see your photo and review; like each one, and try **Most liked / Latest**.

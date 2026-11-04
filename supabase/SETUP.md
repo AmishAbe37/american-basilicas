@@ -76,23 +76,6 @@ Supabase's built-in email service only delivers to your own team's addresses, an
 
 Members who sign in with Google see the same welcome message on the site. Google doesn't send them the Confirm signup email.
 
-## 3b. Set up Sign in with Apple (optional)
-
-Needs a paid Apple Developer Program membership ($99 a year). The "Continue with Apple" button stays hidden until `appleSignIn` is `true` in `members/config.js`.
-
-1. Join the Apple Developer Program as an individual (developer.apple.com, or the Apple Developer app). Note your **Team ID** under Membership details.
-2. **Identifiers → + → App IDs → App**: description `American Basilicas`, explicit Bundle ID `org.americanbasilicas.app`, tick **Sign in with Apple**, then register it.
-3. **Identifiers → + → Services IDs**: description `American Basilicas website`, identifier `org.americanbasilicas.web`. Open it, tick **Sign in with Apple → Configure**, choose the App ID from step 2, set **Domains** to `doivutqhoggdacwbynsj.supabase.co` and **Return URLs** to `https://doivutqhoggdacwbynsj.supabase.co/auth/v1/callback`, then save.
-4. **Keys → +**: name `American Basilicas sign-in`, tick **Sign in with Apple → Configure**, choose the App ID, register, and download the `AuthKey_….p8` file (Apple only lets you download it once). Note the **Key ID**.
-5. Generate the client secret with the generator on Supabase's Apple guide (supabase.com/docs/guides/auth/social-sign-in/auth-apple), using the Team ID, Key ID, Services ID and the `.p8` file. It doesn't work in Safari; use Chrome or Firefox on a computer or an Android phone.
-6. In Supabase, **Authentication → Sign In / Providers → Apple**: switch it on, put `org.americanbasilicas.web` in **Client IDs** and the generated secret in **Secret Key (for OAuth)**, and save.
-7. Set `appleSignIn: true` in `members/config.js`.
-
-Things to know:
-- **Apple's client secret expires every 6 months.** Repeat step 5 and paste the new secret in step 6 before it runs out, or Apple sign-in stops working. Keep the `.p8` file safe for this.
-- **Hide My Email:** members can choose a private Apple relay address. Order history and gallery subscriptions are matched by email, so those members need to use that same relay address at the shop and on Buy Me a Coffee, or their orders and subscription won't show up.
-- **Names:** Apple doesn't share the member's name in this kind of web sign-in, so Apple members start as "Pilgrim" and can rename themselves on the account page.
-
 ## 4. Switch the site on
 
 1. In Supabase, open **Project Settings → API Keys**. Copy the **Project URL** and the **anon / publishable** key. This key is designed to be public.
@@ -194,7 +177,6 @@ The same function also handles **Delete my account**, so deploy it even if you s
   - 50,000 monthly active members.
 - **Supabase pausing:** free projects pause after a week with no activity. Once members rely on the site, and certainly once people are paying for the gallery, switch to **Pro** ($25 a month: 100 GB of storage, no pausing).
 - **Resend Free:** 3,000 sign-in emails a month, 100 a day.
-- **Apple Developer Program** (only if you switch on Sign in with Apple): $99 a year.
 - **Buy Me a Coffee:** takes a platform fee plus payment processing on each membership payment. Check their pricing page when you set the price.
 
 ## How the pieces fit
