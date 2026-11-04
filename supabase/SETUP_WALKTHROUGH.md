@@ -28,18 +28,22 @@ Done by Claude through the Supabase connector (project `american-basilicas`, ref
 - 1.5 `account` deployed. Its JWT check is **off** because the function checks the sign-in itself (this avoids the
   "order history isn't available" problem described in 6.5).
 - 1.6 `bmc-webhook` deployed with its JWT check off. URL: `https://doivutqhoggdacwbynsj.supabase.co/functions/v1/bmc-webhook`
-- 1.7 and 6.1 Project URL and publishable key are in `members/config.js` on this branch.
+- 1.7 and 6.1 Project URL and publishable key are in `members/config.js` (now live on `main`).
 - Corrected: `SHOPIFY_STORE` is `qzmnhn-mf.myshopify.com` (the store's permanent Shopify address).
 
-Added Nov 4 (draft, waiting for approval): **questions and answers** on a new members' page for each basilica
-(`basilica.html?b=…`), linked from every popup on the main map and from the gallery. The new tables are in `schema.sql`
-and pass the rule tests (138/138), but they are **not in the live database yet**. When the Q&A draft is approved, Claude
-adds them through the Supabase connector; nothing for you to do there.
-
 Done since (Nov 4): 1.3 (site address and sign-in options), Site 2 (Resend, DNS, SMTP), 1.4 (both email templates).
-If the Q&A draft is approved, change one sentence in the **Confirm signup** template to the wording in 1.4 below
-("photos, reviews, and questions and answers").
-Still to do, all of it workable on a phone: Sites 3–5, then 6.2–6.6.
+
+**Live on americanbasilicas.org since Nov 4 (6.2 done):** PR #2 (textured design) and PR #1 (member accounts, members' gallery,
+and the members' page for each basilica with **questions and answers**, `basilica.html?b=…`) are merged into `main`.
+The Q&A tables went into the live database first, through the Supabase connector (migration `questions_and_answers`).
+
+Two things to know now that it's live:
+- **Change one sentence in the Confirm signup template** (Supabase → Authentication → Emails → Templates → Confirm signup):
+  "It holds every member's photos and reviews" → "It holds every member's photos, reviews, and questions and answers".
+  The full wording is in 1.4 below.
+- **Until Site 3 is done, the live "Continue with Google" button shows an error.** Email sign-in works.
+
+Still to do, all of it workable on a phone: Sites 3–5, then 6.3–6.6.
 
 ---
 
