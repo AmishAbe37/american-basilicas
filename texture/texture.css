@@ -1,0 +1,330 @@
+/* ==========================================================================================
+   American Basilicas — the material layer
+   The Unigrid brochure as a physical object: printed on toothy paper, crowned by the ombrellino's
+   silk valance, laid on verde antico marble, with controls made of the church's own materials —
+   black lacquer, gilt, enamel, mosaic and inked stamps. Loaded after each page's own styles;
+   remove the <link> to return to the flat design.
+   One light, from the top left. Textures stay quiet behind text.
+   ========================================================================================== */
+:root{
+  --lacquer:linear-gradient(180deg,#36312b 0%,#15120f 48%,#050404 100%);
+  --lacquer-flat:#0b0a08;
+  --gilt:linear-gradient(180deg,#fbeab0 0%,#e3b84a 38%,#c7951f 62%,#9a7016 100%);
+  --gilt-diag:linear-gradient(135deg,#f8e4a0 0%,#c9971f 28%,#f3d77f 50%,#a87b16 74%,#e7c35a 100%);
+  --enamel-red:radial-gradient(120% 90% at 50% 0%,#c94436 0%,#9c2420 48%,#6e1111 100%);
+  --grain:url(grain.webp) 0 0/256px 256px;
+  --paper-shadow:0 1px 1px rgba(60,40,10,.10),0 6px 14px -6px rgba(60,40,10,.35);
+  --ink-letterpress:0 1px 0 rgba(255,255,255,.65);
+  --white-engraved:0 -1px 0 rgba(0,0,0,.85);
+}
+
+/* ---------------------------------------------------------------- paper */
+body{background:var(--grain),var(--paper)}
+.sheet{background:var(--grain),var(--paper);position:relative}
+
+/* ---------------------------------------------------------------- the desk: verde antico, on wide screens only
+   (phones never download the marble) */
+@media (min-width:1180px){
+  html{background:#14291f url(marble.webp) 0 0/768px 768px}
+  body{background:transparent;padding:30px 34px 52px}
+  /* polished stone: a broad sheen from the window side */
+  html::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(90% 70% at 18% 0%,rgba(255,255,255,.10),transparent 60%),
+               radial-gradient(70% 60% at 100% 100%,rgba(0,0,0,.35),transparent 70%)}
+  .sheet{max-width:1320px;margin:0 auto;
+    box-shadow:0 0 0 1px rgba(0,0,0,.28),0 2px 2px rgba(0,0,0,.30),0 16px 34px -10px rgba(0,0,0,.6),0 46px 70px -34px rgba(0,0,0,.55)}
+  /* the trimmed edge of the stock catches the light */
+  .sheet::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 0 60px rgba(120,90,40,.10)}
+}
+
+/* ---------------------------------------------------------------- the band: black lacquer, letterpressed */
+header.band{position:relative;background:var(--lacquer);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(0,0,0,.9)}
+header.band::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0) 46%),var(--grain);opacity:.22;mix-blend-mode:screen}
+header.band > *{position:relative}
+header.band h1{text-shadow:var(--white-engraved),0 1px 0 rgba(255,255,255,.06)}
+header.band .sub{text-shadow:var(--white-engraved)}
+/* gilt lettering, as on a book spine */
+header.band .kicker{background:var(--gilt);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 -1px 0 rgba(0,0,0,.9))}
+/* the ombrellino set in a mosaic roundel: lapis field, gold rim, laid in rings */
+header.band .badge{background:url(medallion.webp) center/100% 100% no-repeat;border-radius:50%;padding:10px;width:108px;height:108px;
+  box-shadow:0 0 0 1.5px rgba(0,0,0,.95),0 0 0 3px rgba(217,165,33,.55),0 3px 10px rgba(0,0,0,.85),inset 0 0 12px rgba(0,0,0,.55)}
+header.band .badge use{filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.6))}
+
+/* ---------------------------------------------------------------- the valance: the ombrellino's red-and-gold silk */
+.rule{position:relative;z-index:4;height:16px;background:url(valance.svg) 0 0/44px 16px repeat-x;
+  filter:drop-shadow(0 2px 1.5px rgba(35,15,4,.5));margin-bottom:-9px}
+
+/* ---------------------------------------------------------------- the map */
+.mapwrap{background:
+  radial-gradient(120% 90% at 50% 40%,rgba(255,255,255,.16),rgba(255,255,255,0) 60%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,0) 0 3px,rgba(70,110,118,.07) 3px 4px),
+  var(--water)}
+.relief{mix-blend-mode:hard-light;opacity:calc(.44 * var(--rz,1));pointer-events:none}
+.state{stroke:rgba(250,246,236,.95)}
+/* the legend: a recessed tray under the map, with real keys */
+.legend{position:relative;z-index:1;background:linear-gradient(180deg,rgba(90,64,24,.10),rgba(90,64,24,0) 9px),var(--grain),var(--paper2);
+  border-top:1px solid #b9a678;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.legend > *{position:relative}
+.zoombtns button,.mb-tog{background:linear-gradient(180deg,#fffef9 0%,#f3ead5 55%,#e6d9b9 100%);border:1px solid #a28f63;border-radius:6px;
+  color:#3a3122;text-shadow:0 1px 0 #fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(70,50,15,.28);
+  transition:box-shadow .08s,background .08s}
+.zoombtns button:hover{background:linear-gradient(180deg,#fffef9 0%,#f7eedb 55%,#ecdfc0 100%)}
+.zoombtns button:active,.mb-tog:active{background:linear-gradient(180deg,#e2d5b3,#efe5cd);box-shadow:inset 0 2px 4px rgba(70,50,15,.35);transform:translateY(.5px)}
+
+/* ---------------------------------------------------------------- the index */
+.st h3{border-bottom:2px solid var(--rule);box-shadow:0 1px 0 rgba(255,255,255,.75)}
+.stname{text-shadow:var(--ink-letterpress)}
+/* enamel badges in a gilt bezel */
+.stcount{background:var(--enamel-red);border:1px solid #c99a2e;border-radius:9px;padding:0 7px;line-height:16px;
+  text-shadow:0 -1px 0 rgba(0,0,0,.45);box-shadow:0 1px 1.5px rgba(40,20,5,.35),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 1px rgba(0,0,0,.25)}
+.st.active h3{background:linear-gradient(90deg,rgba(217,165,33,.22),rgba(217,165,33,0))}
+.st li.clk:hover{background:linear-gradient(90deg,rgba(217,165,33,.18),rgba(217,165,33,.04))}
+/* on a phone the index becomes grouped cards of heavier stock, like the lists of the first iPhone apps */
+@media (max-width:640px){
+  .st{background:var(--grain),#fbf8f0;border:1px solid #d3c3a0;border-radius:9px;padding:9px 12px 4px;margin:0 0 14px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(70,50,15,.16)}
+  .st h3{border-bottom-width:1.5px}
+}
+
+/* an illuminated initial, gold leaf behind a red letter, as in a missal */
+.index .lead::first-letter{font-size:22px;line-height:1;font-weight:800;color:#7d1515;padding:2px 6px 1px;margin-right:3px;
+  background:var(--gilt-diag);border:1px solid #8a6514;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 1px 2px rgba(60,40,10,.35);
+  text-shadow:0 1px 0 rgba(255,240,190,.6)}
+.index .lead{color:#4f4636;line-height:1.62}
+
+/* ---------------------------------------------------------------- panels: lacquered section bands */
+.panel-bar{position:relative;background:var(--lacquer);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.9)}
+.panel-bar h2{text-shadow:var(--white-engraved)}
+.panel-bar > span,.panel-bar .tag{background:var(--gilt);-webkit-background-clip:text;background-clip:text;color:transparent}
+.panel-bar > span span,.panel-bar > span *{color:transparent}
+
+/* ---------------------------------------------------------------- buttons: black lacquer, and ivory keys */
+.btn{border-radius:5px;border:1px solid #7e6c45;background:linear-gradient(180deg,#fffef9 0%,#f1e7cf 58%,#e2d3ad 100%);
+  color:#2a2316;text-shadow:0 1px 0 rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(60,40,10,.3);
+  transition:box-shadow .08s,background .1s}
+.btn:not(.solid):hover{background:linear-gradient(180deg,#fffef9 0%,#f6edd8 58%,#e9dcbb 100%);color:#2a2316}
+.btn.solid{background:var(--lacquer);border-color:#000;color:#fff;text-shadow:var(--white-engraved);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.45)}
+.btn.solid:hover{background:linear-gradient(180deg,#b23a2e 0%,#8f1d1d 50%,#5e0f0f 100%);border-color:#4a0b0b}
+.btn:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.35);transform:translateY(.5px)}
+.btn.solid:active{background:linear-gradient(180deg,#050404,#26221d)}
+
+/* ---------------------------------------------------------------- shop: mounted prints */
+.shop-card{background:#fffdf8;border:1px solid #d6c8a5;box-shadow:var(--paper-shadow)}
+.pcard img{box-shadow:var(--paper-shadow);border-color:#e1d5b8}
+.shop-grid .support{border-left:2px solid var(--ink);box-shadow:-1px 0 0 rgba(255,255,255,.7)}
+
+/* ---------------------------------------------------------------- footer: a strip of Cosmatesque pavement */
+.sheet > footer{position:relative;border-top:0;padding-top:34px}
+.sheet > footer::before,footer.mf::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:url(cosmati.svg) 0 0/48px 14px repeat-x;
+  box-shadow:0 1px 0 rgba(0,0,0,.25),0 2px 4px rgba(60,40,10,.25)}
+.fgrid .stat b{text-shadow:var(--ink-letterpress)}
+
+/* ---------------------------------------------------------------- the basilica card */
+.detail-overlay{background:rgba(14,12,8,.62)}
+.detail-card{border-top:0;border-image:none;border-radius:3px;background:var(--grain),var(--paper);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4),0 24px 60px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.5)}
+.detail-card::before{content:"";display:block;position:sticky;top:0;z-index:3;height:16px;margin-bottom:-16px;
+  background:url(valance.svg) 0 0/44px 16px repeat-x;filter:drop-shadow(0 2px 1.5px rgba(35,15,4,.5))}
+.detail-figure{background:transparent;padding:26px 22px 0;min-height:0}
+.detail-figure.loading{min-height:150px}
+/* the photograph in a gilt frame */
+#detailImg{border:7px solid transparent;border-image:var(--gilt-diag) 7;box-shadow:0 3px 8px rgba(40,25,5,.45),0 0 0 1px rgba(60,40,8,.6)}
+.detail-cred{background:transparent;padding:8px 22px 0;text-align:center}
+.detail-x{background:radial-gradient(circle at 50% 28%,#57514a 0%,#1a1714 62%,#000 100%);border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 2px 5px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25);top:24px;right:16px;text-shadow:var(--white-engraved)}
+.detail-x:hover{background:radial-gradient(circle at 50% 28%,#c2483a 0%,#8f1d1d 62%,#4a0b0b 100%)}
+.detail-body h2{text-shadow:var(--ink-letterpress)}
+.detail-facts li::marker{color:var(--red);font-weight:800}
+.detail-links{border-top:1px solid #d9cba6;box-shadow:0 -1px 0 rgba(255,255,255,.7)}
+
+/* ---------------------------------------------------------------- tooltip: a lacquered callout */
+#tip{background:linear-gradient(180deg,#2c2620,#100d0a);border:1px solid rgba(255,255,255,.12);border-left:3px solid var(--gold);
+  box-shadow:0 8px 22px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12);text-shadow:var(--white-engraved)}
+
+/* ---------------------------------------------------------------- comfort and print */
+@media (prefers-contrast:more){
+  body,.sheet,.legend,.detail-card,.st{background-image:none!important}
+  header.band::before{display:none}
+}
+@media print{
+  html,body,.sheet{background:#fff!important;box-shadow:none!important;padding:0!important}
+  header.band::before,html::before,.sheet::after{display:none!important}
+}
+@media (max-width:560px){header.band .badge{width:78px;height:78px;padding:7px}}
+
+/* ==========================================================================================
+   Member pages (account, gallery, review) and the member features on the map
+   ========================================================================================== */
+/* the member pages are one sheet on the desk too (the page itself is the sheet) */
+@media (min-width:1180px){
+  body.mp{max-width:1320px;margin:30px auto 52px;padding:0;background:var(--grain),var(--paper);position:relative;
+    box-shadow:0 0 0 1px rgba(0,0,0,.28),0 2px 2px rgba(0,0,0,.30),0 16px 34px -10px rgba(0,0,0,.6),0 46px 70px -34px rgba(0,0,0,.55)}
+}
+body.mp header.band .badge{width:68px;height:68px;padding:6px}
+@media (max-width:560px){body.mp header.band .badge{width:52px;height:52px;padding:5px}}
+body.mp .rule{margin-bottom:-9px}
+nav.mnav{position:relative;background:linear-gradient(180deg,rgba(90,64,24,.13),rgba(90,64,24,0) 12px),var(--grain),var(--paper2);
+  border-bottom:1px solid #c4b285;box-shadow:inset 0 -1px 0 rgba(255,255,255,.55),0 1px 2px rgba(60,40,10,.10)}
+nav.mnav .in{padding-top:14px}
+nav.mnav a{text-shadow:var(--ink-letterpress)}
+nav.mnav a[aria-current],nav.mnav a:hover{border-bottom-color:transparent;
+  background:linear-gradient(180deg,#b3342b,#8f1d1d 60%,#5a0f0f) bottom/100% 3px no-repeat}
+footer.mf{border-top:0;position:relative;padding-top:30px}
+
+/* fields pressed into the paper */
+input[type=text],input[type=email],input[type=date],select,textarea{border:1px solid #a8956a;border-radius:6px;
+  background:linear-gradient(180deg,#f6f0e1,#fffefa 9px);box-shadow:inset 0 1px 2px rgba(60,40,10,.22),0 1px 0 rgba(255,255,255,.85)}
+.btn.small{border-radius:5px}
+.btn.danger{color:#8f1d1d;border-color:#8f1d1d;text-shadow:0 1px 0 rgba(255,255,255,.9)}
+.btn.danger:hover{background:linear-gradient(180deg,#b23a2e 0%,#8f1d1d 50%,#5e0f0f 100%);color:#fff;border-color:#4a0b0b;text-shadow:var(--white-engraved)}
+
+/* progress: engraved figures and a silk ribbon in a pressed channel */
+.stat b{text-shadow:var(--ink-letterpress)}
+.bar{height:16px;border-radius:8px;border:1px solid #a8956a;overflow:hidden;background:linear-gradient(180deg,#ddd0ae,#f3ecdb);
+  box-shadow:inset 0 2px 3px rgba(60,40,10,.35),0 1px 0 rgba(255,255,255,.8)}
+.bar i{border-radius:0 8px 8px 0;background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 50%,rgba(0,0,0,.2)),
+  repeating-linear-gradient(90deg,var(--red) 0 12px,var(--gold) 12px 24px)}
+
+/* the checklist: count badges in enamel, boxes ticked with a pilgrim's stamp */
+.st h3 small{background:var(--enamel-red);border:1px solid #c99a2e;border-radius:9px;text-shadow:0 -1px 0 rgba(0,0,0,.45);
+  box-shadow:0 1px 1.5px rgba(40,20,5,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.st li input[type=checkbox]{-webkit-appearance:none;appearance:none;width:19px;height:19px;border:1.5px solid #8a7650;border-radius:4px;cursor:pointer;
+  background:linear-gradient(180deg,#f3ead6,#fffef9 8px);box-shadow:inset 0 1px 2px rgba(60,40,10,.28),0 1px 0 rgba(255,255,255,.8)}
+.st li input[type=checkbox]:checked{background:url(check.svg) center/22px 22px no-repeat,linear-gradient(180deg,#f3ead6,#fffef9 8px)}
+.st li input[type=checkbox]:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.st li.mb-done .bname::before{color:#33418a}
+
+/* a visit, stamped like a pilgrim's credential */
+.vb-done{display:inline-flex;align-items:center;color:#33418a;border:2px solid currentColor;border-radius:5px;padding:3px 9px 2px;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;transform:rotate(-3deg);background:rgba(255,253,246,.5);
+  box-shadow:inset 0 0 0 1.5px rgba(255,253,246,.9),inset 0 0 0 3px currentColor;
+  -webkit-mask:url(speckle.png) 0 0/128px;mask:url(speckle.png) 0 0/128px}
+.chip{border:1.5px solid currentColor;border-radius:3px;background:rgba(255,253,246,.95);transform:rotate(-2deg);
+  -webkit-mask:url(speckle.png) 0 0/96px;mask:url(speckle.png) 0 0/96px}
+.chip.pending{color:#8a5d06;border-color:currentColor;background:rgba(255,248,226,.96)}
+.chip.approved{color:#2f6b3a;border-color:currentColor;background:rgba(240,248,238,.96)}
+.chip.rejected{color:#8f1d1d;border-color:currentColor;background:rgba(253,240,238,.96)}
+.ph .chip{z-index:2}
+
+/* photographs mounted in an album, held by black paper corners */
+.ph{background:var(--grain),#fffdf8;border:1px solid #ddd0b2;padding:8px;box-shadow:var(--paper-shadow)}
+.ph button.open{box-shadow:0 0 0 1px rgba(60,40,10,.25)}
+.ph::after{content:"";position:absolute;left:8px;right:8px;top:8px;aspect-ratio:1;pointer-events:none;
+  background:linear-gradient(135deg,#2b2621 0 8px,rgba(255,255,255,.28) 8px 9px,transparent 9px) top left/15px 15px no-repeat,
+    linear-gradient(225deg,#2b2621 0 8px,rgba(255,255,255,.28) 8px 9px,transparent 9px) top right/15px 15px no-repeat,
+    linear-gradient(45deg,#2b2621 0 8px,rgba(255,255,255,.18) 8px 9px,transparent 9px) bottom left/15px 15px no-repeat,
+    linear-gradient(315deg,#2b2621 0 8px,rgba(255,255,255,.18) 8px 9px,transparent 9px) bottom right/15px 15px no-repeat;
+  filter:drop-shadow(0 1px .5px rgba(0,0,0,.35))}
+
+/* a review is written on a ruled index card */
+.rv-prompt{position:relative;border:1px solid #d8cba8;border-radius:2px;padding:16px 18px 14px 50px;
+  background:linear-gradient(90deg,transparent 36px,rgba(196,52,52,.38) 36px 37px,transparent 37px),var(--grain),#fffef8;box-shadow:var(--paper-shadow)}
+.rv-prompt textarea{border:0;border-radius:0;box-shadow:none;padding:0 4px;line-height:26px;font-size:16px;min-height:104px;
+  background:repeating-linear-gradient(180deg,transparent 0 25px,rgba(70,110,170,.30) 25px 26px) local,transparent}
+.rv-prompt textarea:focus{outline:2px solid rgba(217,165,33,.6);outline-offset:3px}
+.rv-mine{border-top:0;position:relative;background:var(--grain),#fffefa;border:1px solid #ddd0b2;padding:12px 14px;box-shadow:var(--paper-shadow)}
+.rv{background:var(--grain),#fffdf8;border:1px solid #dccfb0;border-radius:2px;box-shadow:var(--paper-shadow);position:relative;padding:14px 16px 12px 18px}
+.rv{border-left:4px solid transparent;border-image:linear-gradient(180deg,#f3d77f,#b8861a 50%,#e9c45a) 0 0 0 4}
+
+/* likes: a porcelain button that turns to red enamel */
+.like{border:1px solid #b9a678;background:linear-gradient(180deg,#fffefa,#efe5cf);color:#5d523d;text-shadow:0 1px 0 #fff;
+  box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(60,40,10,.22)}
+.like[aria-pressed=true]{background:var(--enamel-red);border-color:#c99a2e;color:#fff;text-shadow:0 -1px 0 rgba(0,0,0,.4);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 1px 2px rgba(60,20,5,.35)}
+.like:not(:disabled):hover{border-color:#8f1d1d}
+.like[aria-pressed=true]:not(:disabled):hover{color:#fff}
+
+/* segmented controls, as on the first iPhone: tabs and sort order */
+.gtabs{display:inline-flex;border:1px solid #6f5e3a;border-radius:7px;overflow:hidden;margin-bottom:12px;
+  box-shadow:0 1px 0 rgba(255,255,255,.8),0 1px 2px rgba(60,40,10,.2)}
+.gtabs button{background:linear-gradient(180deg,#fffef9,#ece2c8);color:#3a3122;text-shadow:0 1px 0 #fff;border-right:1px solid #a28f63}
+.gtabs button:last-child{border-right:0}
+.gtabs button[aria-selected=true]{background:var(--lacquer);color:#fff;text-shadow:var(--white-engraved);box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+.gtabs button[aria-selected=true] span{background:var(--gilt);color:#3a2a06}
+.rtabs{display:flex;width:max-content;margin:14px 22px 12px;padding:0}
+.gsort{gap:0}
+.gsort span{margin-right:10px}
+.gsort button{border-radius:0;border:1px solid #a28f63;margin-left:-1px;background:linear-gradient(180deg,#fffef9,#ece2c8);color:#3a3122;
+  text-shadow:0 1px 0 #fff;box-shadow:inset 0 1px 0 #fff}
+.gsort button:first-of-type{border-radius:15px 0 0 15px;margin-left:0}
+.gsort button:last-of-type{border-radius:0 15px 15px 0}
+.gsort button[aria-pressed=true]{background:var(--lacquer);color:#fff;border-color:#000;text-shadow:var(--white-engraved);box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+
+/* the gallery */
+.gnote{background-image:var(--grain);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.gmapbox{background:radial-gradient(120% 90% at 50% 40%,rgba(255,255,255,.16),rgba(255,255,255,0) 60%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,0) 0 3px,rgba(70,110,118,.07) 3px 4px),var(--water)}
+#gmap .gst{stroke:rgba(250,246,236,.95)}
+.greset{border-radius:6px}
+.glegend,.gpick{background-image:var(--grain)}
+.paywall{position:relative;border:3px solid transparent;border-image:var(--gilt-diag) 3;background:var(--grain),#fffdf8;box-shadow:var(--paper-shadow);padding-right:96px}
+.paywall::after{content:"";position:absolute;top:12px;right:12px;width:70px;height:70px;background:url(seal.webp) center/contain no-repeat;transform:rotate(-9deg)}
+@media (max-width:480px){.paywall{padding-right:18px;padding-top:70px}.paywall::after{top:-6px;right:10px;width:62px;height:62px}}
+
+/* My pilgrimage: the page menu as a row of keys, the gallery key gilded */
+.amenu{background:var(--grain),rgba(247,242,231,.97);box-shadow:0 2px 5px -2px rgba(60,40,10,.25)}
+.amenu a{background:linear-gradient(180deg,#fffef9,#ece2c8);border:1px solid #a28f63;border-radius:8px;text-shadow:0 1px 0 #fff;
+  box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(60,40,10,.2)}
+.amenu a.gal{background:var(--gilt);color:#3a2706;border-color:#8a6514;text-shadow:0 1px 0 rgba(255,240,190,.7)}
+.amenu a:hover{border-color:#8f1d1d}
+.gpanel .mini{border:4px solid transparent;border-image:var(--gilt-diag) 4;box-shadow:var(--paper-shadow)}
+.gpanel .mini span{background:var(--lacquer);text-shadow:var(--white-engraved)}
+.order{background:var(--grain),#fffefa;border:1px solid #dccfb1;border-radius:2px;box-shadow:var(--paper-shadow)}
+
+/* the sign-in card and the gallery note on it */
+.signin{background:var(--grain),#fffdf8;border:1px solid #d6c8a5;border-radius:8px;padding:22px 24px;box-shadow:inset 0 1px 0 #fff,var(--paper-shadow)}
+.perk{border-left:0;border:1px solid #d9b85c;border-radius:6px;padding-left:16px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,#d9a521 0 5px,transparent 5px),linear-gradient(180deg,#fdf5dd,#f8ebc7);box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.gbtn{background:linear-gradient(180deg,#fff,#f1ece2)}
+
+/* the welcome letter, sealed in wax */
+.mb-card{background:repeating-linear-gradient(90deg,rgba(120,90,40,.035) 0 1px,transparent 1px 27px),var(--grain),#fbf7ee;border-radius:3px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.35),0 30px 70px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.6)}
+.mb-cardbar{background:var(--lacquer);border-bottom:0;border-image:none;position:relative;padding-bottom:24px;padding-right:110px}
+.mb-cardbar::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:16px;z-index:1;background:url(valance.svg) 0 0/44px 16px repeat-x;
+  filter:drop-shadow(0 2px 1.5px rgba(35,15,4,.5))}
+.mb-cardbar .kicker{background:var(--gilt);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mb-cardbar h2{text-shadow:var(--white-engraved)}
+.mb-card::after{content:"";position:absolute;z-index:2;top:46px;right:30px;width:84px;height:84px;background:url(seal.webp) center/contain no-repeat;transform:rotate(-8deg);pointer-events:none}
+.mb-cardbody{padding-top:26px}
+.mb-cardbody h3{box-shadow:0 1px 0 rgba(255,255,255,.7)}
+
+/* the review queue */
+.ritem{background:var(--grain),#fffdf8;border:1px solid #d9cba6;border-top:1px solid #d9cba6;padding:14px;box-shadow:var(--paper-shadow)}
+.ritem img{border:6px solid #fffdf8;box-shadow:0 0 0 1px #d9cba6,0 2px 6px rgba(60,40,10,.25)}
+.tbl table{background:var(--grain),#fffefa;box-shadow:var(--paper-shadow)}
+.tbl th{background:var(--lacquer);color:#fff;text-shadow:var(--white-engraved);border-bottom:0}
+.tbl td{border-bottom:1px solid rgba(70,110,170,.25)}
+
+/* lightbox and toasts */
+.lb img{border:7px solid #fffdf8;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.lb .x,.lb .nav{border-radius:50%;background:radial-gradient(circle at 50% 28%,#57514a 0%,#1a1714 62%,#000 100%);
+  border:1px solid rgba(255,255,255,.28);box-shadow:0 2px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+.mb-toast{background:var(--lacquer);border-radius:8px;border:1px solid #000;text-shadow:var(--white-engraved);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 20px rgba(0,0,0,.4)}
+
+/* map page: the account button as a glossy bar button, and the my-visits switch */
+.mb-acct{border:1px solid #000;border-radius:7px;color:#fff;text-shadow:var(--white-engraved);
+  background:linear-gradient(180deg,#5a544c 0%,#2a2622 49%,#141210 51%,#221f1b 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 0 rgba(255,255,255,.12)}
+.mb-acct:hover{color:#fff;background:linear-gradient(180deg,#c9574a 0%,#9c2721 49%,#7d1414 51%,#8f1d1d 100%)}
+.mb-tog{position:relative;width:68px;height:26px;padding:0;border-radius:13px;font-size:0;color:transparent;text-shadow:none;cursor:pointer;
+  border:1px solid #7e6c45;background:linear-gradient(180deg,#d9cfb8,#f1ead9);box-shadow:inset 0 2px 3px rgba(60,40,10,.35),0 1px 0 rgba(255,255,255,.8)}
+.mb-tog::after{content:"OFF";position:absolute;right:9px;top:50%;transform:translateY(-50%);font:800 10px/1 "Helvetica Neue",Helvetica,Arial,sans-serif;
+  letter-spacing:.06em;color:#6a5f4c;text-shadow:0 1px 0 #fff}
+.mb-tog::before{content:"";position:absolute;top:1px;left:1px;width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(180deg,#fffef9,#ddd2b8);border:1px solid #9a8760;box-shadow:0 1px 2px rgba(0,0,0,.3),inset 0 1px 0 #fff;transition:left .16s ease}
+.mb-tog[aria-pressed=true]{background:linear-gradient(180deg,#9c2721,#c4473a);border-color:#5a0f0f;box-shadow:inset 0 2px 3px rgba(0,0,0,.4)}
+.mb-tog[aria-pressed=true]::after{content:"ON";right:auto;left:12px;color:#fff;text-shadow:0 -1px 0 rgba(0,0,0,.45)}
+.mb-tog[aria-pressed=true]::before{left:43px}
+.mb-tog:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.mb-mine{border-top:0;position:relative;padding-top:24px}
+.mb-mine::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:url(cosmati.svg) 0 0/34px 10px repeat-x;opacity:.9}
+.mb-mine h3{text-shadow:var(--ink-letterpress)}
+@media (prefers-reduced-motion:reduce){.mb-tog::before{transition:none}}
+.like span,.ph figcaption .like span{color:inherit}
+.ph .chip{white-space:nowrap;font-size:9px;letter-spacing:.06em;padding:1px 5px}

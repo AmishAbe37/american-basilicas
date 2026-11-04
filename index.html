@@ -239,9 +239,10 @@
   .detail-overlay{overflow:hidden}
   .detail-card{flex-shrink:0;transform-origin:center center}
 </style>
+<link rel="stylesheet" href="texture/texture.css">
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="omb" viewBox="18 2 64 96"><rect x="48.4" y="48" width="3.2" height="44" fill="#9c7b2e" stroke="#3a2f10" stroke-width="0.8"/><circle cx="50" cy="93" r="3" fill="#e7c866" stroke="#3a2f10" stroke-width="0.8"/><path d="M22.00 52 L31.33 52 L31.33 56 A4.67 3.50 0 0 1 22.00 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M31.33 52 L40.67 52 L40.67 56 A4.67 3.50 0 0 1 31.33 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M40.67 52 L50.00 52 L50.00 56 A4.67 3.50 0 0 1 40.67 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M50.00 52 L59.33 52 L59.33 56 A4.67 3.50 0 0 1 50.00 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M59.33 52 L68.67 52 L68.67 56 A4.67 3.50 0 0 1 59.33 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M68.67 52 L78.00 52 L78.00 56 A4.67 3.50 0 0 1 68.67 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M50 8 Q39.92 32.00 22.00 52 L31.33 52 Q43.28 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q43.28 32.00 31.33 52 L40.67 52 Q46.64 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q46.64 32.00 40.67 52 L50.00 52 Q50.00 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q50.00 32.00 50.00 52 L59.33 52 Q53.36 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q53.36 32.00 59.33 52 L68.67 52 Q56.72 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q56.72 32.00 68.67 52 L78.00 52 Q60.08 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q39.92 32.00 22.00 52 L78 52 Q60.08 32.00 50 8 Z" fill="none" stroke="#3a2f10" stroke-width="1.3" stroke-linejoin="round"/><circle cx="50" cy="6.5" r="3.2" fill="#e7c866" stroke="#3a2f10" stroke-width="0.8"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="omb" viewBox="18 2 64 96"><rect x="48.4" y="48" width="3.2" height="44" fill="#9c7b2e" stroke="#3a2f10" stroke-width="0.8"/><circle cx="50" cy="93" r="3" fill="#e7c866" stroke="#3a2f10" stroke-width="0.8"/><path d="M22.00 52 L31.33 52 L31.33 56 A4.67 3.50 0 0 1 22.00 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M31.33 52 L40.67 52 L40.67 56 A4.67 3.50 0 0 1 31.33 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M40.67 52 L50.00 52 L50.00 56 A4.67 3.50 0 0 1 40.67 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M50.00 52 L59.33 52 L59.33 56 A4.67 3.50 0 0 1 50.00 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M59.33 52 L68.67 52 L68.67 56 A4.67 3.50 0 0 1 59.33 56 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.7"/><path d="M68.67 52 L78.00 52 L78.00 56 A4.67 3.50 0 0 1 68.67 56 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.7"/><path d="M50 8 Q39.92 32.00 22.00 52 L31.33 52 Q43.28 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q43.28 32.00 31.33 52 L40.67 52 Q46.64 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q46.64 32.00 40.67 52 L50.00 52 Q50.00 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q50.00 32.00 50.00 52 L59.33 52 Q53.36 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q53.36 32.00 59.33 52 L68.67 52 Q56.72 32.00 50 8 Z" fill="#8f1d1d" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q56.72 32.00 68.67 52 L78.00 52 Q60.08 32.00 50 8 Z" fill="#d9a521" stroke="#3a2f10" stroke-width="0.6" stroke-linejoin="round"/><path d="M50 8 Q39.92 32.00 22.00 52 L78 52 Q60.08 32.00 50 8 Z" fill="none" stroke="#3a2f10" stroke-width="1.3" stroke-linejoin="round"/><circle cx="50" cy="6.5" r="3.2" fill="#e7c866" stroke="#3a2f10" stroke-width="0.8"/></symbol><defs><radialGradient id="ombShadow"><stop offset="0" stop-color="#1a1005" stop-opacity=".55"/><stop offset="1" stop-color="#1a1005" stop-opacity="0"/></radialGradient><linearGradient id="ombSheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".3" stop-color="#fff" stop-opacity=".34"/><stop offset=".52" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs><symbol id="omb-pin" viewBox="18 2 64 96"><ellipse cx="51" cy="94.4" rx="12" ry="3.1" fill="url(#ombShadow)"/><use href="#omb" x="18" y="2" width="64" height="96"/><path d="M50 8 Q39.92 32 22 52 L78 52 Q60.08 32 50 8 Z" fill="url(#ombSheen)"/></symbol></svg>
 <div class="sheet">
   <header class="band">
     <div class="band-in">
@@ -550,7 +551,7 @@
       <div class="stat"><b>34</b><span>STATES, PLUS D.C.</span></div>
       <div class="stat"><b>9</b><span>MOST, IN NEW YORK</span></div>
     </div>
-    <p class="note"><strong>About the emblem.</strong> The red-and-gold striped umbrella above is the <em>ombrellino</em> (umbraculum); with the bell-on-a-pole <em>tintinnabulum</em>, it is the heraldic sign every minor basilica may display, recalling the canopy once carried over the pope. <strong>Major and minor.</strong> Major basilicas (there are only four, all in Rome) are a papal category; every basilica in the United States is a <em>minor</em> basilica. <strong>Sources:</strong> GCatholic registry and Catholic News Service, cross-checked July 2026 (94 total). Site coordinates are city-level. Not affiliated with the U.S. National Park Service or the Holy See; the Unigrid layout is an homage.</p>
+    <p class="note"><strong>About the emblem.</strong> The red-and-gold striped umbrella above is the <em>ombrellino</em> (umbraculum); with the bell-on-a-pole <em>tintinnabulum</em>, it is the heraldic sign every minor basilica may display, recalling the canopy once carried over the pope. <strong>Major and minor.</strong> Major basilicas (there are only four, all in Rome) are a papal category; every basilica in the United States is a <em>minor</em> basilica. <strong>Sources:</strong> GCatholic registry and Catholic News Service, cross-checked July 2026 (94 total). Site coordinates are city-level. Not affiliated with the U.S. National Park Service or the Holy See; the Unigrid layout is an homage. <strong>Relief shading:</strong> Natural Earth, by Tom Patterson (public domain).</p>
   </footer>
 </div>
 <div id="detail" class="detail-overlay" hidden>
@@ -659,6 +660,9 @@ g.selectAll("path.state").data(states).enter().append("path")
 // --- geography: lakes then rivers, drawn over the land ---
 g.selectAll("path.lake").data(LAKES.features).enter().append("path").attr("class","lake").attr("d",path);
 g.selectAll("path.river").data(RIVERS.features).enter().append("path").attr("class","river").attr("d",path);
+// shaded relief printed over the state tints (Natural Earth, public domain; built by tools/build_relief.py)
+const relief=g.insert("image","path.lake").attr("class","relief").attr("href","texture/relief.webp")
+  .attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("preserveAspectRatio","none").attr("aria-hidden","true");
 // terrain (physiographic) labels
 g.selectAll("text.physio").data(PHYSIO).enter().append("text").attr("class","physio")
   .attr("transform",d=>{const p=projection([d.lng,d.lat]);return p?`translate(${p[0]},${p[1]}) rotate(${d.rot||0})`:"translate(-999,-999)";})
@@ -692,7 +696,7 @@ const mk = g.selectAll("use.marker").data(MARKERS.map(m=>{
     return m;
   }).filter(m=>m.px>-90))
   .enter().append("use")
-  .attr("class","marker").attr("href","#omb")
+  .attr("class","marker").attr("href","#omb-pin")
   .on("mousemove",(e,d)=>{ showTip(`<b>${d.n}</b><br><span class="tc">${d.c}, ${d.s}${d.yr?" · since "+d.yr:""} — click for photo &amp; facts</span>`, e.clientX,e.clientY);})
   .on("mouseleave",hideTip)
   .on("click",(e,d)=>{ if(e.stopPropagation)e.stopPropagation(); openDetail(d); });
@@ -745,6 +749,8 @@ function restyle(){                                          // counter-scale ma
   const ic=iconUnits(), mw=ic.mw/k, mh=ic.mh/k;
   mk.attr("x",d=>d.px-mw/2).attr("y",d=>d.py-mh/2).attr("width",mw).attr("height",mh);
   g.selectAll("text").each(function(){ this.style.fontSize=(this.__fs/k)+"px"; if(this.__sw) this.style.strokeWidth=(this.__sw/k)+"px"; });
+  const rz=(Math.round(Math.min(1,2/k)*10)/10).toFixed(1);             // the raster relief fades as you zoom past 2×
+  if(rz!==restyle.rz){ restyle.rz=rz; relief.node().style.setProperty("--rz",rz); }
   const cs=CITY_PX/(svg.node().getBoundingClientRect().width/W||1)/k;    // constant ~6px square on screen
   cityG.select("rect").attr("x",d=>d.px-cs/2).attr("y",d=>d.py-cs/2).attr("width",cs).attr("height",cs);
 }
@@ -1024,5 +1030,8 @@ document.querySelectorAll('.st').forEach(st=>{
 });
 
 </script>
+<!-- member accounts: inactive until members/config.js is filled in -->
+<script src="members/config.js"></script>
+<script src="members/loader.js"></script>
 </body>
 </html>

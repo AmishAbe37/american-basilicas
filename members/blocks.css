@@ -1,0 +1,113 @@
+/* Member components shared by the map page and the member pages:
+   buttons, fields, sign-in card, the "my visit" block, photo grids, lightbox. */
+.mb,.mb *{box-sizing:border-box}
+/* buttons & fields */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border:2px solid var(--ink);background:transparent;
+  font:inherit;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);cursor:pointer}
+.btn.solid{background:var(--ink);color:#fff}
+.btn.solid:hover{background:var(--red);border-color:var(--red)}
+.btn:not(.solid):hover{background:var(--ink);color:#fff}
+.btn.small{min-height:34px;padding:0 12px;font-size:11px}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:var(--red);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+label.fld{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#3f3a2e;margin:0 0 5px}
+input[type=text],input[type=email],input[type=date],select,textarea{font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid #bfae86;background:#fff;
+  color:var(--text);border-radius:0;width:100%;max-width:420px}
+textarea{min-height:70px;resize:vertical;max-width:640px}
+input:focus,select:focus,textarea:focus,.btn:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.msg{font-size:14px;margin:10px 0 0;min-height:1.2em}
+.msg.err{color:var(--red2);font-weight:700}
+.msg.ok{color:var(--ok,#2f6b3a);font-weight:700}
+
+/* sign-in card */
+.signin{max-width:520px}
+.signin h3{margin:0 0 4px;font-size:19px}
+.signin .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;letter-spacing:.2em;margin:20px 0;text-transform:uppercase}
+.signin .or:before,.signin .or:after{content:"";flex:1;border-top:1px solid #d9cba6}
+.gbtn{background:#fff}
+.gbtn svg{width:18px;height:18px}
+
+/* photo grids */
+.grid-ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+@media(max-width:480px){.grid-ph{grid-template-columns:repeat(2,1fr);gap:8px}}
+.ph{position:relative;background:#fff;border:1px solid #d9cba6;padding:6px;margin:0}
+.ph button.open{display:block;width:100%;padding:0;border:0;background:var(--paper2);cursor:zoom-in;aspect-ratio:1}
+.ph img{display:block;width:100%;height:100%;object-fit:cover}
+.ph figcaption{font-size:12px;line-height:1.3;padding:6px 2px 0}
+.ph figcaption b{display:block;font-size:12.5px}
+.ph figcaption span{color:var(--muted)}
+.chip{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px;
+  background:var(--paper2);color:#5d523d;border:1px solid #d9cba6}
+.chip.pending{background:#fbf1d8;border-color:#e3c97b;color:#7a5a06}
+.chip.approved{background:#e6f0e4;border-color:#9fc29a;color:var(--ok,#2f6b3a)}
+.chip.rejected{background:#f6e2e0;border-color:#d9a19b;color:var(--red)}
+.ph .chip{position:absolute;top:12px;left:12px}
+.empty{color:var(--muted);font-style:italic}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(10,8,4,.9);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+.lb figure{margin:0;max-width:min(1200px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center}
+.lb img{max-width:100%;max-height:calc(100svh - 120px);object-fit:contain;background:#222}
+.lb figcaption{color:#f2ead6;font-size:14px;margin-top:10px;text-align:center;max-width:70ch}
+.lb figcaption b{color:#fff}
+.lb .x,.lb .nav{position:absolute;background:rgba(0,0,0,.5);color:#fff;border:0;font-size:30px;width:48px;height:48px;cursor:pointer;line-height:1}
+.lb .x{top:10px;right:10px}
+.lb .prev{left:10px;top:50%}.lb .next{right:10px;top:50%}
+
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+
+/* "my visit" block */
+.visitblk{margin-top:4px}
+.vb-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.vb-done{font-weight:800;color:var(--ok,#2f6b3a);font-size:15px;margin-right:6px}
+.vb-dl{margin:0!important}
+.vb-head input[type=date]{width:auto;max-width:180px;padding:7px 10px;font-size:15px}
+.vb-ph{margin-top:16px}
+.vb-phh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vb-up{cursor:pointer}
+.vb-ph .grid-ph{margin-top:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.ph figcaption input{width:100%}
+
+/* sign-in card: the gallery perk */
+.perk{margin:0 0 18px;padding:10px 12px;background:#fbf1d8;border-left:4px solid var(--gold);font-size:13.5px;line-height:1.45;color:#3f3522}
+
+/* welcome message (first sign-in) */
+.mb-modal{position:fixed;inset:0;z-index:120;background:rgba(10,8,4,.62);display:flex;align-items:center;justify-content:center;padding:16px}
+.mb-card{position:relative;background:var(--paper,#f7f2e7);max-width:560px;width:100%;max-height:calc(100svh - 32px);overflow:auto;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.mb-cardbar{background:var(--ink,#000);color:#fff;padding:16px 22px 14px;border-bottom:8px solid transparent;
+  border-image:repeating-linear-gradient(90deg,var(--red,#8f1d1d) 0 22px,var(--gold,#d9a521) 22px 44px) 8}
+.mb-cardbar .kicker{font-size:11px;letter-spacing:.28em;color:#d9c9a0;text-transform:uppercase;font-weight:700;margin:0 0 4px}
+.mb-cardbar h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.mb-cardbody{padding:18px 22px 22px;font-size:15px;line-height:1.5}
+.mb-cardbody h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:16px 0 4px;padding-bottom:3px;border-bottom:2px solid var(--ink,#000)}
+.mb-cardbody p{margin:6px 0}
+.mb-card .x{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+
+/* likes */
+.like{display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:0 10px;border:1.5px solid #cdbb8f;background:#fff;color:#5d523d;
+  font:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:16px}
+.like svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.like[aria-pressed=true]{color:var(--red,#8f1d1d);border-color:var(--red,#8f1d1d);background:#fbeeee}
+.like[aria-pressed=true] svg{fill:currentColor}
+.like:not(:disabled):hover{border-color:var(--red,#8f1d1d);color:var(--red,#8f1d1d)}
+.like:disabled{cursor:default;opacity:.75}
+.lb .like{margin-left:10px;vertical-align:middle;background:rgba(255,255,255,.12);color:#f2ead6;border-color:rgba(255,255,255,.4)}
+.lb .like[aria-pressed=true]{background:#f6e2e0;color:var(--red,#8f1d1d)}
+.mb-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:130;background:#221c14;color:#fff;padding:10px 16px;font-size:14px;max-width:90vw}
+
+/* the member's review, under their visit photos */
+.vb-rv{margin-top:18px}
+.vb-rv:empty{display:none}
+.rv-prompt{border:1.5px solid #e3c97b;background:#fffaf0;padding:14px 16px}
+.rv-prompt h4{margin:0 0 4px;font-size:16px}
+.rv-prompt > p:first-of-type{margin:0 0 12px;font-size:14px;color:#3f3522}
+.rv-prompt textarea{max-width:none}
+.rv-mine{border-top:2px solid var(--ink,#000);padding-top:10px}
+.rv-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rv-likes{font-size:13px;font-weight:700;color:var(--red,#8f1d1d)}
+.rv-body{white-space:pre-wrap;margin:8px 0 10px;font-size:14.5px;max-width:70ch}

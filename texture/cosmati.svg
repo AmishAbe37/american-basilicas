@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="14" viewBox="0 0 48 14">
+  <!-- A strip of Cosmatesque pavement, as in the floors of Rome's basilicas: porphyry and serpentine
+       triangles set in white marble between gilt fillets. Tiles across. -->
+  <defs>
+    <linearGradient id="m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f1e6"/><stop offset="1" stop-color="#e2dac8"/></linearGradient>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#93322b"/><stop offset="1" stop-color="#5f1b17"/></linearGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3f7357"/><stop offset="1" stop-color="#1f4632"/></linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1d27a"/><stop offset="1" stop-color="#a87b16"/></linearGradient>
+  </defs>
+  <rect width="48" height="14" fill="url(#m)"/>
+  <rect width="48" height="1.6" fill="url(#gd)"/><rect y="12.4" width="48" height="1.6" fill="url(#gd)"/>
+  <g stroke="#2a1d10" stroke-opacity=".25" stroke-width=".3">
+    <path d="M.9 11.6 6 2.4 11.1 11.6Z" fill="url(#p)"/><path d="M12.9 11.6 18 2.4 23.1 11.6Z" fill="url(#s)"/>
+    <path d="M24.9 11.6 30 2.4 35.1 11.6Z" fill="url(#p)"/><path d="M36.9 11.6 42 2.4 47.1 11.6Z" fill="url(#s)"/>
+    <path d="M6.9 2.4 12 11.6 17.1 2.4Z" fill="url(#gd)"/><path d="M18.9 2.4 24 11.6 29.1 2.4Z" fill="url(#p)"/>
+    <path d="M30.9 2.4 36 11.6 41.1 2.4Z" fill="url(#gd)"/><path d="M42.9 2.4 48 11.6 48 2.4Z" fill="url(#s)"/><path d="M-5.1 2.4 0 11.6 0 2.4Z" fill="url(#s)"/>
+  </g>
+</svg>
