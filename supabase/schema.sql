@@ -44,7 +44,7 @@ create or replace function public.is_admin() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.admins where user_id = auth.uid());
 $$;
-revoke all on function public.is_admin() from public;
+revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
 
 -- ---------------------------------------------------------------- profiles
@@ -80,6 +80,7 @@ end $$;
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created after insert on auth.users
   for each row execute function public.handle_new_user();
+revoke execute on function public.handle_new_user() from public, anon;
 
 -- ---------------------------------------------------------------- gallery membership
 -- The gallery is free for 3 months from sign-up; after that it needs a membership. Memberships are matched by
@@ -194,7 +195,7 @@ do $$ begin
 exception when duplicate_object then null; end $$;
 
 create or replace function public.requeue_on_edit() returns trigger      -- edits by members go back for review
-language plpgsql as $$
+language plpgsql set search_path = public as $$
 begin
   if not public.is_admin() then
     new.status := 'pending'; new.reviewed_at := null;
@@ -256,7 +257,7 @@ create trigger photos_requeue before update of caption on public.photos
 
 -- at most 30 photos per member per basilica
 create or replace function public.photos_limit() returns trigger
-language plpgsql as $$
+language plpgsql set search_path = public as $$
 begin
   if (select count(*) from public.photos where user_id = new.user_id and basilica_id = new.basilica_id) >= 30 then
     raise exception 'You can add up to 30 photos for each basilica.' using errcode = 'check_violation';
@@ -378,6 +379,7 @@ create trigger photo_likes_count after insert or delete on public.photo_likes
 drop trigger if exists review_likes_count on public.review_likes;
 create trigger review_likes_count after insert or delete on public.review_likes
   for each row execute function public.count_likes();
+revoke execute on function public.count_likes() from public, anon;
 
 -- ---------------------------------------------------------------- moderation (admins)
 create or replace function public.moderate(kind text, item_id uuid, decision public.moderation_status) returns void

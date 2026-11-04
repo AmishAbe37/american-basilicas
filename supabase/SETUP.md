@@ -162,7 +162,7 @@ Orders are matched to members by email address. A member sees only orders placed
 
    | Name | Value |
    |---|---|
-   | `SHOPIFY_STORE` | `americanbasilicas.myshopify.com` |
+   | `SHOPIFY_STORE` | `qzmnhn-mf.myshopify.com` |
    | `SHOPIFY_CLIENT_ID` | from step 5 |
    | `SHOPIFY_CLIENT_SECRET` | from step 5 |
 
