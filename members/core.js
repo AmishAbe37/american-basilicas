@@ -58,6 +58,8 @@
     sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: redirect || here(), shouldCreateUser: true } });
   AB.verifyCode = (email, code) => sb.auth.verifyOtp({ email: email.trim(), token: code.replace(/\D/g, ""), type: "email" });
   AB.google = (redirect) => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: redirect || here() } });
+  AB.APPLE = !!C.appleSignIn;
+  AB.apple = (redirect) => sb.auth.signInWithOAuth({ provider: "apple", options: { redirectTo: redirect || here() } });
   AB.signOut = () => sb.auth.signOut();
 
   const must = ({ data, error }) => { if (error) throw error; return data; };

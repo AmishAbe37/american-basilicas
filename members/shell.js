@@ -37,14 +37,18 @@
 
   const GOOGLE = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.2l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.8c-.5-1.5-.8-3.1-.8-4.8s.3-3.3.8-4.8l-7.8-6C1 16.5 0 20.1 0 24s1 7.5 2.7 10.8l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>';
 
-  /* Sign-in card: email link (with a 6-digit code as a fallback) or Google. */
+  // Apple asks sites to use its own button artwork, so the Apple button is Apple's hosted image (Sign in with Apple button API).
+  const APPLE_BTN = "https://appleid.cdn-apple.com/appleid/button?height=44&width=264&color=black&border=false&type=continue&border_radius=0&scale=2&locale=en_US";
+
+  /* Sign-in card: email link (with a 6-digit code as a fallback), Google, or Apple (when switched on in config.js). */
   AB.signinForm = function (el, { lead } = {}) {
     el.innerHTML =
       '<div class="signin"><h3>Sign in or create your account</h3>' +
       '<p class="hint" style="margin:0 0 12px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos and reviews from other members.") + "</p>" +
       '<p class="perk"><b>New accounts get the members’ gallery free for three months.</b> After that, the gallery is for subscribers. ' +
       "Your own map, visits and photos are always free.</p>" +
-      '<button class="btn gbtn" data-g type="button">' + GOOGLE + "Continue with Google</button>" +
+      '<div class="oauth"><button class="btn gbtn" data-g type="button">' + GOOGLE + "Continue with Google</button>" +
+      (AB.APPLE ? '<button class="abtn" data-a type="button"><img src="' + APPLE_BTN + '" alt="Continue with Apple" width="264" height="44"></button>' : "") + "</div>" +
       '<div class="or">or</div>' +
       '<form data-f1><label class="fld" for="sie">Email</label><input id="sie" type="email" autocomplete="email" required placeholder="you@example.com">' +
       '<div class="btnrow" style="margin-top:12px"><button class="btn solid" type="submit">Email me a sign-in link</button></div>' +
@@ -57,6 +61,14 @@
     const say = (t, cls) => { msg.className = "msg " + (cls || ""); msg.textContent = t || ""; };
     const busy = (form, on) => form.querySelectorAll("button").forEach((b) => (b.disabled = on));
     el.querySelector("[data-g]").onclick = async () => { say(""); const { error } = await AB.google(); if (error) say(error.message, "err"); };
+    const ab = el.querySelector("[data-a]");
+    if (ab) {
+      ab.onclick = async () => { say(""); const { error } = await AB.apple(); if (error) say(error.message, "err"); };
+      // if Apple's button image can't load (blocked or offline), fall back to a plain label on the same black button
+      const img = ab.querySelector("img"), plain = () => { const t = document.createElement("span"); t.textContent = "Continue with Apple"; img.replaceWith(t); };
+      img.onerror = plain;
+      if (img.complete && !img.naturalWidth) plain();
+    }
     f1.onsubmit = async (e) => {
       e.preventDefault(); say(""); busy(f1, true);
       const { error } = await AB.sendLink(email.value);
