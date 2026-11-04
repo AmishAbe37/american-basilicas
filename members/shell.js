@@ -41,7 +41,7 @@
   AB.signinForm = function (el, { lead } = {}) {
     el.innerHTML =
       '<div class="signin"><h3>Sign in or create your account</h3>' +
-      '<p class="hint" style="margin:0 0 12px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos and reviews from other members.") + "</p>" +
+      '<p class="hint" style="margin:0 0 12px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos, reviews and questions from other members.") + "</p>" +
       '<p class="perk"><b>New accounts get the members’ gallery free for three months.</b> After that, the gallery is for subscribers. ' +
       "Your own map, visits and photos are always free.</p>" +
       '<button class="btn gbtn" data-g type="button">' + GOOGLE + "Continue with Google</button>" +
@@ -85,7 +85,7 @@
         " — your first three months. After that, it’s for subscribers. Your own map, visits and photos stay free." };
     }
     return { tag: "Subscribers only", html: "Your free three months of the members’ gallery ended on " + until(m.free_until) +
-      ". Subscribe to see members’ photos and reviews again. Your own map, visits and photos stay free." };
+      ". Subscribe to see members’ photos, reviews and questions again. Your own map, visits and photos stay free." };
   };
   AB.subscribeButtons = (m) =>
     '<a class="btn solid" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Become a subscriber</a>' +
@@ -112,7 +112,7 @@
     if (!m || m.welcomed_at || document.querySelector(".mb-welcome")) return;
     const first = p && p.display_name && p.display_name !== "Pilgrim" ? ", " + E(p.display_name) : "";
     const gal = m.kind === "trial"
-      ? "<h3>The members’ gallery — free until " + E(AB.fmtDate(m.free_until)) + "</h3><p>Browse every member’s photos and reviews basilica by basilica on the gallery map, " +
+      ? "<h3>The members’ gallery — free until " + E(AB.fmtDate(m.free_until)) + "</h3><p>Browse every member’s photos, reviews, and questions and answers basilica by basilica on the gallery map, " +
         "like your favourites, and sort by most liked or latest. <b>It’s included free for your first three months.</b> After " + E(AB.fmtDate(m.free_until)) +
         ", the gallery is for paid subscribers.</p>"
       : "<h3>The members’ gallery</h3><p>" + AB.memberLine(m).html + "</p>";

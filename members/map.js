@@ -2,6 +2,7 @@
    - a sign-in / "My pilgrimage" link in the header band
    - the member's own edition of the map: visited basilicas in full colour, the rest faded, ticks in the index
    - "Your visit" (check-off, date, note, photos) inside each basilica's popup
+   - a link from each popup to that basilica's members' page (photos, reviews, questions and answers)
    - index.html#b=<basilica> opens that basilica directly
    Relies on the map page's globals: MARKERS, mk (d3 selection of markers), openDetail, CUR. */
 (function () {
@@ -58,12 +59,14 @@
   body.appendChild(box);
   async function fill(d) {
     if (!AB.user) {
-      box.innerHTML = '<h3>Been here?</h3><p>Sign in to check off ' + E(d.n) + ', keep your photos from the visit, and see members’ photos and reviews.</p>' +
+      box.innerHTML = '<h3>Been here?</h3><p>Sign in to check off ' + E(d.n) + ', keep your photos from the visit, and see members’ photos, reviews and questions.</p>' +
         '<p class="perk">New accounts get the members’ gallery free for three months.</p>' +
-        '<a class="btn solid" href="' + AB.page("account.html#b=" + d.ph) + '">Sign in or create an account</a>';
+        '<a class="btn solid" href="' + AB.page("account.html#b=" + d.ph) + '">Sign in or create an account</a>' +
+        '<p class="mb-gal"><a href="' + AB.page("basilica.html?b=" + d.ph) + '">Members’ photos, reviews &amp; questions about this basilica &rarr;</a></p>';
       return;
     }
-    box.innerHTML = '<h3>Your visit</h3><div class="mb-vb"></div><p class="mb-gal"><a href="' + AB.page("gallery.html#b=" + d.ph) + '">Members’ photos &amp; reviews of this basilica</a>' +
+    box.innerHTML = '<p class="mb-page"><a class="btn" href="' + AB.page("basilica.html?b=" + d.ph) + '">Members’ page: photos, reviews &amp; questions &rarr;</a></p>' +
+      '<h3>Your visit</h3><div class="mb-vb"></div><p class="mb-gal"><a href="' + AB.page("gallery.html#b=" + d.ph) + '">Gallery map</a>' +
       ' · <a href="' + AB.page("account.html#b=" + d.ph) + '">My pilgrimage</a></p>';
     AB.visitBlock(box.querySelector(".mb-vb"), { id: d.ph, name: d.n }, { onChange: paint });
   }

@@ -16,7 +16,7 @@
 </head>
 <body class="mp">
 <main id="main" aria-live="polite"></main>
-<footer class="mf">Approve puts a photo or review in the members’ gallery. Not shared keeps it with the member only. Delete removes it for good (use for anything inappropriate). Memberships: Buy Me a Coffee subscribers appear automatically; grant access by hand for gifts and fixes.</footer>
+<footer class="mf">Approve puts a photo, review, question or answer in the members’ gallery. Not shared keeps it with the member only. Delete removes it for good (use for anything inappropriate). Memberships: Buy Me a Coffee subscribers appear automatically; grant access by hand for gifts and fixes.</footer>
 <script>
 (function () {
   "use strict";
@@ -33,19 +33,22 @@
       return;
     }
     main.innerHTML = '<div class="gtabs rtabs" role="tablist"><button role="tab" type="button" data-t="photos">Photos <span id="nP">…</span></button>' +
-      '<button role="tab" type="button" data-t="reviews">Reviews <span id="nR">…</span></button><button role="tab" type="button" data-t="members">Memberships</button></div><div id="pane"></div>';
+      '<button role="tab" type="button" data-t="reviews">Reviews <span id="nR">…</span></button><button role="tab" type="button" data-t="questions">Questions <span id="nQ">…</span></button>' +
+      '<button role="tab" type="button" data-t="answers">Answers <span id="nA">…</span></button><button role="tab" type="button" data-t="members">Memberships</button></div><div id="pane"></div>';
     main.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => show(b.dataset.t)));
     BY = await AB.basilicaMap().catch(() => ({}));
     AB.pending().then((l) => (document.getElementById("nP").textContent = l.length)).catch(() => {});
     AB.pendingReviews().then((l) => (document.getElementById("nR").textContent = l.length)).catch(() => {});
-    show((location.hash.match(/^#(photos|reviews|members)$/) || [])[1] || "photos");
+    AB.pendingQuestions().then((l) => (document.getElementById("nQ").textContent = l.length)).catch(() => {});
+    AB.pendingAnswers().then((l) => (document.getElementById("nA").textContent = l.length)).catch(() => {});
+    show((location.hash.match(/^#(photos|reviews|questions|answers|members)$/) || [])[1] || "photos");
   });
 
   let BY = {};
   function show(t) {
     history.replaceState(null, "", "#" + t);
     main.querySelectorAll("[data-t]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.t === t)));
-    ({ photos, reviews, members })[t]();
+    ({ photos, reviews, questions, answers, members })[t]();
   }
   const where = (id) => { const b = BY[id] || { name: id, city: "", state: "" }; return b; };
   const shell = (title) => {
@@ -56,7 +59,7 @@
     const count = () => {
       const n = rq.querySelectorAll(".ritem").length;
       document.getElementById("cnt").textContent = n + " " + label + (n === 1 ? "" : "s");
-      document.getElementById(kind === "photo" ? "nP" : "nR").textContent = n;
+      document.getElementById({ photo: "nP", review: "nR", question: "nQ", answer: "nA" }[kind]).textContent = n;
       if (!n) rq.innerHTML = '<p class="empty">Nothing waiting. 🎉</p>';
     };
     count();
@@ -98,6 +101,33 @@
         '<p class="rv-body" style="background:#fff;border:1px solid #d9cba6;padding:10px 12px">' + E(r.body) + "</p>" + BTNS + "</div></div>";
     }).join("");
     wire(rq, list, "review", "review", (r) => AB.deleteReview(r.id));
+  }
+
+  const textBox = (t) => '<p class="rv-body" style="background:#fff;border:1px solid #d9cba6;padding:10px 12px">' + E(t) + "</p>";
+  const byLine = (x, b) => '<p class="hint" style="margin:0 0 8px">' + E(b.city) + ", " + E(b.state) + " · by <b>" + E((x.profiles && x.profiles.display_name) || "?") + "</b> · " +
+    E(AB.fmtDate(x.updated_at)) + (new Date(x.updated_at) - new Date(x.created_at) > 60000 ? " · edited" : "") + (x.author_visited ? " · has visited" : "") + "</p>";
+
+  async function questions() {
+    const { rq, msg } = shell("Questions waiting for review");
+    let list;
+    try { list = await AB.pendingQuestions(); } catch (e) { msg.className = "msg err"; msg.textContent = e.message; return; }
+    rq.innerHTML = list.map((q, i) => {
+      const b = where(q.basilica_id);
+      return '<div class="ritem rrev" data-i="' + i + '"><div><h3>' + E(b.name) + "</h3>" + byLine(q, b) + textBox(q.body) + BTNS + "</div></div>";
+    }).join("");
+    wire(rq, list, "question", "question", (q) => AB.deleteQuestion(q.id));
+  }
+
+  async function answers() {
+    const { rq, msg } = shell("Answers waiting for review");
+    let list;
+    try { list = await AB.pendingAnswers(); } catch (e) { msg.className = "msg err"; msg.textContent = e.message; return; }
+    rq.innerHTML = list.map((a, i) => {
+      const q = a.questions || {}, b = where(q.basilica_id);
+      return '<div class="ritem rrev" data-i="' + i + '"><div><h3>' + E(b.name) + "</h3>" + byLine(a, b) +
+        '<p class="hint" style="margin:0 0 6px">Answering: <i>“' + E(q.body || "") + "”</i></p>" + textBox(a.body) + BTNS + "</div></div>";
+    }).join("");
+    wire(rq, list, "answer", "answer", (a) => AB.deleteAnswer(a.id));
   }
 
   async function members() {

@@ -202,9 +202,64 @@
   };
   AB.deleteReview = async (id) => must(await sb.from("reviews").delete().eq("id", id));
 
+  // ---------- questions and answers: members ask about a basilica and answer each other ----------
+  const Q_COLS = "id,user_id,basilica_id,body,status,answer_count,author_visited,created_at,updated_at";
+  const A_COLS = "id,question_id,user_id,body,status,author_visited,created_at,updated_at";
+  const Q_BY = ",profiles!questions_user_id_fkey(display_name)", A_BY = ",profiles!answers_user_id_fkey(display_name)";
+  // approved questions plus the member's own (theirs show with "waiting for approval" until checked)
+  AB.questionsFor = async (bid, { sort, offset, limit } = {}) => {
+    const from = offset || 0, n = limit || 10;
+    let q = sb.from("questions").select(Q_COLS + Q_BY).eq("basilica_id", bid).or("status.eq.approved,user_id.eq." + AB.user.id);
+    q = sort === "popular" ? q.order("answer_count", { ascending: false }).order("created_at", { ascending: false }) : q.order("created_at", { ascending: false });
+    return must(await q.order("id").range(from, from + n - 1));
+  };
+  AB.answersFor = async (qids) => {
+    const out = [];
+    for (let i = 0; i < qids.length; i += 50)
+      out.push(...must(await sb.from("answers").select(A_COLS + A_BY).in("question_id", qids.slice(i, i + 50))
+        .or("status.eq.approved,user_id.eq." + AB.user.id).order("created_at").order("id")));
+    return out;
+  };
+  const qaError = (e, what) => {
+    if (/a day/.test(e.message)) return e;
+    if (/row-level security|violates|permission/.test(e.message)) return new Error("Only members with gallery access can " + what + ".");
+    return e;
+  };
+  AB.ask = async (bid, body) => {
+    body = String(body || "").trim();
+    if (body.length < 10) throw new Error("Write at least 10 characters.");
+    if (body.length > 500) throw new Error("Keep questions under 500 characters.");
+    try { return must(await sb.from("questions").insert({ basilica_id: bid, body }).select(Q_COLS).single()); }
+    catch (e) { throw qaError(e, "ask questions"); }
+  };
+  AB.answer = async (qid, body) => {
+    body = String(body || "").trim();
+    if (body.length < 2) throw new Error("Write an answer first.");
+    if (body.length > 1500) throw new Error("Keep answers under 1,500 characters.");
+    try { return must(await sb.from("answers").insert({ question_id: qid, body }).select(A_COLS).single()); }
+    catch (e) { throw qaError(e, "answer questions"); }
+  };
+  AB.deleteQuestion = async (id) => must(await sb.from("questions").delete().eq("id", id));
+  AB.deleteAnswer = async (id) => must(await sb.from("answers").delete().eq("id", id));
+  // { basilica_id: n } approved questions; open to all members, like galleryCounts
+  AB.questionCounts = async () => {
+    const m = {};
+    must(await sb.rpc("question_counts")).forEach((r) => (m[r.basilica_id] = Number(r.questions) || 0));
+    return m;
+  };
+  // galleryCounts with questions folded in: { basilica_id: { photos, reviews, questions } }
+  AB.allCounts = async () => {
+    const [g, q] = await Promise.all([AB.galleryCounts(), AB.questionCounts().catch(() => ({}))]);
+    for (const id in g) g[id].questions = q[id] || 0;
+    for (const id in q) if (!g[id]) g[id] = { photos: 0, reviews: 0, questions: q[id] };
+    return g;
+  };
+
   // ---------- moderation and memberships (admins) ----------
   AB.pending = async () => must(await sb.from("photos").select(PHOTO_COLS + PHOTO_BY).eq("status", "pending").order("created_at").limit(200));
   AB.pendingReviews = async () => must(await sb.from("reviews").select(REVIEW_COLS + REVIEW_BY).eq("status", "pending").order("updated_at").limit(200));
+  AB.pendingQuestions = async () => must(await sb.from("questions").select(Q_COLS + Q_BY).eq("status", "pending").order("updated_at").limit(200));
+  AB.pendingAnswers = async () => must(await sb.from("answers").select(A_COLS + A_BY + ",questions(body,basilica_id)").eq("status", "pending").order("updated_at").limit(200));
   AB.moderate = async (kind, id, decision) => must(await sb.rpc("moderate", { kind, item_id: id, decision }));
   AB.review = (id, decision) => AB.moderate("photo", id, decision);
   AB.grantAccess = async (email, months, why) => must(await sb.rpc("admin_grant_access", { member_email: email, months: +months, why: why || null }));

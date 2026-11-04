@@ -10,13 +10,16 @@
 --   reviews        one review per member per basilica, written after a visit with photos; shared once approved
 --   photo_likes,
 --   review_likes   likes, which give the "most liked" order
+--   questions,
+--   answers        members' questions about a basilica and other members' answers; shared once approved
 --   subscriptions  gallery memberships by email (Buy Me a Coffee webhook, or access you grant by hand)
 --   admins         who may approve photos and reviews (add yourself after signing up — see SETUP.md)
 --   storage        private bucket "member-photos", files at <user id>/<basilica id>/<photo id>.jpg (+ .t.jpg thumbnail)
 --
 -- Security model (row-level security is on for every table)
---   • A member always reads and writes their own visits, photos and reviews.
---   • The members' gallery — other members' approved photos and reviews, and liking them — needs gallery access:
+--   • A member always reads and writes their own visits, photos, reviews, questions and answers.
+--   • The members' gallery — other members' approved photos, reviews, questions and answers, liking, asking and
+--     answering — needs gallery access:
 --     free for the first 3 months after sign-up, then for subscribers (plus admins and anyone you grant access).
 --   • Signed-out visitors can read the basilica list and nothing else.
 --   • Nobody can approve their own content; approval goes through moderate(), which checks admins.
@@ -44,7 +47,7 @@ create or replace function public.is_admin() returns boolean
 language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.admins where user_id = auth.uid());
 $$;
-revoke all on function public.is_admin() from public;
+revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
 
 -- ---------------------------------------------------------------- profiles
@@ -80,6 +83,7 @@ end $$;
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created after insert on auth.users
   for each row execute function public.handle_new_user();
+revoke execute on function public.handle_new_user() from public, anon;
 
 -- ---------------------------------------------------------------- gallery membership
 -- The gallery is free for 3 months from sign-up; after that it needs a membership. Memberships are matched by
@@ -194,11 +198,11 @@ do $$ begin
 exception when duplicate_object then null; end $$;
 
 create or replace function public.requeue_on_edit() returns trigger      -- edits by members go back for review
-language plpgsql as $$
+language plpgsql set search_path = public as $$
 begin
   if not public.is_admin() then
     new.status := 'pending'; new.reviewed_at := null;
-    if tg_table_name = 'reviews' then new.updated_at := now(); end if;
+    if tg_table_name in ('reviews', 'questions', 'answers') then new.updated_at := now(); end if;
   end if;
   return new;
 end $$;
@@ -256,7 +260,7 @@ create trigger photos_requeue before update of caption on public.photos
 
 -- at most 30 photos per member per basilica
 create or replace function public.photos_limit() returns trigger
-language plpgsql as $$
+language plpgsql set search_path = public as $$
 begin
   if (select count(*) from public.photos where user_id = new.user_id and basilica_id = new.basilica_id) >= 30 then
     raise exception 'You can add up to 30 photos for each basilica.' using errcode = 'check_violation';
@@ -378,6 +382,157 @@ create trigger photo_likes_count after insert or delete on public.photo_likes
 drop trigger if exists review_likes_count on public.review_likes;
 create trigger review_likes_count after insert or delete on public.review_likes
   for each row execute function public.count_likes();
+revoke execute on function public.count_likes() from public, anon;
+
+-- ---------------------------------------------------------------- questions and answers
+-- Members with gallery access ask about a basilica (parking, Mass times, what not to miss) and answer each other.
+-- Like photos and reviews, both are checked before other members see them; authors always see their own.
+create table if not exists public.questions (
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid not null default auth.uid() references public.profiles(id) on delete cascade,
+  basilica_id    text not null references public.basilicas(id),
+  body           text not null check (char_length(btrim(body)) between 10 and 500),
+  status         public.moderation_status not null default 'pending',
+  answer_count   int not null default 0,                -- approved answers, kept up to date by count_answers()
+  author_visited boolean not null default false,        -- the asker had checked this basilica off when asking
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now(),
+  reviewed_at    timestamptz
+);
+create table if not exists public.answers (
+  id             uuid primary key default gen_random_uuid(),
+  question_id    uuid not null references public.questions(id) on delete cascade,
+  user_id        uuid not null default auth.uid() references public.profiles(id) on delete cascade,
+  body           text not null check (char_length(btrim(body)) between 2 and 1500),
+  status         public.moderation_status not null default 'pending',
+  author_visited boolean not null default false,        -- the answerer had checked this basilica off when answering
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now(),
+  reviewed_at    timestamptz
+);
+create index if not exists questions_latest on public.questions (basilica_id, created_at desc) where status = 'approved';
+create index if not exists questions_answered on public.questions (basilica_id, answer_count desc, created_at desc) where status = 'approved';
+create index if not exists questions_queue on public.questions (status, created_at);
+create index if not exists questions_user on public.questions (user_id, created_at);
+create index if not exists answers_question on public.answers (question_id, created_at);
+create index if not exists answers_queue on public.answers (status, created_at);
+create index if not exists answers_user on public.answers (user_id, created_at);
+alter table public.questions enable row level security;
+alter table public.answers enable row level security;
+
+drop policy if exists "own questions" on public.questions;
+create policy "own questions" on public.questions for select to authenticated using (user_id = auth.uid());
+drop policy if exists "gallery questions" on public.questions;
+create policy "gallery questions" on public.questions for select to authenticated
+  using (status = 'approved' and (select public.has_gallery_access()));
+drop policy if exists "admins see all questions" on public.questions;
+create policy "admins see all questions" on public.questions for select to authenticated using (public.is_admin());
+drop policy if exists "ask a question" on public.questions;
+create policy "ask a question" on public.questions for insert to authenticated
+  with check (user_id = auth.uid() and status = 'pending' and reviewed_at is null and answer_count = 0
+              and (select public.has_gallery_access()));
+drop policy if exists "edit own question" on public.questions;
+create policy "edit own question" on public.questions for update to authenticated
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "delete own question" on public.questions;
+create policy "delete own question" on public.questions for delete to authenticated using (user_id = auth.uid());
+drop policy if exists "admins delete questions" on public.questions;
+create policy "admins delete questions" on public.questions for delete to authenticated using (public.is_admin());
+
+drop policy if exists "own answers" on public.answers;
+create policy "own answers" on public.answers for select to authenticated using (user_id = auth.uid());
+drop policy if exists "gallery answers" on public.answers;
+create policy "gallery answers" on public.answers for select to authenticated
+  using (status = 'approved' and (select public.has_gallery_access())
+         and exists (select 1 from public.questions q where q.id = question_id and q.status = 'approved'));
+drop policy if exists "admins see all answers" on public.answers;
+create policy "admins see all answers" on public.answers for select to authenticated using (public.is_admin());
+-- only approved questions can be answered
+drop policy if exists "answer a question" on public.answers;
+create policy "answer a question" on public.answers for insert to authenticated
+  with check (user_id = auth.uid() and status = 'pending' and reviewed_at is null and (select public.has_gallery_access())
+              and exists (select 1 from public.questions q where q.id = question_id and q.status = 'approved'));
+drop policy if exists "edit own answer" on public.answers;
+create policy "edit own answer" on public.answers for update to authenticated
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "delete own answer" on public.answers;
+create policy "delete own answer" on public.answers for delete to authenticated using (user_id = auth.uid());
+drop policy if exists "admins delete answers" on public.answers;
+create policy "admins delete answers" on public.answers for delete to authenticated using (public.is_admin());
+
+revoke all on public.questions, public.answers from anon, authenticated;
+grant select, delete on public.questions, public.answers to authenticated;
+grant insert (basilica_id, body) on public.questions to authenticated;
+grant insert (question_id, body) on public.answers to authenticated;
+grant update (body) on public.questions, public.answers to authenticated;   -- status and counts change only via functions
+
+drop trigger if exists questions_requeue on public.questions;
+create trigger questions_requeue before update of body on public.questions
+  for each row when (new.body is distinct from old.body) execute function public.requeue_on_edit();
+drop trigger if exists answers_requeue on public.answers;
+create trigger answers_requeue before update of body on public.answers
+  for each row when (new.body is distinct from old.body) execute function public.requeue_on_edit();
+
+-- note whether the author has checked off the basilica, so others can see "has visited" next to the post
+create or replace function public.qa_author_visited() returns trigger
+language plpgsql security definer set search_path = public as $$
+declare bid text;
+begin
+  if tg_table_name = 'questions' then
+    bid := new.basilica_id;
+  else
+    select q.basilica_id into bid from public.questions q where q.id = new.question_id;
+  end if;
+  new.author_visited := exists (select 1 from public.visits v where v.user_id = new.user_id and v.basilica_id = bid);
+  return new;
+end $$;
+revoke execute on function public.qa_author_visited() from public, anon;
+drop trigger if exists questions_visited on public.questions;
+create trigger questions_visited before insert on public.questions
+  for each row execute function public.qa_author_visited();
+drop trigger if exists answers_visited on public.answers;
+create trigger answers_visited before insert on public.answers
+  for each row execute function public.qa_author_visited();
+
+-- at most 20 questions and 50 answers per member per day (keeps a runaway script or spammer in check)
+create or replace function public.qa_limit() returns trigger
+language plpgsql set search_path = public as $$
+begin
+  if tg_table_name = 'questions' then
+    if (select count(*) from public.questions where user_id = new.user_id and created_at > now() - interval '1 day') >= 20 then
+      raise exception 'You can ask up to 20 questions a day. Please try again tomorrow.' using errcode = 'check_violation';
+    end if;
+  elsif (select count(*) from public.answers where user_id = new.user_id and created_at > now() - interval '1 day') >= 50 then
+    raise exception 'You can post up to 50 answers a day. Please try again tomorrow.' using errcode = 'check_violation';
+  end if;
+  return new;
+end $$;
+drop trigger if exists questions_limit on public.questions;
+create trigger questions_limit before insert on public.questions
+  for each row execute function public.qa_limit();
+drop trigger if exists answers_limit on public.answers;
+create trigger answers_limit before insert on public.answers
+  for each row execute function public.qa_limit();
+
+-- keep answer_count equal to the question's approved answers (members can't write it themselves)
+create or replace function public.count_answers() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if tg_op <> 'INSERT' then
+    update public.questions set answer_count =
+      (select count(*) from public.answers a where a.question_id = old.question_id and a.status = 'approved') where id = old.question_id;
+  end if;
+  if tg_op <> 'DELETE' then
+    update public.questions set answer_count =
+      (select count(*) from public.answers a where a.question_id = new.question_id and a.status = 'approved') where id = new.question_id;
+  end if;
+  return null;
+end $$;
+revoke execute on function public.count_answers() from public, anon;
+drop trigger if exists answers_count on public.answers;
+-- (any update: an edit sends the answer back for review through a trigger, which "update of status" wouldn't see)
+create trigger answers_count after insert or delete or update on public.answers
+  for each row execute function public.count_answers();
 
 -- ---------------------------------------------------------------- moderation (admins)
 create or replace function public.moderate(kind text, item_id uuid, decision public.moderation_status) returns void
@@ -389,8 +544,12 @@ begin
     update public.photos set status = decision, reviewed_at = now() where id = item_id;
   elsif kind = 'review' then
     update public.reviews set status = decision, reviewed_at = now() where id = item_id;
+  elsif kind = 'question' then
+    update public.questions set status = decision, reviewed_at = now() where id = item_id;
+  elsif kind = 'answer' then
+    update public.answers set status = decision, reviewed_at = now() where id = item_id;
   else
-    raise exception 'kind must be photo or review';
+    raise exception 'kind must be photo, review, question or answer';
   end if;
 end $$;
 revoke all on function public.moderate(text, uuid, public.moderation_status) from public, anon;
@@ -408,9 +567,17 @@ $$;
 revoke all on function public.gallery_counts() from public, anon;
 grant execute on function public.gallery_counts() to authenticated;
 
+-- how many approved questions each basilica has (only basilicas that have some), for the same purpose
+create or replace function public.question_counts() returns table (basilica_id text, questions bigint)
+language sql stable security definer set search_path = public as $$
+  select q.basilica_id, count(*) from public.questions q where q.status = 'approved' group by q.basilica_id;
+$$;
+revoke all on function public.question_counts() from public, anon;
+grant execute on function public.question_counts() to authenticated;
+
 -- signed-out visitors get nothing from the member tables (RLS would return no rows anyway; this makes it explicit)
 revoke all on public.profiles, public.visits, public.photos, public.reviews, public.photo_likes, public.review_likes,
-  public.admins, public.subscriptions from anon;
+  public.questions, public.answers, public.admins, public.subscriptions from anon;
 
 -- ---------------------------------------------------------------- storage
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

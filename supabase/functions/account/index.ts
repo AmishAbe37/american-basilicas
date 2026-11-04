@@ -5,7 +5,7 @@
 //
 // Deploy:  supabase functions deploy account
 // Secrets (supabase secrets set NAME=value):
-//   SHOPIFY_STORE            americanbasilicas.myshopify.com
+//   SHOPIFY_STORE            qzmnhn-mf.myshopify.com
 //   SHOPIFY_CLIENT_ID        } from the Dev Dashboard app installed on the store (scopes: read_orders,
 //   SHOPIFY_CLIENT_SECRET    }   plus read_all_orders to show orders older than 60 days)
 //   ALLOWED_ORIGINS          optional, comma-separated; default https://americanbasilicas.org

@@ -117,7 +117,7 @@
     if (!id) { head.innerHTML = '<p class="empty" style="margin:0">Tick a basilica in the checklist, or tap its name, to record your visit here.</p>'; blk.innerHTML = ""; return; }
     const b = BY[id];
     head.innerHTML = '<h3 style="margin:0;font-size:20px">' + E(b.name) + '</h3><p class="hint" style="margin:2px 0 14px">' + E(b.city) + ", " + E(b.state) +
-      ' · <a href="index.html#b=' + b.id + '">See on the map</a> · <a href="gallery.html#b=' + b.id + '">Members’ photos</a></p>';
+      ' · <a href="index.html#b=' + b.id + '">See on the map</a> · <a href="basilica.html?b=' + b.id + '">Members’ page</a></p>';
     AB.visitBlock(blk, b, { onChange: () => drawList() });
     if (scroll) document.getElementById("visit").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -164,7 +164,7 @@
         G.markers.map((k) => '<use href="#omb" x="' + (k.x - 6) + '" y="' + (k.y - 9) + '" width="12" height="18"' + (vs.has(k.id) ? "" : ' opacity=".45"') + "/>").join("") +
         "</svg><span>Open the gallery map &rarr;</span></a>";
     }
-    body.innerHTML = '<div class="gpanel"><div><p style="margin-top:0;max-width:70ch">Every member’s photos and reviews, basilica by basilica on the map. Like your favourites and sort by most liked or latest.</p>' +
+    body.innerHTML = '<div class="gpanel"><div><p style="margin-top:0;max-width:70ch">Every member’s photos, reviews, and questions and answers, basilica by basilica on the map. Like your favourites, ask about a basilica before you go, and answer other members’ questions.</p>' +
       "<p style=\"max-width:70ch\">" + line.html + "</p>" +
       '<div class="btnrow">' + (m.access ? '<a class="btn solid" href="gallery.html">Open the gallery map</a>' : "") +
       (m.kind === "trial" ? '<a class="btn" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Subscribe</a>' : "") +

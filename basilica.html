@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Members’ Page — American Basilicas</title>
+<meta name="description" content="Members’ photos, reviews, and questions and answers about one of the U.S. minor basilicas.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="members/members.css">
+<link rel="stylesheet" href="members/blocks.css">
+<link rel="stylesheet" href="texture/texture.css">
+<script src="members/vendor/supabase-2.117.3.js"></script>
+<script src="members/config.js"></script>
+<script src="members/core.js"></script>
+<script src="members/shell.js"></script>
+<script src="members/visit.js"></script>
+<script src="members/bview.js"></script>
+</head>
+<body class="mp">
+<main id="main" aria-live="polite"></main>
+<footer class="mf">Photos, reviews, questions and answers are shared by members and checked before they appear here. They’re visible only to signed-in members with gallery access; please don’t copy them elsewhere without the member’s permission.</footer>
+<script>
+/* One basilica's members' page: basilica.html?b=<basilica id>, with #t=reviews or #t=questions to open a tab.
+   Linked from the basilica's popup on the main map and from the gallery's side panel. */
+(function () {
+  "use strict";
+  const E = AB.esc, main = document.getElementById("main");
+  const id = (new URLSearchParams(location.search).get("b") || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
+  let tab = (location.hash.match(/[#&]t=(photos|reviews|questions)/) || [])[1] || "photos", sort = "popular";
+  AB.shell({ active: "gallery", kicker: "American Basilicas · Members’ page", title: 'Members’ <span class="thin">Page</span>' });
+  if (!AB.enabled) return AB.notConfigured(main);
+
+  let B = null;
+  async function basilica() {
+    if (B) return B;
+    B = (await AB.basilicaMap())[id] || null;
+    if (B) {
+      document.title = B.name + " — Members — American Basilicas";
+      document.querySelector("header.band h1").innerHTML = E(B.name) + ' <span class="thin">' + E(B.city) + "</span>";
+    }
+    return B;
+  }
+  const links = (b, visited) => '<p class="gback"><a href="gallery.html#b=' + b.id + '">&larr; Gallery map</a> · <a href="index.html#b=' + b.id + '">On the main map</a>' +
+    (visited ? ' · <a href="account.html#b=' + b.id + '">Your visit</a>' : ' · <a href="account.html#b=' + b.id + '">Been here? Check it off</a>') + "</p>";
+  const notFound = () => {
+    main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Basilica not found</h2></div><div class="panel-body">' +
+      '<p>We couldn’t find that basilica. Choose one on the <a href="gallery.html">gallery map</a> or the <a href="index.html">main map</a>.</p></div></section>';
+  };
+
+  AB.onAuth(async (u) => {
+    let b;
+    try { b = await basilica(); } catch (e) { main.innerHTML = '<p class="msg err" style="padding:20px 22px">Couldn’t load this page: ' + E(e.message) + "</p>"; return; }
+    if (!b) return notFound();
+    if (!u) {
+      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>' + E(b.name) + '</h2><span class="tag">' + E(b.city) + ", " + E(b.state) + "</span></div>" +
+        '<div class="panel-body">' + links(b, false) + '<div id="form"></div></div></section>';
+      AB.signinForm(document.getElementById("form"), { lead: "Members share photos and reviews of " + E(b.name) + ", ask questions about visiting, and answer each other’s." });
+      return;
+    }
+    start(b);
+  });
+
+  async function start(b) {
+    main.innerHTML = '<div class="gnote" id="gnote"><span class="spin"></span> Loading…</div>' +
+      '<section class="panel bpage"><div class="panel-bar"><h2>Shared by members</h2><span class="tag">' + E(b.city) + ", " + E(b.state) + '</span></div><div class="panel-body" id="pb"></div></section>';
+    let M, counts, visits;
+    try { [M, counts, visits] = await Promise.all([AB.membership(), AB.allCounts(), AB.visits()]); }
+    catch (e) { document.getElementById("gnote").innerHTML = '<p class="msg err">Couldn’t open this page: ' + E(e.message) + "</p>"; return; }
+    const draw = () => {
+      note(M);
+      const pb = document.getElementById("pb");
+      pb.innerHTML = links(b, visits.has(b.id)) + "<div data-view></div>";
+      AB.basilicaView(pb.querySelector("[data-view]"), b, {
+        M, visits, counts: counts[b.id] || {}, tab, sort,
+        onState: (st) => { tab = st.tab; sort = st.sort; history.replaceState(null, "", location.pathname + location.search + (tab !== "photos" ? "#t=" + tab : "")); },
+        onRecheck: (m) => { M = m; draw(); }
+      });
+    };
+    function note(m) {
+      const el = document.getElementById("gnote"), line = AB.memberLine(m);
+      el.className = "gnote " + m.kind;
+      el.innerHTML = '<span class="chip">' + E(line.tag) + "</span><span>" + line.html + "</span>" +
+        (m.kind === "trial" ? '<a class="btn small" href="' + E(AB.SUBSCRIBE_URL) + '" target="_blank" rel="noopener">Subscribe</a>' : "");
+    }
+    draw();
+  }
+})();
+</script>
+</body>
+</html>

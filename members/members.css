@@ -192,3 +192,24 @@ footer.mf{max-width:1300px;margin:20px auto 0;padding:14px 22px 30px;border-top:
 .tbl th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper2);padding:8px 10px;border-bottom:2px solid var(--ink)}
 .tbl td{padding:8px 10px;border-bottom:1px solid #e3d8bd;vertical-align:top}
 .tbl tr.off td{color:var(--muted)}
+
+/* questions and answers (members/bview.js) */
+.gqa{display:grid;gap:12px}
+.qa{border:1px solid #d9cba6;background:#fff;padding:12px 14px}
+.qa > header,.qa-a > header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-size:13px}
+.qa > header > span:last-child,.qa-a > header > span:last-child{color:var(--muted)}
+.qa-v{color:var(--ok);font-weight:700;font-size:12px;margin-left:6px;white-space:nowrap}
+.qa .chip{margin-top:6px}
+.qa-q{font-size:15.5px;font-weight:600;white-space:pre-wrap;margin:8px 0 10px;max-width:70ch}
+.qa-as{border-left:3px solid var(--gold);margin:2px 0 12px 2px;padding-left:12px;display:grid;gap:12px}
+.qa-as:empty{display:none}
+.qa-body{white-space:pre-wrap;margin:4px 0 2px;font-size:14.5px;max-width:70ch}
+.qa-f{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:12.5px;color:var(--muted)}
+.qa-n{font-weight:700;color:var(--red)}
+.qa-reply{margin-top:12px}
+.qa-reply textarea,.qa-ask textarea{max-width:none}
+.qa-ask{border:1.5px solid #e3c97b;background:#fffaf0;padding:14px 16px;margin:0 0 16px}
+.lnk{font:inherit;font-size:12.5px;background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;cursor:pointer}
+.lnk:hover{color:var(--red)}
+.bpage .gback{margin-bottom:14px}
+@media(max-width:480px){.gtabs button{padding:10px 9px;letter-spacing:.06em}.gtabs button span{padding:0 5px}}
