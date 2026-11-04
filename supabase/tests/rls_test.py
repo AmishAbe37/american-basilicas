@@ -173,8 +173,56 @@ run(f"insert into storage.objects (bucket_id, name) values ('member-photos', '{B
 allowed("admin deletes the file", f"delete from storage.objects where name='{B}/{BAS}/2.jpg' returning 1", uid=ADMIN, expect=1)
 allowed("member cannot delete another's file (no rows)", f"delete from storage.objects where name like '{A}/%' returning 1", uid=B, expect="")
 
+# ---------------------------------------------------------------- questions and answers
+QB = "Is there parking near the cathedral on Sundays?"
+AN = "Yes, the lot behind the rectory is free on Sundays."
+Q = "(select id from questions limit 1)"
+allowed("trial member asks a question (pending)", f"insert into questions (basilica_id, body) values ('{BAS}', '{QB}') returning status", uid=B, expect="pending")
+allowed("asker who checked off the basilica is marked as visited", "select author_visited from questions", "postgres", expect="t")
+denied("expired member cannot ask", f"insert into questions (basilica_id, body) values ('{BAS}', '{QB}')", uid=C)
+denied("question too short", f"insert into questions (basilica_id, body) values ('{BAS}', 'Parking?')", uid=B)
+denied("cannot ask a pre-approved question", f"insert into questions (basilica_id, body, status) values ('{BAS}', '{QB}', 'approved')", uid=B)
+denied("cannot claim a visit when asking", f"insert into questions (basilica_id, body, author_visited) values ('{BAS2}', '{QB}', true)", uid=B)
+denied("question for unknown basilica rejected", f"insert into questions (basilica_id, body) values ('nowhere', '{QB}')", uid=B)
+allowed("others can't see a pending question", "select count(*) from questions", uid=A, expect=0)
+allowed("asker sees own pending question", "select count(*) from questions", uid=B, expect=1)
+denied("cannot answer a question awaiting review", f"insert into answers (question_id, body) select id, '{AN}' from questions", uid=B)
+denied("member cannot approve a question", f"select moderate('question', {Q}, 'approved')", uid=B)
+allowed("admin sees the pending question", "select count(*) from questions where status='pending'", uid=ADMIN, expect=1)
+allowed("admin approves the question", f"select moderate('question', {Q}, 'approved')", uid=ADMIN)
+allowed("trial member reads the question", "select count(*) from questions", uid=A, expect=1)
+allowed("expired member can't read it", "select count(*) from questions", uid=C, expect=0)
+allowed("expired member still sees the question count", f"select questions from question_counts() where basilica_id='{BAS}'", uid=C, expect=1)
+denied("anon cannot call question_counts", "select * from question_counts()", "anon")
+allowed("member answers (pending)", f"insert into answers (question_id, body) values ({Q}, '{AN}') returning status", uid=A, expect="pending")
+allowed("answerer who checked off the basilica is marked as visited", "select author_visited from answers", "postgres", expect="t")
+denied("expired member cannot answer", f"insert into answers (question_id, body) values ({Q}, '{AN}')", uid=C)
+denied("cannot post a pre-approved answer", f"insert into answers (question_id, body, status) values ({Q}, '{AN}', 'approved')", uid=A)
+allowed("answer count ignores answers awaiting review", "select answer_count from questions", "postgres", expect=0)
+allowed("others can't see a pending answer", "select count(*) from answers", uid=B, expect=0)
+denied("member cannot approve an answer", "select moderate('answer', (select id from answers limit 1), 'approved')", uid=A)
+allowed("admin approves the answer", "select moderate('answer', (select id from answers limit 1), 'approved')", uid=ADMIN)
+allowed("answer count goes up", "select answer_count from questions", "postgres", expect=1)
+allowed("asker reads the answer", "select count(*) from answers", uid=B, expect=1)
+allowed("asker can reply to an answer on their own question", f"insert into answers (question_id, body) values ({Q}, 'Thank you!') returning status", uid=B, expect="pending")
+denied("cannot set answer_count directly", "update questions set answer_count = 9", uid=B)
+denied("cannot change an answer's status", "update answers set status = 'approved'", uid=A)
+allowed("someone else's answer can't be deleted (no rows)", f"delete from answers where user_id = '{A}' returning 1", uid=B, expect="")
+allowed("editing an answer sends it back for approval", f"update answers set body = body || ' Arrive early.' where user_id = '{A}' returning status", uid=A, expect="pending")
+allowed("answer count drops while it's re-checked", "select answer_count from questions", "postgres", expect=0)
+allowed("editing a question sends it back for approval", "update questions set body = body || ' And on Saturdays?' returning status", uid=B, expect="pending")
+allowed("edited question hidden again", "select count(*) from questions", uid=A, expect=0)
+run(f"select moderate('question', {Q}, 'approved')", "authenticated", ADMIN)
+# daily cap: 20 questions a member
+run("insert into questions (user_id, basilica_id, body) select '%s', '%s', 'Question number '||g||' about this basilica' from generate_series(1,19) g" % (B, BAS))
+denied("21st question in a day rejected", f"insert into questions (basilica_id, body) values ('{BAS}', 'One question too many today')", uid=B)
+run(f"delete from questions where body like 'Question number %'")
+allowed("admin removes a question and its answers", f"delete from questions where body like 'Is there parking%' returning 1", uid=ADMIN, expect=1)
+allowed("its answers are gone too", "select count(*) from answers", "postgres", expect=0)
+allowed("A asks again for the deletion check", f"insert into questions (basilica_id, body) values ('{BAS2}', 'Are there guided tours of the old cathedral?') returning 1", uid=A, expect=1)
+
 # account deletion cascades
-allowed("deleting a user removes their data", f"delete from auth.users where id='{A}'; select (select count(*) from photos where user_id='{A}') + (select count(*) from reviews where user_id='{A}') + (select count(*) from review_likes)", "postgres", expect=0)
+allowed("deleting a user removes their data", f"delete from auth.users where id='{A}'; select (select count(*) from photos where user_id='{A}') + (select count(*) from reviews where user_id='{A}') + (select count(*) from review_likes) + (select count(*) from questions where user_id='{A}') + (select count(*) from answers where user_id='{A}')", "postgres", expect=0)
 
 failed = [n for n, ok in results if not ok]
 print(f"\n{len(results) - len(failed)}/{len(results)} passed")

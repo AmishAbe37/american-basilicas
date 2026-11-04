@@ -53,7 +53,7 @@ Supabase's built-in email service only delivers to your own team's addresses, an
    <p><a href="{{ .ConfirmationURL }}">Confirm your email and sign in</a></p>
    <p>Or enter this code on the sign-in page: <strong style="font-size:20px;letter-spacing:3px">{{ .Token }}</strong></p>
    <p>Your account includes your own edition of the basilica map, where you can check off the basilicas you've visited and keep your photos with each visit. That part is always free.</p>
-   <p><strong>The members' gallery is included free for your first three months.</strong> It holds every member's photos and reviews, basilica by basilica. After three months, the gallery is for subscribers.</p>
+   <p><strong>The members' gallery is included free for your first three months.</strong> It holds every member's photos, reviews, and questions and answers, basilica by basilica. After three months, the gallery is for subscribers.</p>
    <p>If you didn't ask for this, you can ignore this email.</p>
    ```
 
@@ -185,14 +185,16 @@ The same function also handles **Delete my account**, so deploy it even if you s
 |---|---|
 | `members/config.js` | The connection settings and the Subscribe address. A blank URL and key means member features are off. |
 | `members/loader.js` | On the map page, loads the member scripts only once accounts are switched on. |
-| `members/core.js` | Talks to Supabase. It handles sign-in, gallery membership, visits, photo upload (resized, location data stripped), photos and reviews by basilica (most liked or latest), likes, moderation and orders. |
+| `members/core.js` | Talks to Supabase. It handles sign-in, gallery membership, visits, photo upload (resized, location data stripped), photos and reviews by basilica (most liked or latest), questions and answers, likes, moderation and orders. |
+| `members/bview.js` | One basilica's shared content in tabs: Photos, Reviews and Questions. Used by the gallery and by `basilica.html`. |
 | `members/shell.js` | The page header and menu, the sign-in card (with the free-gallery note), the first-sign-in welcome message, membership wording, like buttons and the lightbox. |
 | `members/map.js`, `map.css` | The personal map: visited basilicas in full colour, "Your visit" in each basilica's popup, and links like `index.html#b=<basilica>`. |
 | `members/visit.js` | The visit editor (check-off, date, private note, photos), plus the member's review. The review prompt appears only once a visit has photos. |
 | `members/gallery-map.js` | The gallery map's outlines and marker positions. It's generated from `index.html` by `node tools/build_gallery_map.mjs`; rerun that if the map data changes. |
 | `account.html` | My pilgrimage: a menu, progress, the members' gallery panel, a checklist of all 94, the visit editor, basilicas near you, orders and account settings. |
-| `gallery.html` | The members' gallery, run from the map. Tap a state, then a basilica, to see its photos and reviews, like them, and sort by most liked or latest. |
-| `review.html` | Your review queue: photos, reviews and memberships. |
+| `gallery.html` | The members' gallery, run from the map. Tap a state, then a basilica, to see its photos, reviews and questions, like them, and sort by most liked or latest. |
+| `basilica.html` | The members' page for one basilica (`basilica.html?b=<id>`), linked from every popup on the main map: photos, reviews, and questions and answers. Members ask and answer there; everything waits for approval in the Review queue. |
+| `review.html` | Your review queue: photos, reviews, questions, answers and memberships. |
 | `supabase/schema.sql` | Tables and security rules. Members can only touch their own data. Other members' approved photos and reviews, and likes, are only open to members with gallery access (first 3 months, subscribers, admins). |
 | `supabase/functions/account/` | The server function for order history and account deletion. |
 | `supabase/functions/bmc-webhook/` | Records Buy Me a Coffee memberships. |
