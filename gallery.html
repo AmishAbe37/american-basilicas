@@ -44,7 +44,8 @@
       '<div class="gwrap">' +
       '<section class="panel gmapcol" aria-labelledby="gmH"><div class="panel-bar"><h2 id="gmH">Gallery map</h2><span class="tag">Tap a state, then a basilica</span></div>' +
       '<div class="gmapbox"><svg id="gmap" viewBox="0 0 ' + G.w + " " + G.h + '" role="img" aria-label="Map of the basilicas with members’ photos, reviews and questions"></svg>' +
-      '<button class="btn small greset" type="button" id="greset" hidden>&larr; Whole country</button></div>' +
+      '<button class="btn small greset" type="button" id="greset" hidden>&larr; Whole country</button>' +
+      '<div class="gzoom" role="group" aria-label="Zoom the map"><button type="button" id="gzin" aria-label="Zoom in">+</button><button type="button" id="gzout" aria-label="Zoom out">&minus;</button></div></div>' +
       '<div class="glegend"><span class="gkey"><svg viewBox="0 0 100 100" width="12" height="15" aria-hidden="true"><use href="#omb" width="100" height="100"/></svg> Has photos, reviews or questions</span>' +
       '<span class="gkey none"><svg viewBox="0 0 100 100" width="12" height="15" aria-hidden="true"><use href="#omb" width="100" height="100"/></svg> Nothing shared yet</span>' +
       '<span class="gtot" id="gtot"></span></div>' +
@@ -109,13 +110,83 @@
     const tot = Object.values(COUNTS).reduce((a, c) => ({ photos: a.photos + c.photos, reviews: a.reviews + c.reviews, questions: a.questions + (c.questions || 0) }), { photos: 0, reviews: 0, questions: 0 });
     document.getElementById("gtot").textContent = countLine(tot) + " shared so far";
     document.getElementById("greset").onclick = () => { selState = null; selB = null; setHash(""); zoomTo(null); intro(); };
+    document.getElementById("gzin").onclick = () => zoomBy(1.8);
+    document.getElementById("gzout").onclick = () => zoomBy(1 / 1.8);
+    gestures(svg);
     window.addEventListener("resize", place);
     place();
+  }
+
+  // ---------- zooming the map on its own ----------
+  // Pinching or ctrl/trackpad-zooming over the map zooms only the map, never the page, so the basilica panel
+  // below stays at normal size. One finger still scrolls the page; two fingers pinch and move the map.
+  const ZMAX = 14;
+  let lastGesture = 0;
+  function clampView(v) {
+    const k = Math.max(1, Math.min(ZMAX, v.k));
+    return { k, x: Math.min(0, Math.max(G.w * (1 - k), v.x)), y: Math.min(0, Math.max(G.h * (1 - k), v.y)) };
+  }
+  function toSvg(svg, cx, cy) {                // screen point -> map units (the SVG keeps its aspect ratio, centred)
+    const r = svg.getBoundingClientRect(), s = Math.min(r.width / G.w, r.height / G.h) || 1;
+    return { x: (cx - r.left - (r.width - G.w * s) / 2) / s, y: (cy - r.top - (r.height - G.h * s) / 2) / s };
+  }
+  function zoomAround(pt, k, from) {           // keep the map point under pt where it is
+    const v = from || view, mx = (pt.x - v.x) / v.k, my = (pt.y - v.y) / v.k;
+    return clampView({ k, x: pt.x - mx * k, y: pt.y - my * k });
+  }
+  function zoomBy(f) { animate(zoomAround({ x: G.w / 2, y: G.h / 2 }, view.k * f)); }
+  function gestures(svg) {
+    let pinch = null, drag = null;
+    const two = (t) => ({ cx: (t[0].clientX + t[1].clientX) / 2, cy: (t[0].clientY + t[1].clientY) / 2, d: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1 });
+    svg.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 2) return;
+      e.preventDefault(); cancelAnimationFrame(anim);
+      const g = two(e.touches); pinch = { g, v: Object.assign({}, view), m: toSvg(svg, g.cx, g.cy) };
+    }, { passive: false });
+    svg.addEventListener("touchmove", (e) => {
+      if (!pinch || e.touches.length !== 2) return;
+      e.preventDefault();
+      const g = two(e.touches), k = pinch.v.k * g.d / pinch.g.d, at = toSvg(svg, g.cx, g.cy);
+      const mx = (pinch.m.x - pinch.v.x) / pinch.v.k, my = (pinch.m.y - pinch.v.y) / pinch.v.k;   // map point under the fingers at the start
+      view = clampView({ k, x: at.x - mx * Math.max(1, Math.min(ZMAX, k)), y: at.y - my * Math.max(1, Math.min(ZMAX, k)) });
+      place();
+    }, { passive: false });
+    const endPinch = (e) => { if (pinch && e.touches.length < 2) { pinch = null; lastGesture = Date.now(); } };
+    svg.addEventListener("touchend", endPinch); svg.addEventListener("touchcancel", endPinch);
+    // Safari's own pinch events: block page zoom on iPhone; zoom the map with them on a Mac trackpad
+    let gs = null;
+    svg.addEventListener("gesturestart", (e) => { e.preventDefault(); if (!("ontouchstart" in window)) gs = { v: Object.assign({}, view), pt: toSvg(svg, e.clientX, e.clientY) }; }, { passive: false });
+    svg.addEventListener("gesturechange", (e) => { e.preventDefault(); if (gs) { cancelAnimationFrame(anim); view = zoomAround(gs.pt, gs.v.k * e.scale, gs.v); place(); } }, { passive: false });
+    svg.addEventListener("gestureend", (e) => { e.preventDefault(); if (gs) { gs = null; lastGesture = Date.now(); } }, { passive: false });
+    // trackpad pinch / ctrl + scroll wheel on a computer
+    svg.addEventListener("wheel", (e) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault(); cancelAnimationFrame(anim);
+      view = zoomAround(toSvg(svg, e.clientX, e.clientY), view.k * Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.005))); place();
+    }, { passive: false });
+    // drag with the mouse to move a zoomed-in map
+    svg.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0 || view.k <= 1.01) return;
+      drag = { x: e.clientX, y: e.clientY, v: Object.assign({}, view), moved: false };
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const a = toSvg(svg, drag.x, drag.y), b = toSvg(svg, e.clientX, e.clientY);
+      if (!drag.moved && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < 4) return;
+      drag.moved = true; svg.classList.add("dragging"); cancelAnimationFrame(anim);
+      view = clampView({ k: drag.v.k, x: drag.v.x + b.x - a.x, y: drag.v.y + b.y - a.y }); place();
+    });
+    window.addEventListener("pointerup", () => { if (drag && drag.moved) lastGesture = Date.now(); drag = null; svg.classList.remove("dragging"); });
+    // a pinch or drag isn't a tap: don't let it open a state or basilica
+    svg.addEventListener("click", (e) => { if (Date.now() - lastGesture < 400) { e.stopPropagation(); e.preventDefault(); } }, true);
   }
   function place() {                         // keep markers about 14 px tall on screen at any zoom
     const svg = document.getElementById("gmap"); if (!svg) return;
     const s = (svg.getBoundingClientRect().width || G.w) / G.w, px = s < 0.6 ? 15 : 14, q = px / 16 / s / view.k;
     zoomG.setAttribute("transform", "translate(" + view.x.toFixed(2) + " " + view.y.toFixed(2) + ") scale(" + view.k.toFixed(4) + ")");
+    document.getElementById("greset").hidden = !selState && view.k <= 1.02;
+    document.getElementById("gzout").disabled = view.k <= 1.01;
+    document.getElementById("gzin").disabled = view.k >= ZMAX - 0.01;
     const rl = zoomG.querySelector(".relief"), rz = (Math.round(Math.min(1, 2.6 / view.k) * 10) / 10).toFixed(1);
     if (rl && rl.dataset.rz !== rz) { rl.dataset.rz = rz; rl.style.setProperty("--rz", rz); }
     mks.forEach(({ g, m }) => g.setAttribute("transform", "translate(" + m.x + " " + m.y + ") scale(" + q.toFixed(4) + ")"));
@@ -129,7 +200,9 @@
       const k = Math.max(1, Math.min(9, 0.82 * Math.min(G.w / Math.max(bb.width, 1), G.h / Math.max(bb.height, 1))));
       to = { k, x: G.w / 2 - k * (bb.x + bb.width / 2), y: G.h / 2 - k * (bb.y + bb.height / 2) };
     }
-    document.getElementById("greset").hidden = !stateName;
+    animate(clampView(to));
+  }
+  function animate(to) {
     const from = Object.assign({}, view), t0 = performance.now(), dur = matchMedia("(prefers-reduced-motion:reduce)").matches ? 0 : 450;
     cancelAnimationFrame(anim);
     const step = (t) => {
@@ -175,6 +248,7 @@
     S.h.textContent = "Choose a basilica"; S.t.textContent = "";
     const top = LIST.slice().sort((a, b) => total(b.id) - total(a.id)).filter((b) => total(b.id)).slice(0, 8);
     S.b.innerHTML = '<p style="margin-top:0">Tap a state on the map to zoom in, then tap a basilica to see what members have shared: photos you can like, reviews of what they enjoyed, and <b>questions</b> you can ask and answer. Each basilica also has its own page with all three.</p>' +
+      '<p class="hint">To zoom the map further, pinch it with two fingers or use the + and &minus; buttons. Only the map zooms; the rest of the page stays the same size.</p>' +
       (top.length ? '<h3 class="gsub">Most shared so far</h3><ul class="glist">' + top.map(row).join("") + "</ul>"
         : '<p class="empty">Nothing has been shared yet. Add photos to your visits in <a href="account.html">My pilgrimage</a> and they’ll appear here once approved.</p>');
     wireRows(S.b);
