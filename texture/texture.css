@@ -129,14 +129,19 @@ header.band .badge use{filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.6))}
   box-shadow:0 0 0 1px rgba(0,0,0,.4),0 24px 60px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.5)}
 .detail-card::before{content:"";display:block;position:sticky;top:0;z-index:3;height:16px;margin-bottom:-16px;
   background:url(valance.svg) 0 0/44px 16px repeat-x;filter:drop-shadow(0 2px 1.5px rgba(35,15,4,.5))}
-.detail-figure{background:transparent;padding:26px 22px 0;min-height:0}
+.detail-figure{background:transparent;padding:32px 22px 0;min-height:0}
 .detail-figure.loading{min-height:150px}
 /* the photograph in a gilt frame */
 #detailImg{border:7px solid transparent;border-image:var(--gilt-diag) 7;box-shadow:0 3px 8px rgba(40,25,5,.45),0 0 0 1px rgba(60,40,8,.6)}
 .detail-cred{background:transparent;padding:8px 22px 0;text-align:center}
+/* close button: on the valance strip above the photo, and it stays there while the card scrolls */
+.detail-xbar{position:sticky;top:0;z-index:4;height:0}
 .detail-x{background:radial-gradient(circle at 50% 28%,#57514a 0%,#1a1714 62%,#000 100%);border:1px solid rgba(255,255,255,.28);
-  box-shadow:0 2px 5px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25);top:24px;right:16px;text-shadow:var(--white-engraved)}
-.detail-x:hover{background:radial-gradient(circle at 50% 28%,#c2483a 0%,#8f1d1d 62%,#4a0b0b 100%)}
+  box-shadow:0 1px 3px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.25);top:3px;right:8px;width:26px;height:26px;
+  font-size:18px;line-height:1;padding:0;text-shadow:var(--white-engraved);opacity:.88}
+.detail-x::after{content:"";position:absolute;inset:-9px}  /* a 44px touch target without a bigger button */
+.detail-x:focus-visible{outline:2px solid var(--gold);outline-offset:2px;opacity:1}
+.detail-x:hover{background:radial-gradient(circle at 50% 28%,#c2483a 0%,#8f1d1d 62%,#4a0b0b 100%);opacity:1}
 .detail-body h2{text-shadow:var(--ink-letterpress)}
 .detail-facts li::marker{color:var(--red);font-weight:800}
 .detail-links{border-top:1px solid #d9cba6;box-shadow:0 -1px 0 rgba(255,255,255,.7)}
