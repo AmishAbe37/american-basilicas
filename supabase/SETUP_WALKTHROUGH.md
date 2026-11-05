@@ -227,6 +227,7 @@ To-dos:
 3. **Branding** (left menu):
    - **Application home page:** `https://americanbasilicas.org`
    - **Authorized domains:** add `americanbasilicas.org` and `<project-ref>.supabase.co` (your Supabase project's address)
+   - **Privacy policy link:** `https://americanbasilicas.org/privacy.html` (live since Nov 5)
    - Don't add a logo for now; a logo makes Google review the branding first, which takes days.
    - **Save**.
 4. **Data Access → Add or remove scopes**: tick `openid`, `.../auth/userinfo.email` and `.../auth/userinfo.profile` → **Update** → **Save**.
