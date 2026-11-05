@@ -16,6 +16,7 @@
 <script src="members/shell.js"></script>
 <script src="members/visit.js"></script>
 <script src="members/bview.js"></script>
+<script src="members/basilica-info.js"></script>
 </head>
 <body class="mp">
 <main id="main" aria-live="polite"></main>
@@ -43,6 +44,47 @@
   }
   const links = (b, visited) => '<p class="gback"><a href="gallery.html#b=' + b.id + '">&larr; Gallery map</a> · <a href="index.html#b=' + b.id + '">On the main map</a>' +
     (visited ? ' · <a href="account.html#b=' + b.id + '">Your visit</a>' : ' · <a href="account.html#b=' + b.id + '">Been here? Check it off</a>') + "</p>";
+  // ---------- about this basilica: a photo and three facts ----------
+  // The photo is the Wikimedia Commons one from the main map, until members share their own: then members with
+  // gallery access see the most-liked approved member photo instead (photos are checked in the Review queue first).
+  const INFO = (window.AB_INFO || {})[id] || { f: [] };
+  let creditsP = null;
+  const credits = () => creditsP || (creditsP = fetch("images/credits.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+  function creditHTML(c) {
+    const note = INFO.pn ? " · " + E(INFO.pn) : "";
+    if (!c) return "Photo: Wikimedia Commons" + note;
+    const lic = c.license_url ? '<a href="' + E(c.license_url) + '" target="_blank" rel="noopener">' + E(c.license) + "</a>" : E(c.license);
+    return "Photo: " + E(c.author) + " · " + lic + ' · <a href="' + E(c.page) + '" target="_blank" rel="noopener">Wikimedia Commons ↗</a>' + note;
+  }
+  const about = (b) => '<section class="panel bab" aria-labelledby="abH"><div class="panel-bar"><h2 id="abH">About this basilica</h2>' +
+    (INFO.yr ? '<span class="tag">Minor basilica since ' + E(INFO.yr) + "</span>" : "") + "</div>" +
+    '<div class="panel-body binfo"><figure class="bphoto" id="bphoto" hidden><img alt="" decoding="async"><figcaption></figcaption></figure>' +
+    '<div class="bfacts-w"><h3 class="gsub">Three things to know</h3>' +
+    (INFO.f.length ? '<ul class="bfacts">' + INFO.f.map((f) => "<li>" + E(f) + "</li>").join("") + "</ul>" : '<p class="empty">Facts about this basilica are coming soon.</p>') +
+    (INFO.wu ? '<p class="hint"><a href="' + E(INFO.wu) + '" target="_blank" rel="noopener">Read more on Wikipedia ↗</a></p>' : "") +
+    "</div></div></section>";
+  async function photo(b, M, counts) {
+    const fig = document.getElementById("bphoto"); if (!fig) return;
+    const img = fig.querySelector("img"), cap = fig.querySelector("figcaption");
+    const show = (src, alt, html, member) => {
+      img.onload = () => { fig.hidden = false; };
+      img.onerror = () => { fig.hidden = true; };
+      img.alt = alt; cap.innerHTML = html; fig.classList.toggle("member", !!member); img.src = src;
+    };
+    if (M && M.access && ((counts && counts[b.id]) || {}).photos > 0) {
+      try {
+        const [p] = await AB.photosFor(b.id, { sort: "popular", limit: 1 });
+        const u = p ? await AB.urls([p.storage_path]) : {};
+        if (p && u[p.storage_path]) {
+          const who = (p.profiles && p.profiles.display_name) || "a member";
+          return show(u[p.storage_path], p.caption || b.name + ", shared by " + who,
+            "Photo shared by " + E(who) + (p.caption ? ": “" + E(p.caption) + "”" : "") + ' · <a href="#t=photos" data-ph>See all members’ photos</a>', true);
+        }
+      } catch (e) { /* fall back to the Wikimedia photo */ }
+    }
+    show("images/" + b.id + ".jpg", b.name + ", " + b.city + ", " + b.state, creditHTML((await credits())[b.id]), false);
+  }
+
   const notFound = () => {
     main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>Basilica not found</h2></div><div class="panel-body">' +
       '<p>We couldn’t find that basilica. Choose one on the <a href="gallery.html">gallery map</a> or the <a href="index.html">main map</a>.</p></div></section>';
@@ -53,8 +95,9 @@
     try { b = await basilica(); } catch (e) { main.innerHTML = '<p class="msg err" style="padding:20px 22px">Couldn’t load this page: ' + E(e.message) + "</p>"; return; }
     if (!b) return notFound();
     if (!u) {
-      main.innerHTML = '<section class="panel"><div class="panel-bar"><h2>' + E(b.name) + '</h2><span class="tag">' + E(b.city) + ", " + E(b.state) + "</span></div>" +
+      main.innerHTML = about(b) + '<section class="panel"><div class="panel-bar"><h2>Shared by members</h2><span class="tag">' + E(b.city) + ", " + E(b.state) + "</span></div>" +
         '<div class="panel-body">' + links(b, false) + '<div id="form"></div></div></section>';
+      photo(b, null, null);
       AB.signinForm(document.getElementById("form"), { lead: "Members share photos and reviews of " + E(b.name) + ", ask questions about visiting, and answer each other’s." });
       return;
     }
@@ -62,11 +105,16 @@
   });
 
   async function start(b) {
-    main.innerHTML = '<div class="gnote" id="gnote"><span class="spin"></span> Loading…</div>' +
+    main.innerHTML = '<div class="gnote" id="gnote"><span class="spin"></span> Loading…</div>' + about(b) +
       '<section class="panel bpage"><div class="panel-bar"><h2>Shared by members</h2><span class="tag">' + E(b.city) + ", " + E(b.state) + '</span></div><div class="panel-body" id="pb"></div></section>';
     let M, counts, visits;
     try { [M, counts, visits] = await Promise.all([AB.membership(), AB.allCounts(), AB.visits()]); }
-    catch (e) { document.getElementById("gnote").innerHTML = '<p class="msg err">Couldn’t open this page: ' + E(e.message) + "</p>"; return; }
+    catch (e) { document.getElementById("gnote").innerHTML = '<p class="msg err">Couldn’t open this page: ' + E(e.message) + "</p>"; photo(b, null, null); return; }
+    photo(b, M, counts);
+    document.getElementById("bphoto").addEventListener("click", (e) => {
+      if (!e.target.closest("[data-ph]")) return;
+      e.preventDefault(); tab = "photos"; draw(); document.querySelector(".bpage").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     const draw = () => {
       note(M);
       const pb = document.getElementById("pb");
