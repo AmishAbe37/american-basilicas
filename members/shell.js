@@ -52,7 +52,8 @@
       '<form data-f2 hidden><p style="margin:0 0 10px">We sent a sign-in link to <b data-to></b>. Open it on this device, or type the 6-digit code from the email:</p>' +
       '<label class="fld" for="sic">Code</label><input id="sic" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" style="max-width:180px;letter-spacing:.3em">' +
       '<div class="btnrow" style="margin-top:12px"><button class="btn solid" type="submit">Sign in</button><button class="btn small" type="button" data-back>Use a different email</button></div></form>' +
-      '<p class="msg" role="status"></p></div>';
+      '<p class="msg" role="status"></p>' +
+      '<p class="hint" style="margin:14px 0 0">What we keep and who can see it: <a href="' + AB.page("privacy.html") + '">Privacy policy</a></p></div>';
     const f1 = el.querySelector("[data-f1]"), f2 = el.querySelector("[data-f2]"), msg = el.querySelector(".msg"), email = el.querySelector("#sie");
     const say = (t, cls) => { msg.className = "msg " + (cls || ""); msg.textContent = t || ""; };
     const busy = (form, on) => form.querySelectorAll("button").forEach((b) => (b.disabled = on));
