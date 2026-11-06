@@ -54,7 +54,7 @@
     const note = INFO.pn ? " · " + E(INFO.pn) : "";
     if (!c) return "Photo: Wikimedia Commons" + note;
     const lic = c.license_url ? '<a href="' + E(c.license_url) + '" target="_blank" rel="noopener">' + E(c.license) + "</a>" : E(c.license);
-    return "Photo: " + E(c.author) + " · " + lic + ' · <a href="' + E(c.page) + '" target="_blank" rel="noopener">Wikimedia Commons ↗</a>' + note;
+    return "Photo: " + E(c.author) + (lic ? " · " + lic : "") + (c.page ? ' · <a href="' + E(c.page) + '" target="_blank" rel="noopener">Wikimedia Commons ↗</a>' : "") + note;
   }
   const about = (b) => '<section class="panel bab" aria-labelledby="abH"><div class="panel-bar"><h2 id="abH">About this basilica</h2>' +
     (INFO.yr ? '<span class="tag">Minor basilica since ' + E(INFO.yr) + "</span>" : "") + "</div>" +

@@ -960,7 +960,7 @@ function creditHTML(c,d){
   const note=d.pn?' · '+esc(d.pn):'';
   if(!c) return 'Photo: Wikimedia Commons'+note;
   const lic=c.license_url?'<a href="'+esc(c.license_url)+'" target="_blank" rel="noopener">'+esc(c.license)+'</a>':esc(c.license);
-  return 'Photo: '+esc(c.author)+' · '+lic+' · <a href="'+esc(c.page)+'" target="_blank" rel="noopener">Wikimedia Commons ↗</a>'+note;
+  return 'Photo: '+esc(c.author)+(lic?' · '+lic:'')+(c.page?' · <a href="'+esc(c.page)+'" target="_blank" rel="noopener">Wikimedia Commons ↗</a>':'')+note;
 }
 function loadPhoto(d){
   if(!d.ph){ loadPhotoLive(d); return; }
