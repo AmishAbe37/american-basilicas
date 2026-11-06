@@ -1,0 +1,71 @@
+{
+ "basilica": "scranton-basilica-of-the-national-shrine-of-st-ann",
+ "basilica_name": "Basilica of the National Shrine of St. Ann, Scranton, Pennsylvania",
+ "photographer": "Fred Bradbury",
+ "credit": "Photo: Fred Bradbury · Used with permission",
+ "received": "2026-11-06",
+ "use": "Saved for products (mugs, tumblers, postcards, shirts). Credit every use as above.",
+ "note": "These are the copies sent through chat, about 1080 px on the long side: fine for the web, too small for most print products. Ask the photographer for the full-size originals before making print files.",
+ "photos": [
+  {
+   "file": "01.jpg",
+   "w": 1080,
+   "h": 810,
+   "subject": "Exterior, front and side with statues of St. Ann (used on the site)"
+  },
+  {
+   "file": "02.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Interior, St. Ann shrine chapel (\"Saint Ann pray for us\")"
+  },
+  {
+   "file": "03.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Sanctuary: apse mural above the baldachin and crucifix"
+  },
+  {
+   "file": "04.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Bronze bust of Pope John Paul II"
+  },
+  {
+   "file": "05.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Sanctuary arch (\"Through the intercession of Saint Ann...\")"
+  },
+  {
+   "file": "06.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Nave toward the altar, portrait"
+  },
+  {
+   "file": "07.jpg",
+   "w": 1080,
+   "h": 810,
+   "subject": "Nave toward the altar, landscape"
+  },
+  {
+   "file": "08.jpg",
+   "w": 810,
+   "h": 1080,
+   "subject": "Pietà before three stained-glass windows"
+  },
+  {
+   "file": "09.jpg",
+   "w": 1080,
+   "h": 810,
+   "subject": "Side wall: stained glass and Stations of the Cross"
+  },
+  {
+   "file": "10.jpg",
+   "w": 1080,
+   "h": 810,
+   "subject": "Nave from the side aisle, landscape"
+  }
+ ]
+}
