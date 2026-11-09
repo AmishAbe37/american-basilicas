@@ -135,6 +135,8 @@ def main():
         slug = e["slug"]
         source = {k: e[k] for k in SOURCE_KEYS if k in e}
         path = os.path.join(OUT, slug + ".jpg")
+        if credits.get(slug, {}).get("manual") and os.path.exists(path):   # added by hand (e.g. a photographer's own photo): never replace it
+            print(f"[{i:2}/{len(manifest)}] keep  {slug} (added by hand)"); continue
         if os.path.exists(path) and credits.get(slug, {}).get("source") == source:
             print(f"[{i:2}/{len(manifest)}] keep  {slug}"); continue
         try:
