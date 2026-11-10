@@ -38,7 +38,9 @@
       '<div class="vb-ph"><div class="vb-phh"><b>Your photos</b>' +
       '<label class="btn small solid vb-up">Add photos<input type="file" accept="image/*" multiple hidden></label></div>' +
       '<p class="hint">Photos are resized and their location data is removed before upload. They appear here right away, and in the members’ gallery once approved.</p>' +
-      '<div class="grid-ph" data-grid></div></div><div class="vb-rv" data-rv></div><p class="msg" role="status"></p>';
+      '<div class="grid-ph" data-grid></div></div><div class="vb-rv" data-rv></div>' +
+      '<p class="hint vb-qa">Questions about visiting? <a href="basilica.html?b=' + E(b.id) + '#t=questions">Ask other members on this basilica’s members’ page →</a></p>' +
+      '<p class="msg" role="status"></p>';
     const msg = el.querySelector(".msg"), say = (t, c) => { msg.className = "msg " + (c || ""); msg.textContent = t || ""; };
     const date = el.querySelector('input[type=date]'), note = el.querySelector("textarea"), grid = el.querySelector("[data-grid]"), rv = el.querySelector("[data-rv]");
 
@@ -62,7 +64,10 @@
     async function drawPhotos() {
       let ps;
       try { ps = await AB.myPhotos(b.id); } catch (e) { grid.innerHTML = '<p class="msg err">' + E(e.message) + "</p>"; return; }
-      if (shownFor !== (ps.length > 0)) { shownFor = ps.length > 0; AB.reviewBlock(rv, b, { photos: ps.length }); }   // keep a half-written review
+      if (shownFor !== (ps.length > 0)) {   // keep a half-written review
+        shownFor = ps.length > 0;
+        AB.reviewBlock(rv, b, { photos: ps.length, ineligible: '<p class="hint" style="margin:0"><b>Reviews:</b> add a photo from your visit, and you can then write a review for other members.</p>' });
+      }
       if (!ps.length) { grid.innerHTML = '<p class="empty" style="margin:0">No photos yet.</p>'; return; }
       const urls = await AB.urls(ps.map((p) => p.thumb_path));
       grid.innerHTML = ps.map((p, i) => {
