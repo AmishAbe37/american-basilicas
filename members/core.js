@@ -58,6 +58,9 @@
     sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: redirect || here(), shouldCreateUser: true } });
   AB.verifyCode = (email, code) => sb.auth.verifyOtp({ email: email.trim(), token: code.replace(/\D/g, ""), type: "email" });
   AB.google = (redirect) => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: redirect || here() } });
+  // Google's own button (Google Identity Services) hands back a signed ID token; Supabase checks it with the raw nonce
+  AB.GOOGLE_CLIENT_ID = String(C.googleClientId || "").trim();
+  AB.googleIdToken = (token, nonce) => sb.auth.signInWithIdToken({ provider: "google", token, nonce });
   AB.signOut = () => sb.auth.signOut();
 
   const must = ({ data, error }) => { if (error) throw error; return data; };

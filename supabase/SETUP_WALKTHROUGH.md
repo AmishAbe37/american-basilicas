@@ -247,6 +247,17 @@ To-dos:
 2. Paste the **Client ID** (into Client IDs) and the **Client Secret**. Leave the other options off.
 3. **Save**.
 
+
+### 3.5 Show americanbasilicas.org on Google's sign-in screen (added Nov 10)
+Signing in through Supabase makes Google's screen say "continue to doivutqhoggdacwbynsj.supabase.co".
+Google's own sign-in button fixes that without a paid custom domain:
+1. Copy the web client's **Client ID** (Google Auth Platform → Clients → American Basilicas website;
+   it ends in `.apps.googleusercontent.com` and is public). Claude puts it in `members/config.js` as `googleClientId`.
+2. The client's **Authorized JavaScript origins** must include `https://americanbasilicas.org` and
+   `https://www.americanbasilicas.org` (done in 3.3).
+3. In Supabase → **Sign In / Providers → Google**, the same Client ID stays in **Client IDs**, and
+   **Skip nonce check** stays **off**.
+If Google's script can't load, the page falls back to the plain "Continue with Google" button automatically.
 ---
 
 ## Site 4 — Shopify
