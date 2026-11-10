@@ -49,8 +49,12 @@
       panel("list", "Checklist", "All 94 minor basilicas", '<p class="hint" style="margin:0 0 14px">Tick a basilica when you’ve been there. Tap a name to add the date, a note and your photos.</p><div class="idxcols" id="cols"></div>') +
       panel("visit", "Visit", "Date · note · photos", '<div id="vhead"></div><div id="vblock"></div>') +
       panel("near", "Basilicas near you", "Trip planning",
-        '<p style="margin:0 0 12px;max-width:70ch">Find the basilicas closest to where you are right now. Your location is used on this page only; it isn’t saved or sent anywhere.</p>' +
-        '<button class="btn solid" type="button" id="locBtn">Use my location</button><p class="msg" id="locMsg" role="status"></p><ul class="near" id="nearList"></ul>') +
+        '<p style="margin:0 0 12px;max-width:70ch">Find the basilicas closest to you, from your location or a ZIP code. Either one is used on this page only; it isn’t saved or sent anywhere.</p>' +
+        '<div class="nearpick"><button class="btn solid" type="button" id="locBtn">Use my location</button><span class="or">or</span>' +
+        '<form class="zipform" id="zipForm" novalidate><label class="visually-hidden" for="zipIn">ZIP code</label>' +
+        '<input id="zipIn" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="ZIP code">' +
+        '<button class="btn" type="submit">Go</button></form></div>' +
+        '<p class="msg" id="locMsg" role="status"></p><ul class="near" id="nearList"></ul>') +
       panel("orders", "Orders", "From the shop", '<div id="orderBox"><p><span class="spin"></span> Looking up your orders…</p></div>') +
       panel("acct", "Account", "Settings", '<div id="acctBox"></div>');
     try { B = await AB.basilicas(); B.forEach((b) => (BY[b.id] = b)); }
@@ -61,6 +65,7 @@
     const recent = [...vs.values()].sort((a, b) => String(b.visited_on || b.created_at).localeCompare(String(a.visited_on || a.created_at)))[0];
     openVisit(want && BY[want] ? want : recent ? recent.basilica_id : null, false);
     document.getElementById("locBtn").onclick = nearby;
+    document.getElementById("zipForm").onsubmit = (e) => { e.preventDefault(); nearZip(); };
     galleryPanel(); orders(); account();
   }
 
@@ -124,11 +129,37 @@
 
   function nearby() {
     const msg = document.getElementById("locMsg"), out = document.getElementById("nearList"), btn = document.getElementById("locBtn");
-    if (!navigator.geolocation) { msg.className = "msg err"; msg.textContent = "This browser can’t share its location."; return; }
+    if (!navigator.geolocation) { msg.className = "msg err"; msg.textContent = "This browser can’t share its location. Enter a ZIP code instead."; return; }
     btn.disabled = true; msg.className = "msg"; msg.innerHTML = '<span class="spin"></span> Finding you…';
-    navigator.geolocation.getCurrentPosition(async (pos) => {
+    navigator.geolocation.getCurrentPosition((pos) => {
       btn.disabled = false; msg.textContent = "";
-      const { latitude: la, longitude: lo } = pos.coords, vs = await AB.visits();
+      showNear(pos.coords.latitude, pos.coords.longitude);
+    }, (err) => {
+      btn.disabled = false; msg.className = "msg err";
+      msg.textContent = err.code === 1 ? "Location access was declined. You can allow it in your browser’s site settings and try again, or enter a ZIP code instead." : "Couldn’t get your location. Try again in a moment, or enter a ZIP code instead.";
+    }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
+  }
+
+  // ZIP code → its centre, from the files in members/zip/ (built from Census data by tools/build_zip.mjs).
+  // The lookup happens on this device; the ZIP isn't sent anywhere or stored.
+  const zipFiles = {};
+  async function nearZip() {
+    const msg = document.getElementById("locMsg"), zip = document.getElementById("zipIn").value.trim();
+    document.getElementById("nearList").innerHTML = "";
+    if (!/^\d{5}$/.test(zip)) { msg.className = "msg err"; msg.textContent = "Enter a 5-digit ZIP code."; return; }
+    msg.className = "msg"; msg.innerHTML = '<span class="spin"></span> Looking up ' + zip + "…";
+    try {
+      const p = zip.slice(0, 3);
+      const m = zipFiles[p] || (zipFiles[p] = await fetch("members/zip/" + p + ".json").then((r) => (r.ok ? r.json() : {})));
+      const c = m[zip.slice(3)];
+      if (!c) { delete zipFiles[p]; msg.className = "msg err"; msg.textContent = "We couldn’t find that ZIP code."; return; }
+      msg.textContent = "Distances from the center of ZIP code " + zip + ".";
+      showNear(c[0], c[1]);
+    } catch (e) { msg.className = "msg err"; msg.textContent = "We couldn’t look that up right now. Try again in a moment."; }
+  }
+
+  async function showNear(la, lo) {
+      const out = document.getElementById("nearList"), vs = await AB.visits();
       const list = B.map((b) => ({ b, d: AB.miles(la, lo, b.lat, b.lng) })).sort((x, y) => x.d - y.d);
       const next = list.find((x) => !vs.has(x.b.id));
       const top = list.slice(0, 8);
@@ -139,10 +170,6 @@
           (vs.has(x.b.id) ? " · ✓ visited" : x === next ? " · <b style=\"color:var(--red)\">nearest you haven’t visited</b>" : "") +
           '</span></span><a class="btn small" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + dest + '">Directions</a></li>';
       }).join("");
-    }, (err) => {
-      btn.disabled = false; msg.className = "msg err";
-      msg.textContent = err.code === 1 ? "Location access was declined. You can allow it in your browser’s site settings and try again." : "Couldn’t get your location. Try again in a moment.";
-    }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
   }
 
   // the members' gallery: where the member stands (free 3 months, then subscribers) and the way in, by the map
