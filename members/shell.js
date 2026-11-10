@@ -38,13 +38,61 @@
   const GOOGLE = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.2l7.8 6C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.8c-.5-1.5-.8-3.1-.8-4.8s.3-3.3.8-4.8l-7.8-6C1 16.5 0 20.1 0 24s1 7.5 2.7 10.8l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.2-13.5-9.9l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>';
 
   /* Sign-in card: email link (with a 6-digit code as a fallback) or Google. */
+  /* ---------- Google's own sign-in button (only when googleClientId is set in config.js) ----------
+     The sign-in happens on this site, so Google's screen names americanbasilicas.org rather than the Supabase
+     address. Google's script loads only when a sign-in card is on screen. If it can't load or doesn't draw its
+     button within 4 seconds, the plain "Continue with Google" button (sign-in through Supabase) shows instead. */
+  let gisP = null;
+  const loadGIS = () => gisP || (gisP = new Promise((ok, bad) => {
+    const ready = () => window.google && google.accounts && google.accounts.id;
+    if (ready()) return ok();
+    const s = document.createElement("script");
+    s.src = "https://accounts.google.com/gsi/client"; s.async = true;
+    s.onload = () => (ready() ? ok() : bad(new Error("Google sign-in didn't load")));
+    s.onerror = () => { gisP = null; bad(new Error("Google sign-in didn't load")); };
+    document.head.appendChild(s);
+  }));
+  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const sha256 = async (t) => hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)));
+  function googleButton(el, say) {
+    const slot = el.querySelector("[data-gsi]"), plain = el.querySelector("[data-g]"), alt = el.querySelector("[data-galt]");
+    let settled = false;
+    const usePlain = () => { if (settled) return; settled = true; slot.hidden = true; plain.hidden = false; };
+    const timer = setTimeout(usePlain, 4000);
+    (async () => {
+      try {
+        await loadGIS();
+        const raw = hex(crypto.getRandomValues(new Uint8Array(24)));       // fresh for every card shown
+        google.accounts.id.initialize({
+          client_id: AB.GOOGLE_CLIENT_ID, nonce: await sha256(raw),
+          ux_mode: "popup", itp_support: true, use_fedcm_for_button: true, auto_select: false, cancel_on_tap_outside: true,
+          callback: async (resp) => {
+            say(""); alt.hidden = true;
+            const { error } = await AB.googleIdToken(resp && resp.credential, raw);
+            if (error) { say(error.message, "err"); alt.hidden = false; }
+          }
+        });
+        const w = Math.round(Math.max(200, Math.min(280, slot.getBoundingClientRect().width || 280)));   // about as wide as the card's other buttons
+        google.accounts.id.renderButton(slot, { type: "standard", theme: "outline", size: "large", text: "continue_with",
+          shape: "rectangular", logo_alignment: "left", width: w });
+        // wait for Google's button to appear (it draws an iframe); otherwise the timer falls back to the plain button
+        for (let i = 0; i < 40 && !settled; i++) {
+          if (slot.querySelector("iframe, [role=button]")) { settled = true; clearTimeout(timer); return; }
+          await new Promise((r) => setTimeout(r, 100));
+        }
+      } catch (e) { clearTimeout(timer); usePlain(); }
+    })();
+    alt.querySelector("a").onclick = async (e) => { e.preventDefault(); say(""); const { error } = await AB.google(); if (error) say(error.message, "err"); };
+  }
+
   AB.signinForm = function (el, { lead } = {}) {
     el.innerHTML =
       '<div class="signin"><h3>Sign in or create your account</h3>' +
       '<p class="hint" style="margin:0 0 12px">' + (lead || "Check off the basilicas you’ve visited, keep your photos with each visit, and see photos, reviews and questions from other members.") + "</p>" +
       '<p class="perk"><b>New accounts get the members’ gallery free for three months.</b> After that, the gallery is for subscribers. ' +
       "Your own map, visits and photos are always free.</p>" +
-      '<button class="btn gbtn" data-g type="button">' + GOOGLE + "Continue with Google</button>" +
+      (AB.GOOGLE_CLIENT_ID ? '<div class="gsi" data-gsi></div><p class="hint gsi-alt" data-galt hidden><a href="#">Try Google sign-in another way</a></p>' : "") +
+      '<button class="btn gbtn" data-g type="button"' + (AB.GOOGLE_CLIENT_ID ? " hidden" : "") + ">" + GOOGLE + "Continue with Google</button>" +
       '<div class="or">or</div>' +
       '<form data-f1><label class="fld" for="sie">Email</label><input id="sie" type="email" autocomplete="email" required placeholder="you@example.com">' +
       '<div class="btnrow" style="margin-top:12px"><button class="btn solid" type="submit">Email me a sign-in link</button></div>' +
@@ -58,6 +106,7 @@
     const say = (t, cls) => { msg.className = "msg " + (cls || ""); msg.textContent = t || ""; };
     const busy = (form, on) => form.querySelectorAll("button").forEach((b) => (b.disabled = on));
     el.querySelector("[data-g]").onclick = async () => { say(""); const { error } = await AB.google(); if (error) say(error.message, "err"); };
+    if (AB.GOOGLE_CLIENT_ID) googleButton(el, say);
     f1.onsubmit = async (e) => {
       e.preventDefault(); say(""); busy(f1, true);
       const { error } = await AB.sendLink(email.value);

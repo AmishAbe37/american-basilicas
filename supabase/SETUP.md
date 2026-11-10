@@ -76,6 +76,13 @@ Supabase's built-in email service only delivers to your own team's addresses, an
 
 Members who sign in with Google see the same welcome message on the site. Google doesn't send them the Confirm signup email.
 
+### Google's own sign-in button (optional, recommended)
+Set `googleClientId` in `members/config.js` to the web client's Client ID (Google Auth Platform → Clients). The sign-in card then
+shows Google's own button, the sign-in happens on americanbasilicas.org, and Google's screen names americanbasilicas.org instead of
+the Supabase project address. The client's Authorized JavaScript origins must include `https://americanbasilicas.org` and
+`https://www.americanbasilicas.org`; in Supabase's Google provider, keep "Skip nonce check" off. Google's script loads only while a
+sign-in form is shown, and if it can't load the plain "Continue with Google" button appears instead.
+
 ## 4. Switch the site on
 
 1. In Supabase, open **Project Settings → API Keys**. Copy the **Project URL** and the **anon / publishable** key. This key is designed to be public.
