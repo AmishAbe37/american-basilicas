@@ -110,12 +110,12 @@
   "created": "2026-11-03T11:15:31-06:00"
  },
  {
-  "title": "Cathedral Basilica of St. Louis Postcards | St. Louis, MO",
-  "place": "St",
+  "title": "Cathedral Basilica of St Louis (New Cathedral) Postcard",
+  "place": "",
   "url": "https://americanbasilicas.myshopify.com/products/cathedral-basilica-of-st-louis-postcards",
-  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/6599669081158110519_2048.jpg?v=1793294536",
-  "min": 14.99,
-  "max": 30.99,
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/14655044862354831706_2048.jpg?v=1794517551",
+  "min": 15.99,
+  "max": 29.99,
   "kind": "other",
   "created": "2026-10-29T12:22:05-05:00"
  },
@@ -128,5 +128,15 @@
   "max": 39.99,
   "kind": "other",
   "created": "2026-11-03T12:00:41-06:00"
+ },
+ {
+  "title": "Postcard Bundles (envelopes not included)",
+  "place": "",
+  "url": "https://americanbasilicas.myshopify.com/products/postcard-bundles-envelopes-not-included",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/14840680561756754035_2048.jpg?v=1794516753",
+  "min": 13.41,
+  "max": 31.14,
+  "kind": "other",
+  "created": "2026-11-12T14:52:25-06:00"
  }
 ]
