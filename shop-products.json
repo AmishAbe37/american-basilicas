@@ -1,6 +1,6 @@
 [
  {
-  "title": "Poster",
+  "title": "Basilicas of the United States Map Poster | All 94 Minor Basilicas",
   "place": "",
   "url": "https://americanbasilicas.myshopify.com/products/catholic-basilicas-of-the-united-states-map-poster",
   "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/enhanced-matte-paper-poster-_in_-24x36-front-6ac401712ce20.jpg?v=1791230343",
@@ -80,6 +80,16 @@
   "created": "2026-10-20T18:20:42-05:00"
  },
  {
+  "title": "Basilica of St. Louis, King of France (Old Cathedral) Postcards | St. Louis, MO",
+  "place": "St",
+  "url": "https://americanbasilicas.myshopify.com/products/basilica-of-st-louis-king-of-france-old-cathedral-postcards",
+  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/14840680561756754035_2048.jpg?v=1794516753",
+  "min": 12.99,
+  "max": 30.99,
+  "kind": "other",
+  "created": "2026-11-12T14:52:25-06:00"
+ },
+ {
   "title": "Basilica of the National Shrine of the Little Flower Postcards | San Antonio, TX",
   "place": "San Antonio, Texas, plus room to write, a stamp box and address lines",
   "url": "https://americanbasilicas.myshopify.com/products/basilica-of-the-national-shrine-of-the-little-flower-postcards",
@@ -110,12 +120,12 @@
   "created": "2026-11-03T11:15:31-06:00"
  },
  {
-  "title": "Cathedral Basilica of St Louis (New Cathedral) Postcard",
-  "place": "",
+  "title": "Cathedral Basilica of St. Louis Postcards | St. Louis, MO",
+  "place": "St",
   "url": "https://americanbasilicas.myshopify.com/products/cathedral-basilica-of-st-louis-postcards",
   "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/14655044862354831706_2048.jpg?v=1794517551",
-  "min": 15.99,
-  "max": 29.99,
+  "min": 14.99,
+  "max": 30.99,
   "kind": "other",
   "created": "2026-10-29T12:22:05-05:00"
  },
@@ -124,19 +134,9 @@
   "place": "St",
   "url": "https://americanbasilicas.myshopify.com/products/cathedral-basilica-of-st-louis-tee",
   "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/mens-oversized-faded-t-shirt-faded-black-back-6aea2b3318b4c.png?v=1793731396",
-  "min": 35.0,
-  "max": 39.99,
+  "min": 41.99,
+  "max": 46.99,
   "kind": "other",
   "created": "2026-11-03T12:00:41-06:00"
- },
- {
-  "title": "Postcard Bundles (envelopes not included)",
-  "place": "",
-  "url": "https://americanbasilicas.myshopify.com/products/postcard-bundles-envelopes-not-included",
-  "image": "https://cdn.shopify.com/s/files/1/0791/7541/8046/files/14840680561756754035_2048.jpg?v=1794516753",
-  "min": 13.41,
-  "max": 31.14,
-  "kind": "other",
-  "created": "2026-11-12T14:52:25-06:00"
  }
 ]
