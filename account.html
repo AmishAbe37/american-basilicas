@@ -19,7 +19,7 @@
 </head>
 <body class="mp">
 <main id="main" aria-live="polite"></main>
-<footer class="mf">American Basilicas · <a href="index.html">The map</a> · <a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a>
+<footer class="mf">American Basilicas · <a href="index.html">The map</a> · <a href="mailto:hello@americanbasilicas.org">hello@americanbasilicas.org</a>
   · Your visits, notes and photos are private to you unless a photo is approved for the members’ gallery. · <a href="privacy.html">Privacy policy</a></footer>
 <script>
 (function () {
@@ -206,7 +206,7 @@
     const box = document.getElementById("orderBox");
     let r;
     try { r = await AB.orders(); }
-    catch (e) { box.innerHTML = '<p class="empty">Order history isn’t available right now. Questions about an order? Write to <a href="mailto:americanbasilicas@gmail.com">americanbasilicas@gmail.com</a>.</p>'; return; }
+    catch (e) { box.innerHTML = '<p class="empty">Order history isn’t available right now. Questions about an order? Write to <a href="mailto:hello@americanbasilicas.org">hello@americanbasilicas.org</a>.</p>'; return; }
     const list = (r && r.orders) || [];
     if (!list.length) {
       box.innerHTML = '<p class="empty" style="margin:0 0 12px">No orders yet for ' + E(AB.user.email) + '. Orders placed with this email address appear here.</p>' +
